@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
+using RecipeRadar;
 using static RecipeRadar.MainWindow;
 
 namespace RecipeRadar
@@ -25,11 +26,10 @@ namespace RecipeRadar
 
             InitializeComponent();
 
-            // Subscribe to button click events
-            ApplyButton.Click += ApplyButton_Click;
+            FindButton.Click += FindButton_Click;
         }
 
-        private async void ApplyButton_Click(object sender, RoutedEventArgs e)
+        private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
             string? apiKey = "288d4b3d9f8d44d39f041ea5260c4301";
             string ingredients = "beef";
@@ -55,34 +55,6 @@ namespace RecipeRadar
                     Console.WriteLine("Failed to retrieve data");
                 }
             }
-        }
-
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Your logic for the Reset button click event
-            // For example:
-            MessageBox.Show("Reset button clicked!");
-        }
-
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Your logic for the Refresh button click event
-            // For example:
-            MessageBox.Show("Refresh button clicked!");
-        }
-
-        public class Recipe
-        {
-            public string? Title { get; set; }
-            public int ReadyInMinutes { get; set; }
-            public int Servings { get; set; }
-            // Add other properties as needed for your API response
-        }
-
-        public class RootObject
-        {
-            public Recipe[]? Results { get; set; }
-            // Add other properties as needed for your API response
         }
     }
 }
