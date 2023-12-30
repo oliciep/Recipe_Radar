@@ -20,3 +20,4 @@ C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\obj\Debug\net8.0-windows\r
 C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\obj\Debug\net8.0-windows\Recipe_Radar.pdb
 C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\obj\Debug\net8.0-windows\Recipe_Radar.genruntimeconfig.cache
 C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\obj\Debug\net8.0-windows\ref\Recipe_Radar.dll
+C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\obj\Debug\net8.0-windows\Recipe_Radar.sourcelink.json

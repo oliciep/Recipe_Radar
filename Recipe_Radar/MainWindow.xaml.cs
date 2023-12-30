@@ -32,7 +32,7 @@ namespace RecipeRadar
         private async void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
             string? apiKey = "288d4b3d9f8d44d39f041ea5260c4301";
-            string ingredients = "chicken";
+            string ingredients = "beef";
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
