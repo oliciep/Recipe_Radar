@@ -60,6 +60,7 @@ namespace RecipeRadar
                     {
                         outputRecipes.Append(recipe.Title + ", ready in " + recipe.ReadyInMinutes + " minutes. Serves " + recipe.Servings + " people. \n\n");
                     }
+                    MessageBox.Show(outputRecipes.ToString());
                     fetchResults(outputRecipes);
                 }
                 else
@@ -77,18 +78,35 @@ namespace RecipeRadar
             {
                 outputRecipes.Append("Title: " +recipe.Title + "\n\n");
             }
-            fetchResults(outputRecipes);
+            fetchResults(testData);
         }
 
-        private void fetchResults(StringBuilder outputRecipes)
+        private void fetchResults(TestRootObject testData)
         {
-             MessageBox.Show(outputRecipes.ToString());
-           /* var imageWindow = new Window
+            List<string> recipeImages = new List<string>();
+            var StackPanel = new StackPanel();
+
+            foreach (var recipe in testData.Results)
+            {
+                BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
+
+                Image img = new Image();
+                img.Source = bitmap;
+                img.Width = 200;
+                img.Height = 150;
+                img.Margin = new Thickness(10);
+
+                StackPanel.Children.Add(img);
+            }
+            var imageWindow = new Window
             {
                 Title = "Fetched Image and Text",
-                Width = 400,
-                Height = 300
-            }; */
+                Width = 1000,
+                Height = 2000
+            };
+
+            imageWindow.Content = StackPanel;
+            imageWindow.ShowDialog();
         }
 
     private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
