@@ -23,6 +23,7 @@ namespace RecipeRadar
     public partial class MainWindow : Window
     {
         private int numberOfRecipes = 1;
+        private int maxTimeAllowed = 60;
 
         public MainWindow()
         {
@@ -36,11 +37,11 @@ namespace RecipeRadar
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
             string? apiKey = APIKeys.SpoonacularKey;
-            string ingredients = "beef";
+            string ingredients = "corn";
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
-                HttpResponseMessage response = await client.GetAsync($"recipes/search?query={ingredients}&number={numberOfRecipes}&apiKey={apiKey}");
+                HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -66,6 +67,18 @@ namespace RecipeRadar
             if (RecipesComboBox.SelectedItem != null)
             {
                 int.TryParse(((ComboBoxItem)RecipesComboBox.SelectedItem).Content.ToString(), out numberOfRecipes);
+            }
+        }
+        private void timeTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            String maxTime = timeTextBox.Text.Trim();
+            if (int.TryParse(timeTextBox.Text.Trim(), out int result))
+            {
+                maxTimeAllowed = result;
+            }
+            if (string.IsNullOrEmpty(maxTime))
+            {
+                MessageBox.Show("Please enter maximum ready time.");
             }
         }
     }

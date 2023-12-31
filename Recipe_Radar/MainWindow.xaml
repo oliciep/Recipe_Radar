@@ -16,13 +16,17 @@
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Number of Recipes
                 </TextBlock>
-                <ComboBox x:Name="RecipesComboBox" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
+                <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
                     <ComboBoxItem Content="1" />
                     <ComboBoxItem Content="2" />
                     <ComboBoxItem Content="3" />
                     <ComboBoxItem Content="4" />
                     <ComboBoxItem Content="5" />
                 </ComboBox>
+                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
+                    Maximum Time Allowed
+                </TextBlock>
+                <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus"/>
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <Grid>
