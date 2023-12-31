@@ -39,6 +39,8 @@ namespace RecipeRadar
 
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
+            // Real Data (WITH API)
+            /*
             string? apiKey = APIKeys.SpoonacularKey;
             using (HttpClient client = new HttpClient())
 
@@ -64,7 +66,18 @@ namespace RecipeRadar
                 {
                     Console.WriteLine("Failed to retrieve data");
                 }
+            } */
+
+            // Test Data (NO API)
+            RecipeTests recipeTests = new RecipeTests();
+            RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
+            StringBuilder outputRecipes = new("");
+
+            foreach (var recipe in testData.Results)
+            {
+                outputRecipes.Append("Title: " +recipe.Title + "\n\n");
             }
+            fetchResults(outputRecipes);
         }
 
         private void fetchResults(StringBuilder outputRecipes)
