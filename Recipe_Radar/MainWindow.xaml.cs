@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
+using Recipe_Radar.config;
 using RecipeRadar;
 using static RecipeRadar.MainWindow;
 
@@ -34,7 +35,7 @@ namespace RecipeRadar
 
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
-            string? apiKey = "288d4b3d9f8d44d39f041ea5260c4301";
+            string? apiKey = APIKeys.SpoonacularKey;
             string ingredients = "beef";
             using (HttpClient client = new HttpClient())
             {
