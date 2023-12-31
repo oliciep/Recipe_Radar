@@ -49,7 +49,7 @@ namespace RecipeRadar
 
                     foreach (var recipe in rootObject.Results)
                     {
-                        outputRecipes.Append(recipe.Title + "\n");
+                        outputRecipes.Append(recipe.Title + ", ready in " + recipe.ReadyInMinutes + " minutes. Serves " + recipe.Servings + " people. \n\n");
                     }
                     MessageBox.Show(outputRecipes.ToString());
                 }
