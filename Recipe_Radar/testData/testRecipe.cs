@@ -47,6 +47,8 @@ namespace Recipe_Radar.testData
                         Image = "https://spoonacular.com/recipeImages/715538-312x231.jpg",
                         ImageType = "jpg"
                     }
+
+
                 },
                 TotalResults = 86
             };

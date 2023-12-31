@@ -84,6 +84,9 @@ namespace RecipeRadar
         private void fetchResults(TestRootObject testData)
         {
             List<string> recipeImages = new List<string>();
+            ScrollViewer scrollViewer = new ScrollViewer();
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            var imageWindow = new Window();
             var stackPanel = new StackPanel();
 
             foreach (var recipe in testData.Results)
@@ -92,27 +95,28 @@ namespace RecipeRadar
                 TextBlock textBlock = new TextBlock();
 
                 textBlock.Text = $"Title: {recipe.Title}";
+                textBlock.FontSize = 18;
+                textBlock.Foreground = Brushes.DarkOliveGreen;
                 textBlock.Margin = new Thickness(10);
                 textBlock.TextAlignment = TextAlignment.Center;
 
                 Image img = new Image();
                 img.Source = bitmap;
-                img.Width = 200;
-                img.Height = 150;
+                img.Width = 300;
+                img.Height = 200;
                 img.Margin = new Thickness(10);
 
                 stackPanel.Children.Add(textBlock);
                 stackPanel.Children.Add(img);
             }
 
-            var imageWindow = new Window
-            {
-                Title = "Fetched Image and Text",
-                Width = 600,
-                Height = 600
-            };
+            scrollViewer.Content = stackPanel;
 
-            imageWindow.Content = stackPanel;
+            imageWindow.Title = "Your Recipes";
+            imageWindow.Width = 800;
+            imageWindow.Height = 600;
+            imageWindow.Background = Brushes.LightGreen;
+            imageWindow.Content = scrollViewer;
             imageWindow.ShowDialog();
         }
 
