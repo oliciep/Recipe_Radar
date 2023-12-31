@@ -13,7 +13,9 @@ using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Recipe_Radar.config;
 using RecipeRadar;
+using Recipe_Radar.testData;
 using static RecipeRadar.MainWindow;
+using static Recipe_Radar.testData.RecipeTests;
 
 namespace RecipeRadar
 {
@@ -41,6 +43,8 @@ namespace RecipeRadar
             using (HttpClient client = new HttpClient())
 
             {
+                RecipeTests recipeTests = new RecipeTests();
+                RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
                 HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
 
@@ -54,7 +58,7 @@ namespace RecipeRadar
                     {
                         outputRecipes.Append(recipe.Title + ", ready in " + recipe.ReadyInMinutes + " minutes. Serves " + recipe.Servings + " people. \n\n");
                     }
-                    MessageBox.Show(outputRecipes.ToString());
+                    fetchResults(outputRecipes);
                 }
                 else
                 {
@@ -62,7 +66,19 @@ namespace RecipeRadar
                 }
             }
         }
-        private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
+
+        private void fetchResults(StringBuilder outputRecipes)
+        {
+             MessageBox.Show(outputRecipes.ToString());
+           /* var imageWindow = new Window
+            {
+                Title = "Fetched Image and Text",
+                Width = 400,
+                Height = 300
+            }; */
+        }
+
+    private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             ingredients = ingredientsTextBox.Text.Trim();
             if (string.IsNullOrEmpty(ingredients))
@@ -70,6 +86,7 @@ namespace RecipeRadar
                 MessageBox.Show("Please enter ingredients.");
             }
         }
+
         private void RecipesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Retrieve the selected value from ComboBox and update numberOfRecipes
@@ -78,6 +95,7 @@ namespace RecipeRadar
                 int.TryParse(((ComboBoxItem)RecipesComboBox.SelectedItem).Content.ToString(), out numberOfRecipes);
             }
         }
+
         private void timeTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             String maxTime = timeTextBox.Text.Trim();

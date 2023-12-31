@@ -18,7 +18,7 @@
                 </TextBlock>
                 <TextBox x:Name="ingredientsTextBox" Margin="5" LostFocus="ingredientsTextBox_LostFocus"/>
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
-                    Maximum Time Allowed
+                    Maximum Ready Time (in minutes)
                 </TextBlock>
                 <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus"/>
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
