@@ -21,12 +21,15 @@ namespace RecipeRadar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int numberOfRecipes = 1;
+
         public MainWindow()
         {
 
             InitializeComponent();
 
             FindButton.Click += FindButton_Click;
+            RecipesComboBox.SelectedIndex = 0;
         }
 
         private async void FindButton_Click(object sender, RoutedEventArgs e)
@@ -36,24 +39,32 @@ namespace RecipeRadar
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
-                HttpResponseMessage response = await client.GetAsync($"recipes/search?query={ingredients}&number=1&apiKey={apiKey}");
+                HttpResponseMessage response = await client.GetAsync($"recipes/search?query={ingredients}&number={numberOfRecipes}&apiKey={apiKey}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
                     RootObject? rootObject = JsonConvert.DeserializeObject<RootObject>(responseData);
-                    String outputRecipes = new("");
+                    StringBuilder outputRecipes = new("");
 
                     foreach (var recipe in rootObject.Results)
                     {
-                        outputRecipes = recipe.Title;
+                        outputRecipes.Append(recipe.Title + "\n");
                     }
-                    MessageBox.Show(outputRecipes);
+                    MessageBox.Show(outputRecipes.ToString());
                 }
                 else
                 {
                     Console.WriteLine("Failed to retrieve data");
                 }
+            }
+        }
+        private void RecipesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Retrieve the selected value from ComboBox and update numberOfRecipes
+            if (RecipesComboBox.SelectedItem != null)
+            {
+                int.TryParse(((ComboBoxItem)RecipesComboBox.SelectedItem).Content.ToString(), out numberOfRecipes);
             }
         }
     }
