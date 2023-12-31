@@ -84,11 +84,16 @@ namespace RecipeRadar
         private void fetchResults(TestRootObject testData)
         {
             List<string> recipeImages = new List<string>();
-            var StackPanel = new StackPanel();
+            var stackPanel = new StackPanel();
 
             foreach (var recipe in testData.Results)
             {
                 BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
+                TextBlock textBlock = new TextBlock();
+
+                textBlock.Text = $"Title: {recipe.Title}";
+                textBlock.Margin = new Thickness(10);
+                textBlock.TextAlignment = TextAlignment.Center;
 
                 Image img = new Image();
                 img.Source = bitmap;
@@ -96,16 +101,18 @@ namespace RecipeRadar
                 img.Height = 150;
                 img.Margin = new Thickness(10);
 
-                StackPanel.Children.Add(img);
+                stackPanel.Children.Add(textBlock);
+                stackPanel.Children.Add(img);
             }
+
             var imageWindow = new Window
             {
                 Title = "Fetched Image and Text",
-                Width = 1000,
-                Height = 2000
+                Width = 600,
+                Height = 600
             };
 
-            imageWindow.Content = StackPanel;
+            imageWindow.Content = stackPanel;
             imageWindow.ShowDialog();
         }
 
