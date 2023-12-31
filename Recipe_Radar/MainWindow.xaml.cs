@@ -24,6 +24,7 @@ namespace RecipeRadar
     {
         private int numberOfRecipes = 1;
         private int maxTimeAllowed = 60;
+        private String ingredients = "";
 
         public MainWindow()
         {
@@ -37,8 +38,8 @@ namespace RecipeRadar
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
             string? apiKey = APIKeys.SpoonacularKey;
-            string ingredients = "corn";
             using (HttpClient client = new HttpClient())
+
             {
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
                 HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
@@ -59,6 +60,14 @@ namespace RecipeRadar
                 {
                     Console.WriteLine("Failed to retrieve data");
                 }
+            }
+        }
+        private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ingredients = ingredientsTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(ingredients))
+            {
+                MessageBox.Show("Please enter ingredients.");
             }
         }
         private void RecipesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
