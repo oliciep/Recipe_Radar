@@ -8,10 +8,10 @@ namespace RecipeRadar
 {
     public class Recipe
     {
-        public string? Title { get; set; }
-        public int ReadyInMinutes { get; set; }
-        public int Servings { get; set; }
-        // Add other properties as needed for your API response
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+        public string ImageType { get; set; }
     }
 
     public class RootObject

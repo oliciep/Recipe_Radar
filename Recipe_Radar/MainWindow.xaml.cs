@@ -40,7 +40,6 @@ namespace RecipeRadar
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
             // Real Data (WITH API)
-            /*
             string? apiKey = APIKeys.SpoonacularKey;
             using (HttpClient client = new HttpClient())
 
@@ -55,21 +54,16 @@ namespace RecipeRadar
                     string responseData = await response.Content.ReadAsStringAsync();
                     RootObject? rootObject = JsonConvert.DeserializeObject<RootObject>(responseData);
                     StringBuilder outputRecipes = new("");
-
-                    foreach (var recipe in rootObject.Results)
-                    {
-                        outputRecipes.Append(recipe.Title + ", ready in " + recipe.ReadyInMinutes + " minutes. Serves " + recipe.Servings + " people. \n\n");
-                    }
-                    MessageBox.Show(outputRecipes.ToString());
-                    fetchResults(outputRecipes);
+                    fetchResults(rootObject);
                 }
                 else
                 {
                     Console.WriteLine("Failed to retrieve data");
                 }
-            } */
+            }
 
             // Test Data (NO API)
+            /*
             RecipeTests recipeTests = new RecipeTests();
             RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
             StringBuilder outputRecipes = new("");
@@ -79,9 +73,10 @@ namespace RecipeRadar
                 outputRecipes.Append("Title: " +recipe.Title + "\n\n");
             }
             fetchResults(testData);
+            */
         }
 
-        private void fetchResults(TestRootObject testData)
+        private void fetchResults(RootObject rootObject)
         {
             List<string> recipeImages = new List<string>();
             ScrollViewer scrollViewer = new ScrollViewer();
@@ -89,7 +84,7 @@ namespace RecipeRadar
             var imageWindow = new Window();
             var stackPanel = new StackPanel();
 
-            foreach (var recipe in testData.Results)
+            foreach (var recipe in rootObject.Results)
             {
                 BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                 TextBlock textBlock = new TextBlock();
