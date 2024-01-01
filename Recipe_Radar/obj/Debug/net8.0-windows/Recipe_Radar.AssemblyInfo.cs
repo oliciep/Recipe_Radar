@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Recipe_Radar")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba735f1bd1113e41edb5749d8ba6ff88760e767b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c929fc0ea1dd29c56d24ec52fb0a7ac8621e27f6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Recipe_Radar")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Recipe_Radar")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
