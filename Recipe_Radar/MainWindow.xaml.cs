@@ -115,12 +115,30 @@ namespace RecipeRadar
             imageWindow.ShowDialog();
         }
 
-    private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             ingredients = ingredientsTextBox.Text.Trim();
             if (string.IsNullOrEmpty(ingredients))
             {
                 MessageBox.Show("Please enter ingredients.");
+            }
+        }
+
+        private void AddIngredient_Click(object sender, RoutedEventArgs e)
+        {
+            string newIngredient = ingredientsTextBox.Text;
+            if (!string.IsNullOrWhiteSpace(newIngredient))
+            {
+                ingredientListBox.Items.Add(newIngredient);
+                ingredientsTextBox.Text = string.Empty;
+            }
+        }
+
+        private void RemoveIngredient_Click(object sender, RoutedEventArgs e)
+        {
+            if (ingredientListBox.SelectedItem != null)
+            {
+                ingredientListBox.Items.Remove(ingredientListBox.SelectedItem);
             }
         }
 
