@@ -26,7 +26,6 @@ namespace RecipeRadar
     {
         private int numberOfRecipes = 1;
         private int maxTimeAllowed = 60;
-        private String ingredients = "";
 
         public MainWindow()
         {
@@ -40,12 +39,14 @@ namespace RecipeRadar
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
             // Real Data (WITH API)
+            StringBuilder ingredients = new("");
+            foreach (var item in ingredientListBox.Items)
+            {
+                ingredients.Append(item + ", ");
+            }
             string? apiKey = APIKeys.SpoonacularKey;
             using (HttpClient client = new HttpClient())
-
             {
-                RecipeTests recipeTests = new RecipeTests();
-                RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
                 HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
 
@@ -115,15 +116,6 @@ namespace RecipeRadar
             imageWindow.ShowDialog();
         }
 
-        private void ingredientsTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            ingredients = ingredientsTextBox.Text.Trim();
-            if (string.IsNullOrEmpty(ingredients))
-            {
-                MessageBox.Show("Please enter ingredients.");
-            }
-        }
-
         private void AddIngredient_Click(object sender, RoutedEventArgs e)
         {
             string newIngredient = ingredientsTextBox.Text;
@@ -144,7 +136,6 @@ namespace RecipeRadar
 
         private void RecipesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Retrieve the selected value from ComboBox and update numberOfRecipes
             if (RecipesComboBox.SelectedItem != null)
             {
                 int.TryParse(((ComboBoxItem)RecipesComboBox.SelectedItem).Content.ToString(), out numberOfRecipes);

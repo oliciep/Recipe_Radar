@@ -16,7 +16,7 @@
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Ingredients
                 </TextBlock>
-                <TextBox x:Name="ingredientsTextBox" Margin="5" LostFocus="ingredientsTextBox_LostFocus"/>
+                <TextBox x:Name="ingredientsTextBox" Margin="5"/>
                 <ListBox x:Name="ingredientListBox" Margin="5" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Add Ingredient" Click="AddIngredient_Click" Margin="5"/>
