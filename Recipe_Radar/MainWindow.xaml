@@ -16,9 +16,8 @@
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Ingredients
                 </TextBlock>
-                <TextBox x:Name="ingredientsTextBox" Margin="5"/>
+                <TextBox x:Name="ingredientsTextBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
                 <ListBox x:Name="ingredientListBox" Margin="5">
-                    <!-- Your ListBox content -->
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -31,18 +30,24 @@
                     </ListBox.Style>
                 </ListBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Add Ingredient" Click="AddIngredient_Click" Margin="5"/>
-                    <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Margin="5"/>
+                    <Button Content="Add Ingredient" Click="AddIngredient_Click" Margin="5" Background="#FF92C46B" BorderBrush="#FF2F5318"/>
+                    <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Margin="5" Background="#FF92C46B" BorderBrush="#FF2F5318"/>
                 </StackPanel>
                 
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Maximum Ready Time (in minutes)
                 </TextBlock>
-                <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus"/>
+                <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus" Background="#FFC6EAA2" BorderBrush="#FF2F5318"/>
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Number of Recipes
                 </TextBlock>
                 <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
+                    <ComboBox.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FFF0F0F0"/>
+                            <GradientStop Color="#FF3C8026" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Background>
                     <ComboBoxItem Content="1" />
                     <ComboBoxItem Content="2" />
                     <ComboBoxItem Content="3" />
@@ -52,7 +57,7 @@
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <Grid>
-                    <Button x:Name="FindButton" Content="Find Recipes" Background="Green" Margin="0,-58,0,0"/>
+                    <Button x:Name="FindButton" Content="Find Recipes" Background="#FF92C46B" Margin="0,-58,0,0"/>
                 </Grid>
             </StackPanel>
         </Grid>
