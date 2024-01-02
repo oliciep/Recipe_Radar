@@ -166,10 +166,21 @@ namespace RecipeRadar
 
         private void chooseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button clickedButton)
+            Button? button = sender as Button;
+            int uniqueID = Convert.ToInt32(button.Tag);
+            MessageBox.Show("Button clicked with ID: " + uniqueID);
+            if (button != null)
             {
-                int uniqueID = Convert.ToInt32(clickedButton.Tag);
-                MessageBox.Show("Button clicked with ID: " + uniqueID);
+                Window window = Window.GetWindow(button);
+
+                if (window != null)
+                {
+                    if (window.Content is ScrollViewer scrollViewer)
+                    {
+                        scrollViewer.Content = null;
+                    }
+                    window.Title = "ID: " + uniqueID;
+                }
             }
         }
     }
