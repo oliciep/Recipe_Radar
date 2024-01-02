@@ -17,11 +17,24 @@
                     Ingredients
                 </TextBlock>
                 <TextBox x:Name="ingredientsTextBox" Margin="5"/>
-                <ListBox x:Name="ingredientListBox" Margin="5" />
+                <ListBox x:Name="ingredientListBox" Margin="5">
+                    <!-- Your ListBox content -->
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Items.Count, ElementName=ingredientListBox}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Style>
+                </ListBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Add Ingredient" Click="AddIngredient_Click" Margin="5"/>
                     <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Margin="5"/>
                 </StackPanel>
+                
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Maximum Ready Time (in minutes)
                 </TextBlock>
