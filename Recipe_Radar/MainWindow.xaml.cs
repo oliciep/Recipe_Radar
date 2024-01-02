@@ -150,21 +150,29 @@ namespace RecipeRadar
             var stackPanel = new StackPanel();
             TextBlock textBlock = new TextBlock();
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
+            TextBlock textBlock2 = new TextBlock();
 
             textBlock.Text = $"Title: {recipeInformation.Title}";
-            textBlock.FontSize = 18;
+            textBlock.FontSize = 24;
             textBlock.Foreground = Brushes.DarkOliveGreen;
             textBlock.Margin = new Thickness(10);
             textBlock.TextAlignment = TextAlignment.Center;
 
             Image img = new Image();
             img.Source = bitmap;
-            img.Width = 300;
-            img.Height = 200;
+            img.Width = 400;
+            img.Height = 300;
             img.Margin = new Thickness(10);
+
+            textBlock2.Text = $"Ready in: {recipeInformation.ReadyInMinutes} minutes. \n Serves: {recipeInformation.Servings} people.";
+            textBlock2.FontSize = 18;
+            textBlock2.Foreground = Brushes.DarkOliveGreen;
+            textBlock2.Margin = new Thickness(10);
+            textBlock2.TextAlignment = TextAlignment.Center;
 
             stackPanel.Children.Add(textBlock);
             stackPanel.Children.Add(img);
+            stackPanel.Children.Add(textBlock2);
 
             window.Content = stackPanel;
         }
