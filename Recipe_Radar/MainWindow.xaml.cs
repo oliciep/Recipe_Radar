@@ -89,6 +89,7 @@ namespace RecipeRadar
             {
                 BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                 TextBlock textBlock = new TextBlock();
+                Button chooseButton = new Button();
 
                 textBlock.Text = $"Title: {recipe.Title}";
                 textBlock.FontSize = 18;
@@ -102,8 +103,16 @@ namespace RecipeRadar
                 img.Height = 200;
                 img.Margin = new Thickness(10);
 
+                chooseButton.Content = $"Choose {recipe.Id}";
+                chooseButton.Width = 100;
+                chooseButton.Margin = new Thickness(10);
+                chooseButton.Tag = recipe.Id;
+                chooseButton.Click += chooseButton_Click;
+                
+
                 stackPanel.Children.Add(textBlock);
                 stackPanel.Children.Add(img);
+                stackPanel.Children.Add(chooseButton);
             }
 
             scrollViewer.Content = stackPanel;
@@ -152,6 +161,15 @@ namespace RecipeRadar
             if (string.IsNullOrEmpty(maxTime))
             {
                 MessageBox.Show("Please enter maximum ready time.");
+            }
+        }
+
+        private void chooseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button clickedButton)
+            {
+                int uniqueID = Convert.ToInt32(clickedButton.Tag);
+                MessageBox.Show("Button clicked with ID: " + uniqueID);
             }
         }
     }
