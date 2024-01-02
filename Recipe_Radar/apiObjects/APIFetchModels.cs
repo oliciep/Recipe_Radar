@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RecipeRadar
+namespace Recipe_Radar.apiObjects
 {
     public class Recipe
     {

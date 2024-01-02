@@ -12,10 +12,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Recipe_Radar.config;
-using RecipeRadar;
 using Recipe_Radar.testData;
 using static RecipeRadar.MainWindow;
 using static Recipe_Radar.testData.RecipeTests;
+using Recipe_Radar.apiObjects;
 
 namespace RecipeRadar
 {
@@ -54,7 +54,6 @@ namespace RecipeRadar
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
                     RootObject? rootObject = JsonConvert.DeserializeObject<RootObject>(responseData);
-                    StringBuilder outputRecipes = new("");
                     fetchResults(rootObject);
                 }
                 else
@@ -125,7 +124,52 @@ namespace RecipeRadar
             imageWindow.ShowDialog();
         }
 
-        private void AddIngredient_Click(object sender, RoutedEventArgs e)
+        private async void chooseRecipe(Window window, int uniqueID)
+        {
+            string? apiKey = APIKeys.SpoonacularKey;
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://api.spoonacular.com/");
+                HttpResponseMessage response = await client.GetAsync($"recipes/{uniqueID}/information?apiKey={apiKey}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+                    RecipeInformation? recipeInfo = JsonConvert.DeserializeObject<RecipeInformation>(responseData);
+                    fetchInfo(window,recipeInfo);
+                }
+                else
+                {
+                    Console.WriteLine("Failed to retrieve data");
+                }
+            }
+        }
+
+        private void fetchInfo(Window window, RecipeInformation recipeInformation)
+        {
+            var stackPanel = new StackPanel();
+            TextBlock textBlock = new TextBlock();
+            BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
+
+            textBlock.Text = $"Title: {recipeInformation.Title}";
+            textBlock.FontSize = 18;
+            textBlock.Foreground = Brushes.DarkOliveGreen;
+            textBlock.Margin = new Thickness(10);
+            textBlock.TextAlignment = TextAlignment.Center;
+
+            Image img = new Image();
+            img.Source = bitmap;
+            img.Width = 300;
+            img.Height = 200;
+            img.Margin = new Thickness(10);
+
+            stackPanel.Children.Add(textBlock);
+            stackPanel.Children.Add(img);
+
+            window.Content = stackPanel;
+        }
+
+            private void AddIngredient_Click(object sender, RoutedEventArgs e)
         {
             string newIngredient = ingredientsTextBox.Text;
             if (!string.IsNullOrWhiteSpace(newIngredient))
@@ -168,7 +212,6 @@ namespace RecipeRadar
         {
             Button? button = sender as Button;
             int uniqueID = Convert.ToInt32(button.Tag);
-            MessageBox.Show("Button clicked with ID: " + uniqueID);
             if (button != null)
             {
                 Window window = Window.GetWindow(button);
@@ -178,8 +221,10 @@ namespace RecipeRadar
                     if (window.Content is ScrollViewer scrollViewer)
                     {
                         scrollViewer.Content = null;
+
                     }
                     window.Title = "ID: " + uniqueID;
+                    chooseRecipe(window, uniqueID);
                 }
             }
         }
