@@ -3,6 +3,69 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="MainWindow" Height="600" Width="800"
     Background="LightGreen">
+
+    <Window.Resources>
+        <Style x:Key="ComboBoxTest2" TargetType="{x:Type ComboBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Grid.Column="2" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" >
+                                <ToggleButton.Template>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border x:Name="Border"  Grid.ColumnSpan="2" CornerRadius="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318" BorderThickness="1" />
+                                            <Border Grid.Column="0" CornerRadius="5,0,0,5"  Margin="1"  Background="#FFCAEEA5"  BorderBrush="#FF2F5318" BorderThickness="0,0,1,0" />
+                                            <Path x:Name="Arrow" Grid.Column="1"  Fill="DarkGreen" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                                                <Setter TargetName="Border" Property="Background" Value="#FF92C46B" />
+                                            </Trigger>
+                                            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                                                <Setter TargetName="Border" Property="Background" Value="#FF92C46B" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3"  />
+                            <TextBox x:Name="PART_EditableTextBox" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"  Focusable="False" PopupAnimation="Slide">
+                                <Grid  Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" Background="#FFCAEEA5" />
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+    
     <Border Padding="10">
         <Grid>
             <Grid.RowDefinitions>
@@ -16,8 +79,8 @@
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Ingredients
                 </TextBlock>
-                <TextBox x:Name="ingredientsTextBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
-                <ListBox x:Name="ingredientListBox" Margin="5">
+                <TextBox x:Name="ingredientsTextBox" Margin="5"  Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
+                <ListBox x:Name="ingredientListBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318">
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -28,6 +91,11 @@
                             </Style.Triggers>
                         </Style>
                     </ListBox.Style>
+                    <ListBox.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="#FFCAEEA5" />
+                        </Style>
+                    </ListBox.Resources>
                 </ListBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Add Ingredient" Click="AddIngredient_Click" Margin="5" Background="#FF92C46B" BorderBrush="#FF2F5318"/>
@@ -41,7 +109,7 @@
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Number of Recipes
                 </TextBlock>
-                <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
+                <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" Style="{StaticResource ComboBoxTest2}" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
                     <ComboBox.Background>
                         <LinearGradientBrush EndPoint="0,1">
                             <GradientStop Color="#FFF0F0F0"/>
@@ -57,7 +125,7 @@
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <Grid>
-                    <Button x:Name="FindButton" Content="Find Recipes" Background="#FF92C46B" Margin="0,-58,0,0"/>
+                    <Button x:Name="FindButton" Content="Find Recipes" Background="#FF92C46B" Margin="0,-58,0,0" BorderBrush="#FF2F5318"/>
                 </Grid>
             </StackPanel>
         </Grid>
