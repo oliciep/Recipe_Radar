@@ -27,11 +27,14 @@ namespace RecipeRadar
     {
         private int numberOfRecipes = 1;
         private int maxTimeAllowed = 60;
+        private bool isDialogShown = false;
+        private RootObject? fetchedRecipes;
 
         public MainWindow()
         {
 
             InitializeComponent();
+            this.Closed += MainWindow_Closed;
 
             FindButton.Click += FindButton_Click;
             RecipesComboBox.SelectedIndex = 0;
@@ -54,8 +57,8 @@ namespace RecipeRadar
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
-                    RootObject? rootObject = JsonConvert.DeserializeObject<RootObject>(responseData);
-                    fetchResults(rootObject);
+                    fetchedRecipes = JsonConvert.DeserializeObject<RootObject>(responseData);
+                    createWindow(fetchedRecipes);
                 }
                 else
                 {
@@ -77,12 +80,23 @@ namespace RecipeRadar
             */
         }
 
-        private void fetchResults(RootObject rootObject)
+        private void createWindow(RootObject rootObject)
+        {
+            var imageWindow = new Window();
+
+            imageWindow.Title = "Your Recipes";
+            imageWindow.Width = 800;
+            imageWindow.Height = 600;
+            imageWindow.Background = Brushes.LightGreen;
+            fetchResults(fetchedRecipes, imageWindow);
+        }
+
+        private void fetchResults(RootObject rootObject, Window imageWindow)
         {
             List<string> recipeImages = new List<string>();
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            var imageWindow = new Window();
+            scrollViewer.Content = null;
             var stackPanel = new StackPanel();
 
             foreach (var recipe in rootObject.Results)
@@ -122,7 +136,11 @@ namespace RecipeRadar
             imageWindow.Height = 600;
             imageWindow.Background = Brushes.LightGreen;
             imageWindow.Content = scrollViewer;
-            imageWindow.ShowDialog();
+            if (!isDialogShown)
+            {
+                isDialogShown = true;
+                imageWindow.ShowDialog();
+            }
         }
 
         private async void chooseRecipe(Window window, int uniqueID)
@@ -164,6 +182,7 @@ namespace RecipeRadar
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
             TextBlock infoBlock = new TextBlock();
             TextBlock ingredientsBlock = new TextBlock();
+            Button returnButton = new Button();
 
             titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = Brushes.DarkGreen });
             titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = Brushes.Olive });
@@ -191,12 +210,18 @@ namespace RecipeRadar
             ingredientsBlock.TextAlignment = TextAlignment.Center;
             ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
 
+            returnButton.Content = "Return to Recipe Select";
+            returnButton.Style = (Style)Resources["ButtonStyle"];
+            returnButton.Tag = window;
+            returnButton.Click += returnButton_Click;
+
             ingredientsPanel.Children.Add(recipeImage);
             ingredientsPanel.Children.Add(ingredientsBlock);
             
             stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(ingredientsPanel);
             stackPanel.Children.Add(infoBlock);
+            stackPanel.Children.Add(returnButton);
 
             scrollViewer.Content = stackPanel;
             window.Content = scrollViewer;
@@ -262,5 +287,25 @@ namespace RecipeRadar
                 }
             }
         }
+
+        private void returnButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+            if (button != null)
+            {
+                Window window = Window.GetWindow(button);
+
+                if (window != null)
+                {
+                    fetchResults(fetchedRecipes, window);
+                }
+            }
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            isDialogShown = false;
+        }
+
     }
 }
