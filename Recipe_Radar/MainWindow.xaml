@@ -57,12 +57,30 @@
                 </Style>
             </Style.Resources>
         </Style>
+
         <Style TargetType="{x:Type Button}">
             <Style.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
                 </Style>
             </Style.Resources>
+        </Style>
+        
+        <Style x:Key= "ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="MaxWidth" Value="150"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="#FF92C46B"/>
+            <Setter Property="BorderBrush" Value="#FF2F5318"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
     
@@ -76,6 +94,7 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10" FontSize="30" Foreground="DarkGreen">
                     Welcome to Recipe Radar!
                 </TextBlock>
+
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Ingredients
                 </TextBlock>
@@ -97,15 +116,17 @@
                         </Style>
                     </ListBox.Resources>
                 </ListBox>
+                
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Add Ingredient" Click="AddIngredient_Click" Margin="5" Background="#FF92C46B" BorderBrush="#FF2F5318"/>
-                    <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Margin="5" Background="#FF92C46B" BorderBrush="#FF2F5318"/>
+                    <Button Content="Add Ingredient" Click="AddIngredient_Click" Style="{StaticResource ButtonStyle}"/>
+                    <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Style="{StaticResource ButtonStyle}"/>
                 </StackPanel>
                 
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Maximum Ready Time (in minutes)
                 </TextBlock>
                 <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus" Background="#FFC6EAA2" BorderBrush="#FF2F5318"/>
+                
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
                     Number of Recipes
                 </TextBlock>
@@ -123,6 +144,7 @@
                     <ComboBoxItem Content="5" />
                 </ComboBox>
             </StackPanel>
+            
             <StackPanel Grid.Row="1">
                 <Grid>
                     <Button x:Name="FindButton" Content="Find Recipes" Background="#FF92C46B" Margin="0,-58,0,0" BorderBrush="#FF2F5318"/>

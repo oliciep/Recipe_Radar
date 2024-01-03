@@ -103,11 +103,10 @@ namespace RecipeRadar
                 img.Margin = new Thickness(10);
 
                 chooseButton.Content = $"Choose {recipe.Id}";
-                chooseButton.Width = 100;
-                chooseButton.Margin = new Thickness(10);
+                chooseButton.Style = (Style)Resources["ButtonStyle"];
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
-                
+
 
                 stackPanel.Children.Add(textBlock);
                 stackPanel.Children.Add(img);
