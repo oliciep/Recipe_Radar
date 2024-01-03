@@ -34,7 +34,6 @@ namespace RecipeRadar
         {
 
             InitializeComponent();
-            this.Closed += MainWindow_Closed;
 
             FindButton.Click += FindButton_Click;
             RecipesComboBox.SelectedIndex = 0;
@@ -88,6 +87,7 @@ namespace RecipeRadar
             imageWindow.Width = 800;
             imageWindow.Height = 600;
             imageWindow.Background = Brushes.LightGreen;
+            imageWindow.Closed += ImageWindow_Closed;
             fetchResults(fetchedRecipes, imageWindow);
         }
 
@@ -302,7 +302,7 @@ namespace RecipeRadar
             }
         }
 
-        private void MainWindow_Closed(object sender, EventArgs e)
+        private void ImageWindow_Closed(object sender, EventArgs e)
         {
             isDialogShown = false;
         }
