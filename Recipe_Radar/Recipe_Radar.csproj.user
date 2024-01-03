@@ -7,8 +7,8 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="MainWindow.xaml">
+    <SplashScreen Update="MainWindow.xaml">
       <SubType>Designer</SubType>
-    </Page>
+    </SplashScreen>
   </ItemGroup>
 </Project>

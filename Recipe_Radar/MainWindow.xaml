@@ -65,7 +65,7 @@
                 </Style>
             </Style.Resources>
         </Style>
-        
+
         <Style x:Key= "ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="MinWidth" Value="120"/>
             <Setter Property="MaxWidth" Value="150"/>
@@ -83,7 +83,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Border Padding="10">
         <Grid>
             <Grid.RowDefinitions>
@@ -91,17 +91,19 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10" FontSize="30" Foreground="DarkGreen">
-                    Welcome to Recipe Radar!
-                </TextBlock>
 
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
-                    Ingredients
-                </TextBlock>
+                <Image Source="logo.png" Width="538" Height="129"/>
+
+                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Ingredients"/></TextBlock>
                 <TextBox x:Name="ingredientsTextBox" Margin="5"  Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
                 <ListBox x:Name="ingredientListBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318">
+                    <ListBox.Resources>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Background" Value="#FFC6EAA2"/>
+                        </Style>
+                    </ListBox.Resources>
                     <ListBox.Style>
-                        <Style TargetType="ListBox">
+                        <Style TargetType="{x:Type ListBox}">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Items.Count, ElementName=ingredientListBox}" Value="0">
@@ -110,26 +112,17 @@
                             </Style.Triggers>
                         </Style>
                     </ListBox.Style>
-                    <ListBox.Resources>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Background" Value="#FFC6EAA2"/>
-                        </Style>
-                    </ListBox.Resources>
                 </ListBox>
-                
+
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Add Ingredient" Click="AddIngredient_Click" Style="{StaticResource ButtonStyle}"/>
                     <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Style="{StaticResource ButtonStyle}"/>
                 </StackPanel>
-                
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
-                    Maximum Ready Time (in minutes)
-                </TextBlock>
+
+                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Maximum Ready Time (in minutes)"/></TextBlock>
                 <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus" Background="#FFC6EAA2" BorderBrush="#FF2F5318"/>
-                
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen">
-                    Number of Recipes
-                </TextBlock>
+
+                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Number of Recipes"/></TextBlock>
                 <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" Style="{StaticResource ComboBoxTest2}" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
                     <ComboBox.Background>
                         <LinearGradientBrush EndPoint="0,1">
@@ -144,7 +137,7 @@
                     <ComboBoxItem Content="5" />
                 </ComboBox>
             </StackPanel>
-            
+
             <StackPanel Grid.Row="1">
                 <Grid>
                     <Button x:Name="FindButton" Content="Find Recipes" Background="#FF92C46B" Margin="0,-58,0,0" BorderBrush="#FF2F5318"/>
