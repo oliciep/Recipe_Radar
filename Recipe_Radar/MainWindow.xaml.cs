@@ -146,10 +146,19 @@ namespace RecipeRadar
 
         private void fetchInfo(Window window, RecipeInformation recipeInformation)
         {
+            StringBuilder ingredientsList = new("Ingredients:\n");
+            foreach (var ingredient in recipeInformation.ExtendedIngredients)
+            {
+                ingredientsList.Append(ingredient.Name + "\n");
+            }
+
+            ScrollViewer scrollViewer = new ScrollViewer();
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             var stackPanel = new StackPanel();
             TextBlock textBlock = new TextBlock();
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
             TextBlock textBlock2 = new TextBlock();
+            TextBlock textBlock3 = new TextBlock();
 
             textBlock.Text = $"Title: {recipeInformation.Title}";
             textBlock.FontSize = 24;
@@ -169,11 +178,21 @@ namespace RecipeRadar
             textBlock2.Margin = new Thickness(10);
             textBlock2.TextAlignment = TextAlignment.Center;
 
+            textBlock3.Text = ingredientsList.ToString();
+            textBlock3.FontSize = 12;
+            textBlock3.Foreground = Brushes.DarkOliveGreen;
+            textBlock3.Margin = new Thickness(10);
+            textBlock3.TextAlignment = TextAlignment.Center;
+
             stackPanel.Children.Add(textBlock);
             stackPanel.Children.Add(img);
             stackPanel.Children.Add(textBlock2);
+            stackPanel.Children.Add(textBlock3);
 
-            window.Content = stackPanel;
+            scrollViewer.Content = stackPanel;
+            window.Content = scrollViewer;
+
+
         }
 
             private void AddIngredient_Click(object sender, RoutedEventArgs e)
