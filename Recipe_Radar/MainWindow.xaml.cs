@@ -16,6 +16,7 @@ using Recipe_Radar.testData;
 using static RecipeRadar.MainWindow;
 using static Recipe_Radar.testData.RecipeTests;
 using Recipe_Radar.apiObjects;
+using System.Xml;
 
 namespace RecipeRadar
 {
@@ -149,20 +150,23 @@ namespace RecipeRadar
             StringBuilder ingredientsList = new("Ingredients:\n");
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
-                ingredientsList.Append(ingredient.Name + "\n");
+                ingredientsList.Append("•" + ingredient.Name + "\n");
             }
 
+            window.Title = $"Recipe: {recipeInformation.Title}";
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             var stackPanel = new StackPanel();
+            var ingredientsPanel = new StackPanel();
+            ingredientsPanel.Orientation = Orientation.Horizontal;
             TextBlock textBlock = new TextBlock();
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
             TextBlock textBlock2 = new TextBlock();
             TextBlock textBlock3 = new TextBlock();
 
-            textBlock.Text = $"Title: {recipeInformation.Title}";
+            textBlock.Text = $"Recipe: {recipeInformation.Title}";
             textBlock.FontSize = 24;
-            textBlock.Foreground = Brushes.DarkOliveGreen;
+            textBlock.Foreground = Brushes.DarkGreen;
             textBlock.Margin = new Thickness(10);
             textBlock.TextAlignment = TextAlignment.Center;
 
@@ -171,6 +175,7 @@ namespace RecipeRadar
             img.Width = 400;
             img.Height = 300;
             img.Margin = new Thickness(10);
+            img.VerticalAlignment = VerticalAlignment.Top;
 
             textBlock2.Text = $"Ready in: {recipeInformation.ReadyInMinutes} minutes. \n Serves: {recipeInformation.Servings} people.";
             textBlock2.FontSize = 18;
@@ -183,11 +188,14 @@ namespace RecipeRadar
             textBlock3.Foreground = Brushes.DarkOliveGreen;
             textBlock3.Margin = new Thickness(10);
             textBlock3.TextAlignment = TextAlignment.Center;
+            textBlock3.VerticalAlignment = VerticalAlignment.Top;
 
+            ingredientsPanel.Children.Add(img);
+            ingredientsPanel.Children.Add(textBlock3);
+            
             stackPanel.Children.Add(textBlock);
-            stackPanel.Children.Add(img);
+            stackPanel.Children.Add(ingredientsPanel);
             stackPanel.Children.Add(textBlock2);
-            stackPanel.Children.Add(textBlock3);
 
             scrollViewer.Content = stackPanel;
             window.Content = scrollViewer;
@@ -249,7 +257,6 @@ namespace RecipeRadar
                         scrollViewer.Content = null;
 
                     }
-                    window.Title = "ID: " + uniqueID;
                     chooseRecipe(window, uniqueID);
                 }
             }
