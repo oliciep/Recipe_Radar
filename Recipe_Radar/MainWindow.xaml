@@ -112,7 +112,7 @@
                     </ListBox.Style>
                     <ListBox.Resources>
                         <Style TargetType="ListBoxItem">
-                            <Setter Property="Background" Value="#FFCAEEA5" />
+                            <Setter Property="Background" Value="#FFC6EAA2"/>
                         </Style>
                     </ListBox.Resources>
                 </ListBox>

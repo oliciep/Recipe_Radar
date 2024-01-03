@@ -91,7 +91,8 @@ namespace RecipeRadar
                 TextBlock textBlock = new TextBlock();
                 Button chooseButton = new Button();
 
-                textBlock.Text = $"Title: {recipe.Title}";
+                textBlock.Inlines.Add(new Run("Recipe: ") { Foreground = Brushes.DarkGreen });
+                textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
                 textBlock.FontSize = 18;
                 textBlock.Foreground = Brushes.DarkOliveGreen;
                 textBlock.Margin = new Thickness(10);
@@ -103,7 +104,7 @@ namespace RecipeRadar
                 img.Height = 200;
                 img.Margin = new Thickness(10);
 
-                chooseButton.Content = $"Choose {recipe.Id}";
+                chooseButton.Content = $"Choose Recipe";
                 chooseButton.Style = (Style)Resources["ButtonStyle"];
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
@@ -159,43 +160,43 @@ namespace RecipeRadar
             var stackPanel = new StackPanel();
             var ingredientsPanel = new StackPanel();
             ingredientsPanel.Orientation = Orientation.Horizontal;
-            TextBlock textBlock = new TextBlock();
+            TextBlock titleBlock = new TextBlock();
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
-            TextBlock textBlock2 = new TextBlock();
-            TextBlock textBlock3 = new TextBlock();
+            TextBlock infoBlock = new TextBlock();
+            TextBlock ingredientsBlock = new TextBlock();
 
-            textBlock.Text = $"Recipe: {recipeInformation.Title}";
-            textBlock.FontSize = 24;
-            textBlock.Foreground = Brushes.DarkGreen;
-            textBlock.Margin = new Thickness(10);
-            textBlock.TextAlignment = TextAlignment.Center;
+            titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = Brushes.DarkGreen });
+            titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = Brushes.Olive });
+            titleBlock.FontSize = 24;
+            titleBlock.Margin = new Thickness(10);
+            titleBlock.TextAlignment = TextAlignment.Center;
 
-            Image img = new Image();
-            img.Source = bitmap;
-            img.Width = 400;
-            img.Height = 300;
-            img.Margin = new Thickness(10);
-            img.VerticalAlignment = VerticalAlignment.Top;
+            Image recipeImage = new Image();
+            recipeImage.Source = bitmap;
+            recipeImage.Width = 400;
+            recipeImage.Height = 300;
+            recipeImage.Margin = new Thickness(10);
+            recipeImage.VerticalAlignment = VerticalAlignment.Top;
 
-            textBlock2.Text = $"Ready in: {recipeInformation.ReadyInMinutes} minutes. \n Serves: {recipeInformation.Servings} people.";
-            textBlock2.FontSize = 18;
-            textBlock2.Foreground = Brushes.DarkOliveGreen;
-            textBlock2.Margin = new Thickness(10);
-            textBlock2.TextAlignment = TextAlignment.Center;
+            infoBlock.Text = $"Ready in: {recipeInformation.ReadyInMinutes} minutes. \n Serves: {recipeInformation.Servings} people.";
+            infoBlock.FontSize = 18;
+            infoBlock.Foreground = Brushes.DarkOliveGreen;
+            infoBlock.Margin = new Thickness(10);
+            infoBlock.TextAlignment = TextAlignment.Center;
 
-            textBlock3.Text = ingredientsList.ToString();
-            textBlock3.FontSize = 12;
-            textBlock3.Foreground = Brushes.DarkOliveGreen;
-            textBlock3.Margin = new Thickness(10);
-            textBlock3.TextAlignment = TextAlignment.Center;
-            textBlock3.VerticalAlignment = VerticalAlignment.Top;
+            ingredientsBlock.Text = ingredientsList.ToString();
+            ingredientsBlock.FontSize = 12;
+            ingredientsBlock.Foreground = Brushes.DarkOliveGreen;
+            ingredientsBlock.Margin = new Thickness(10);
+            ingredientsBlock.TextAlignment = TextAlignment.Center;
+            ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
 
-            ingredientsPanel.Children.Add(img);
-            ingredientsPanel.Children.Add(textBlock3);
+            ingredientsPanel.Children.Add(recipeImage);
+            ingredientsPanel.Children.Add(ingredientsBlock);
             
-            stackPanel.Children.Add(textBlock);
+            stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(ingredientsPanel);
-            stackPanel.Children.Add(textBlock2);
+            stackPanel.Children.Add(infoBlock);
 
             scrollViewer.Content = stackPanel;
             window.Content = scrollViewer;
