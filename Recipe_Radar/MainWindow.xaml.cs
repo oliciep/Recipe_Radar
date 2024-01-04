@@ -123,7 +123,6 @@ namespace RecipeRadar
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
 
-
                 stackPanel.Children.Add(textBlock);
                 stackPanel.Children.Add(img);
                 stackPanel.Children.Add(chooseButton);
