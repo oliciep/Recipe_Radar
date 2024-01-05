@@ -165,30 +165,33 @@ namespace RecipeRadar
 
         private void fetchInfo(Window window, RecipeInformation recipeInformation)
         {
+            window.Title = $"Recipe: {recipeInformation.Title}";
+
             StringBuilder ingredientsList = new("Ingredients:\n");
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
                 ingredientsList.Append("•" + ingredient.Name + "\n");
             }
 
-            window.Title = $"Recipe: {recipeInformation.Title}";
+            StringBuilder instructionsList = new("Instructions:\n");
+            string[] instructions = recipeInformation.Instructions.ToString().Split('.');
+            foreach (var instruction in instructions)
+            {
+                instructionsList.Append("•" + instruction + "\n");
+            }
+
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             var stackPanel = new StackPanel();
-            var ingredientsPanel = new StackPanel();
-            ingredientsPanel.Orientation = Orientation.Horizontal;
-            TextBlock titleBlock = new TextBlock();
-            BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
-            TextBlock infoBlock = new TextBlock();
-            TextBlock ingredientsBlock = new TextBlock();
-            Button returnButton = new Button();
 
+            TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = Brushes.DarkGreen });
             titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = Brushes.Olive });
             titleBlock.FontSize = 24;
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
 
+            BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
             Image recipeImage = new Image();
             recipeImage.Source = bitmap;
             recipeImage.Width = 400;
@@ -196,12 +199,14 @@ namespace RecipeRadar
             recipeImage.Margin = new Thickness(10);
             recipeImage.VerticalAlignment = VerticalAlignment.Top;
 
+            TextBlock infoBlock = new TextBlock();
             infoBlock.Text = $"Ready in: {recipeInformation.ReadyInMinutes} minutes. \n Serves: {recipeInformation.Servings} people.";
             infoBlock.FontSize = 18;
             infoBlock.Foreground = Brushes.DarkOliveGreen;
             infoBlock.Margin = new Thickness(10);
             infoBlock.TextAlignment = TextAlignment.Center;
 
+            TextBlock ingredientsBlock = new TextBlock();
             ingredientsBlock.Text = ingredientsList.ToString();
             ingredientsBlock.FontSize = 12;
             ingredientsBlock.Foreground = Brushes.DarkOliveGreen;
@@ -209,17 +214,28 @@ namespace RecipeRadar
             ingredientsBlock.TextAlignment = TextAlignment.Center;
             ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
 
+            Button returnButton = new Button();
             returnButton.Content = "Return to Recipe Select";
             returnButton.Style = (Style)Resources["ButtonStyle"];
             returnButton.Tag = window;
             returnButton.Click += returnButton_Click;
 
+            var ingredientsPanel = new StackPanel();
+            ingredientsPanel.Orientation = Orientation.Horizontal;
             ingredientsPanel.Children.Add(recipeImage);
             ingredientsPanel.Children.Add(ingredientsBlock);
-            
+
+            TextBlock instructionsBlock = new TextBlock();
+            instructionsBlock.Text = instructionsList.ToString();
+            instructionsBlock.FontSize = 12;
+            instructionsBlock.Foreground = Brushes.DarkOliveGreen;
+            instructionsBlock.Margin = new Thickness(10);
+            instructionsBlock.TextAlignment = TextAlignment.Center;
+
             stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(ingredientsPanel);
             stackPanel.Children.Add(infoBlock);
+            stackPanel.Children.Add(instructionsBlock);
             stackPanel.Children.Add(returnButton);
 
             scrollViewer.Content = stackPanel;
