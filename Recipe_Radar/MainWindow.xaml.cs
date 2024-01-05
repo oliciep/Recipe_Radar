@@ -17,6 +17,7 @@ using static RecipeRadar.MainWindow;
 using static Recipe_Radar.testData.RecipeTests;
 using Recipe_Radar.apiObjects;
 using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace RecipeRadar
 {
@@ -174,7 +175,9 @@ namespace RecipeRadar
             }
 
             StringBuilder instructionsList = new("Instructions:\n");
-            string[] instructions = recipeInformation.Instructions.ToString().Split('.');
+            string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), @"<ol>|</ol>", "", RegexOptions.IgnoreCase);
+            filterInstructions = Regex.Replace(filterInstructions, @"<li>|</li>", "", RegexOptions.IgnoreCase);
+            string[] instructions = filterInstructions.Split('.');
             foreach (var instruction in instructions)
             {
                 instructionsList.Append("•" + instruction + "\n");
