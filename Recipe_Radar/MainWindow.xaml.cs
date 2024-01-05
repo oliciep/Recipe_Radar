@@ -168,19 +168,43 @@ namespace RecipeRadar
         {
             window.Title = $"Recipe: {recipeInformation.Title}";
 
-            StringBuilder ingredientsList = new("Ingredients:\n");
+            StringBuilder ingredientsList = new("");
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
                 ingredientsList.Append("•" + ingredient.Name + "\n");
             }
 
-            StringBuilder instructionsList = new("Instructions:\n");
-            string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), @"<ol>|</ol>", "", RegexOptions.IgnoreCase);
-            filterInstructions = Regex.Replace(filterInstructions, @"<li>|</li>", "", RegexOptions.IgnoreCase);
-            string[] instructions = filterInstructions.Split('.');
+            StringBuilder instructionsList = new("");
+            int maxLength = 130;
+            string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), "<.*?>", "");
+            string[] instructions = filterInstructions.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            int counter = 1;
             foreach (var instruction in instructions)
             {
-                instructionsList.Append("•" + instruction + "\n");
+                string trimmedInstruction = instruction.Trim();
+                if (trimmedInstruction.Length > maxLength)
+                {
+                    int index = maxLength;
+
+                    while (index < trimmedInstruction.Length)
+                    {
+                        while (index > 0 && trimmedInstruction[index] != ' ')
+                        {
+                            index--;
+                        }
+
+                        if (index == 0)
+                        {
+                            index = maxLength;
+                        }
+
+                        trimmedInstruction = trimmedInstruction.Insert(index, Environment.NewLine);
+                        index += maxLength + Environment.NewLine.Length;
+                    }
+                }
+
+                instructionsList.Append(counter + ": " + trimmedInstruction + "\n");
+                counter += 1;
             }
 
             ScrollViewer scrollViewer = new ScrollViewer();
@@ -203,19 +227,44 @@ namespace RecipeRadar
             recipeImage.VerticalAlignment = VerticalAlignment.Top;
 
             TextBlock infoBlock = new TextBlock();
-            infoBlock.Text = $"Ready in: {recipeInformation.ReadyInMinutes} minutes. \n Serves: {recipeInformation.Servings} people.";
+            infoBlock.Inlines.Add(new Run("Ready in: ") { FontStyle = FontStyles.Italic });
+            infoBlock.Inlines.Add(new Run($"{recipeInformation.ReadyInMinutes} minutes. \n") { FontWeight = FontWeights.Bold });
+            infoBlock.Inlines.Add(new Run("Serves: ") { FontStyle = FontStyles.Italic });
+            infoBlock.Inlines.Add(new Run($"{recipeInformation.Servings} people.") { FontWeight = FontWeights.Bold });
             infoBlock.FontSize = 18;
             infoBlock.Foreground = Brushes.DarkOliveGreen;
             infoBlock.Margin = new Thickness(10);
             infoBlock.TextAlignment = TextAlignment.Center;
+
+            TextBlock ingredientsTitleBlock = new TextBlock();
+            ingredientsTitleBlock.Text = "Ingredients";
+            ingredientsTitleBlock.FontSize = 24;
+            ingredientsTitleBlock.Foreground = Brushes.DarkGreen;
+            ingredientsTitleBlock.TextAlignment = TextAlignment.Center;
+            ingredientsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
             TextBlock ingredientsBlock = new TextBlock();
             ingredientsBlock.Text = ingredientsList.ToString();
             ingredientsBlock.FontSize = 12;
             ingredientsBlock.Foreground = Brushes.DarkOliveGreen;
             ingredientsBlock.Margin = new Thickness(10);
-            ingredientsBlock.TextAlignment = TextAlignment.Center;
+            ingredientsBlock.TextAlignment = TextAlignment.Left;
             ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
+
+            TextBlock instructionsTitleBlock = new TextBlock();
+            instructionsTitleBlock.Text = "  Instructions";
+            instructionsTitleBlock.FontSize = 24;
+            instructionsTitleBlock.Foreground = Brushes.DarkGreen;
+            ingredientsBlock.Margin = new Thickness(10);
+            instructionsTitleBlock.TextAlignment = TextAlignment.Left;
+            instructionsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
+
+            TextBlock instructionsBlock = new TextBlock();
+            instructionsBlock.Text = instructionsList.ToString();
+            instructionsBlock.FontSize = 12;
+            instructionsBlock.Foreground = Brushes.DarkOliveGreen;
+            instructionsBlock.Margin = new Thickness(10);
+            instructionsBlock.TextAlignment = TextAlignment.Left;
 
             Button returnButton = new Button();
             returnButton.Content = "Return to Recipe Select";
@@ -223,22 +272,25 @@ namespace RecipeRadar
             returnButton.Tag = window;
             returnButton.Click += returnButton_Click;
 
+            var ingredientsTextPanel = new StackPanel();
+            ingredientsTextPanel.Orientation = Orientation.Vertical;
+            ingredientsTextPanel.Children.Add(ingredientsTitleBlock);
+            ingredientsTextPanel.Children.Add(ingredientsBlock);
+
             var ingredientsPanel = new StackPanel();
             ingredientsPanel.Orientation = Orientation.Horizontal;
             ingredientsPanel.Children.Add(recipeImage);
-            ingredientsPanel.Children.Add(ingredientsBlock);
+            ingredientsPanel.Children.Add(ingredientsTextPanel);
 
-            TextBlock instructionsBlock = new TextBlock();
-            instructionsBlock.Text = instructionsList.ToString();
-            instructionsBlock.FontSize = 12;
-            instructionsBlock.Foreground = Brushes.DarkOliveGreen;
-            instructionsBlock.Margin = new Thickness(10);
-            instructionsBlock.TextAlignment = TextAlignment.Center;
+            var instructionsPanel = new StackPanel();
+            instructionsPanel.Orientation = Orientation.Vertical;
+            instructionsPanel.Children.Add(instructionsTitleBlock);
+            instructionsPanel.Children.Add(instructionsBlock);
 
             stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(ingredientsPanel);
+            stackPanel.Children.Add(instructionsPanel);
             stackPanel.Children.Add(infoBlock);
-            stackPanel.Children.Add(instructionsBlock);
             stackPanel.Children.Add(returnButton);
 
             scrollViewer.Content = stackPanel;
