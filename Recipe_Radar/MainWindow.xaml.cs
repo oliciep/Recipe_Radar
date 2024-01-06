@@ -168,23 +168,27 @@ namespace RecipeRadar
         {
             window.Title = $"Recipe: {recipeInformation.Title}";
 
-            StringBuilder ingredientsList = new("");
+            StringBuilder ingredientsList = new StringBuilder();
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
                 ingredientsList.Append("•" + ingredient.Name + "\n");
             }
 
-            StringBuilder instructionsList = new("");
-            int maxLength = 130;
+            StringBuilder instructionsList = new StringBuilder();
             string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), "<.*?>", "");
             string[] instructions = filterInstructions.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-            int counter = 1;
-            foreach (var instruction in instructions)
+
+            const int maxLength = 130; // Set your desired maximum length
+            const int ninthInstruction = 9;
+
+            for (int i = 0; i < instructions.Length; i++)
             {
-                string trimmedInstruction = instruction.Trim();
+                string trimmedInstruction = instructions[i].Trim();
+
                 if (trimmedInstruction.Length > maxLength)
                 {
                     int index = maxLength;
+                    int currentInstruction = i + 1;
 
                     while (index < trimmedInstruction.Length)
                     {
@@ -198,14 +202,19 @@ namespace RecipeRadar
                             index = maxLength;
                         }
 
-                        trimmedInstruction = trimmedInstruction.Insert(index, Environment.NewLine);
-                        index += maxLength + Environment.NewLine.Length;
+                        int spacesToAdd = (currentInstruction > ninthInstruction) ? 5 : 3;
+                        string spaces = new string(' ', spacesToAdd);
+
+                        trimmedInstruction = trimmedInstruction.Insert(index, Environment.NewLine + spaces);
+                        index += maxLength + Environment.NewLine.Length + spacesToAdd;
+
+                        currentInstruction++;
                     }
                 }
 
-                instructionsList.Append(counter + ": " + trimmedInstruction + "\n");
-                counter += 1;
+                instructionsList.Append((i + 1) + ": " + trimmedInstruction + "\n");
             }
+
 
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
