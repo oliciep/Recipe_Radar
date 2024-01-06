@@ -26,6 +26,7 @@ namespace RecipeRadar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string cuisineType = "";
         private int numberOfRecipes = 1;
         private int maxTimeAllowed = 60;
         private bool isDialogShown = false;
@@ -52,7 +53,7 @@ namespace RecipeRadar
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
-                HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
+                HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&cuisine={cuisineType}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -308,7 +309,7 @@ namespace RecipeRadar
 
         }
 
-            private void AddIngredient_Click(object sender, RoutedEventArgs e)
+        private void AddIngredient_Click(object sender, RoutedEventArgs e)
         {
             string newIngredient = ingredientsTextBox.Text;
             if (!string.IsNullOrWhiteSpace(newIngredient))
@@ -325,6 +326,15 @@ namespace RecipeRadar
                 ingredientListBox.Items.Remove(ingredientListBox.SelectedItem);
             }
         }
+        private void CuisinesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CuisinesComboBox.SelectedItem != null)
+            {
+                cuisineType = ((ComboBoxItem)CuisinesComboBox.SelectedItem).Content.ToString();
+            }
+        }
+
+
 
         private void RecipesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
