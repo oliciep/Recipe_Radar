@@ -170,10 +170,20 @@ namespace RecipeRadar
             window.Title = $"Recipe: {recipeInformation.Title}";
 
             StringBuilder ingredientsList = new StringBuilder();
+            List<string> uniqueIngredients = new List<string>();
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
-                ingredientsList.Append($"• {ingredient.Amount} {ingredient.Unit} of {ingredient.Name}\n");
+                if (!uniqueIngredients.Contains($"• {ingredient.Amount} {ingredient.Unit} of {ingredient.Name}\n"))
+                {
+                    uniqueIngredients.Add($"• {ingredient.Amount} {ingredient.Unit} of {ingredient.Name}\n");
+                }
             }
+
+            foreach (var ingredient in uniqueIngredients)
+            {
+                ingredientsList.Append(ingredient);
+            }
+
 
             StringBuilder instructionsList = new StringBuilder();
             string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), "<.*?>", "");
