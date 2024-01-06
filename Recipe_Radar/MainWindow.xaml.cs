@@ -172,14 +172,14 @@ namespace RecipeRadar
             StringBuilder ingredientsList = new StringBuilder();
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
-                ingredientsList.Append("•" + ingredient.Name + "\n");
+                ingredientsList.Append($"• {ingredient.Amount} {ingredient.Unit} of {ingredient.Name}\n");
             }
 
             StringBuilder instructionsList = new StringBuilder();
             string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), "<.*?>", "");
             string[] instructions = filterInstructions.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
-            const int maxLength = 130; // Set your desired maximum length
+            const int maxLength = 130;
             const int ninthInstruction = 9;
 
             for (int i = 0; i < instructions.Length; i++)
