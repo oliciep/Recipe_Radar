@@ -4,7 +4,7 @@ This project is a C# based recipe application that allows you to find recipes, v
 ## Demo
 
 
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demo.gif)
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demo.gif) 
 
 
 ## Features
