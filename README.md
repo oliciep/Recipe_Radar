@@ -11,8 +11,8 @@ This project is a C# based recipe application that allows you to find recipes, v
 
 - C# Based backend to implement recipe finding logic.
 - Uses Spoonacular API to fetch recipes based on parameters.
-- WPF GUI using buttons, inputs and displaying information.
-- WPF styling for visually-pleasing design.
+- WPF GUI using buttons, general styling and displaying information.
+- SQL integration for storing user data and recipe information.
 - Filtering system to hone in on user needs.
 - Console application version available for efficiency.
 
