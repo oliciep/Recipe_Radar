@@ -91,6 +91,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
+                <Button Content="Login" Click="AddIngredient_Click" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
 
                 <Image Source="logo.png" Width="538" Height="129"/>
 

@@ -42,12 +42,7 @@ namespace RecipeRadar
             RecipesComboBox.SelectedIndex = 0;
             using (var context = new YourDbContext())
             {
-                User newUser = new User { Username = "oliciep", Password = "password123" };
 
-                // Adding the new user to the Users DbSet
-                context.AddUser(newUser);
-
-                // Listing all users
                 List<User> users = context.ListUsers();
                 foreach (var user in users)
                 {
