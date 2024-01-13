@@ -91,6 +91,32 @@ namespace RecipeRadar
             */
         }
 
+        private void createLoginWindow(object sender, RoutedEventArgs e)
+        {
+            var stackPanel = new StackPanel();
+
+
+            var loginWindow = new Window();
+            loginWindow.Title = "Log In";
+            loginWindow.Width = 400;
+            loginWindow.Height = 300;
+            loginWindow.Background = Brushes.LightGreen;
+
+            TextBlock titleBlock = new TextBlock();
+            titleBlock.Inlines.Add(new Run("Log") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+            titleBlock.Inlines.Add(new Run("In") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+            titleBlock.FontSize = 36;
+
+            titleBlock.Foreground = Brushes.DarkOliveGreen;
+            titleBlock.Margin = new Thickness(10);
+            titleBlock.TextAlignment = TextAlignment.Center;
+
+            stackPanel.Children.Add(titleBlock);
+            loginWindow.Content = stackPanel;
+            loginWindow.ShowDialog();
+        }
+
+
         private void createWindow(RootObject rootObject)
         {
             var imageWindow = new Window();
