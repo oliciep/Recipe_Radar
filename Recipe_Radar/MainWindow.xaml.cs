@@ -18,6 +18,7 @@ using static Recipe_Radar.testData.RecipeTests;
 using Recipe_Radar.apiObjects;
 using System.Xml;
 using System.Text.RegularExpressions;
+using Recipe_Radar.dbConfig;
 
 namespace RecipeRadar
 {
@@ -39,6 +40,20 @@ namespace RecipeRadar
 
             FindButton.Click += FindButton_Click;
             RecipesComboBox.SelectedIndex = 0;
+            using (var context = new YourDbContext())
+            {
+                User newUser = new User { Username = "oliciep", Password = "password123" };
+
+                // Adding the new user to the Users DbSet
+                context.AddUser(newUser);
+
+                // Listing all users
+                List<User> users = context.ListUsers();
+                foreach (var user in users)
+                {
+                    Console.WriteLine($"UserID: {user.UserID}, Username: {user.Username}, Password: {user.Password}");
+                }
+            }
         }
 
         private async void FindButton_Click(object sender, RoutedEventArgs e)

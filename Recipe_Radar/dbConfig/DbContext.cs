@@ -16,15 +16,26 @@ namespace Recipe_Radar.dbConfig
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=dbConfig\\Recipes.db");
+                optionsBuilder.UseSqlite("Data Source=C:\\Users\\olive\\source\\repos\\Recipe_Radar\\Recipe_Radar\\dbConfig\\Recipes.db");
             }
+        }
+
+        public void AddUser(User newUser)
+        {
+            Users.Add(newUser);
+            SaveChanges();
+        }
+
+        public List<User> ListUsers()
+        {
+            return Users.ToList();
         }
     }
 
     public class User
     {
-        public int userID { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
+        public int UserID { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

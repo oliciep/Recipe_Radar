@@ -17,19 +17,19 @@ namespace Recipe_Radar.Migrations
 
             modelBuilder.Entity("Recipe_Radar.dbConfig.User", b =>
                 {
-                    b.Property<int>("userID")
+                    b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("username")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("userID");
+                    b.HasKey("UserID");
 
                     b.ToTable("Users");
                 });
