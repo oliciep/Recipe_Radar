@@ -149,27 +149,33 @@ namespace RecipeRadar
 
             foreach (var recipe in rootObject.Results)
             {
-                BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
-                TextBlock textBlock = new TextBlock();
-                Button chooseButton = new Button();
+                Border dividerLine = new Border();
+                dividerLine.Width = 700;
+                dividerLine.Height = 2;
+                dividerLine.Background = CreateFadingBrush();
+                dividerLine.Margin = new Thickness(0, 5, 0, 5);
 
+                TextBlock textBlock = new TextBlock();
                 textBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                 textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#319930")) });
                 textBlock.FontSize = 18;
                 textBlock.Margin = new Thickness(10);
                 textBlock.TextAlignment = TextAlignment.Center;
 
+                BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                 Image img = new Image();
                 img.Source = bitmap;
                 img.Width = 300;
                 img.Height = 200;
                 img.Margin = new Thickness(10);
 
+                Button chooseButton = new Button();
                 chooseButton.Content = $"Choose Recipe";
                 chooseButton.Style = (Style)Resources["ButtonStyle"];
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
 
+                stackPanel.Children.Add(dividerLine);
                 stackPanel.Children.Add(textBlock);
                 stackPanel.Children.Add(img);
                 stackPanel.Children.Add(chooseButton);
@@ -187,6 +193,21 @@ namespace RecipeRadar
                 isDialogShown = true;
                 imageWindow.ShowDialog();
             }
+        }
+
+        private LinearGradientBrush CreateFadingBrush()
+        {
+            LinearGradientBrush gradientBrush = new LinearGradientBrush();
+
+            gradientBrush.StartPoint = new Point(0, 0.5);
+            gradientBrush.EndPoint = new Point(1, 0.5);
+
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 0));
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 86, 202, 85), 0.2));
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 86, 202, 85), 0.8));
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1));
+
+            return gradientBrush;
         }
 
         private async void chooseRecipe(Window window, int uniqueID)
