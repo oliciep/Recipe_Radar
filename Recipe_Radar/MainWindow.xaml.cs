@@ -103,9 +103,10 @@ namespace RecipeRadar
             loginWindow.Background = Brushes.LightGreen;
 
             TextBlock titleBlock = new TextBlock();
-            titleBlock.Inlines.Add(new Run("Log") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+            titleBlock.Inlines.Add(new Run("Log ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
             titleBlock.Inlines.Add(new Run("In") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
-            titleBlock.FontSize = 36;
+            titleBlock.FontFamily = new FontFamily("Impact");
+            titleBlock.FontSize = 48;
 
             titleBlock.Foreground = Brushes.DarkOliveGreen;
             titleBlock.Margin = new Thickness(10);
@@ -137,16 +138,24 @@ namespace RecipeRadar
             scrollViewer.Content = null;
             var stackPanel = new StackPanel();
 
+            TextBlock titleBlock = new TextBlock();
+            titleBlock.Inlines.Add(new Run("Your ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+            titleBlock.Inlines.Add(new Run("Recipes") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+            titleBlock.FontFamily = new FontFamily("Impact");
+            titleBlock.FontSize = 36;
+            titleBlock.TextAlignment = TextAlignment.Center;
+
+            stackPanel.Children.Add(titleBlock);
+
             foreach (var recipe in rootObject.Results)
             {
                 BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                 TextBlock textBlock = new TextBlock();
                 Button chooseButton = new Button();
 
-                textBlock.Inlines.Add(new Run("Recipe: ") { Foreground = Brushes.DarkGreen });
-                textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
+                textBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
+                textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#319930")) });
                 textBlock.FontSize = 18;
-                textBlock.Foreground = Brushes.DarkOliveGreen;
                 textBlock.Margin = new Thickness(10);
                 textBlock.TextAlignment = TextAlignment.Center;
 
@@ -268,9 +277,10 @@ namespace RecipeRadar
             var stackPanel = new StackPanel();
 
             TextBlock titleBlock = new TextBlock();
-            titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = Brushes.DarkGreen });
-            titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = Brushes.Olive });
+            titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#329f32")) });
+            titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#40c33f")) });
             titleBlock.FontSize = 24;
+            titleBlock.FontFamily = new FontFamily("Impact");
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
 
@@ -288,14 +298,14 @@ namespace RecipeRadar
             infoBlock.Inlines.Add(new Run("Serves: ") { FontStyle = FontStyles.Italic });
             infoBlock.Inlines.Add(new Run($"{recipeInformation.Servings} people.") { FontWeight = FontWeights.Bold });
             infoBlock.FontSize = 18;
-            infoBlock.Foreground = Brushes.DarkOliveGreen;
+            infoBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
             infoBlock.Margin = new Thickness(10);
             infoBlock.TextAlignment = TextAlignment.Center;
 
             TextBlock ingredientsTitleBlock = new TextBlock();
             ingredientsTitleBlock.Text = "Ingredients";
             ingredientsTitleBlock.FontSize = 24;
-            ingredientsTitleBlock.Foreground = Brushes.DarkGreen;
+            ingredientsTitleBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
             ingredientsTitleBlock.TextAlignment = TextAlignment.Center;
             ingredientsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
@@ -310,7 +320,7 @@ namespace RecipeRadar
             TextBlock instructionsTitleBlock = new TextBlock();
             instructionsTitleBlock.Text = "  Instructions";
             instructionsTitleBlock.FontSize = 24;
-            instructionsTitleBlock.Foreground = Brushes.DarkGreen;
+            instructionsTitleBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
             ingredientsBlock.Margin = new Thickness(10);
             instructionsTitleBlock.TextAlignment = TextAlignment.Left;
             instructionsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
