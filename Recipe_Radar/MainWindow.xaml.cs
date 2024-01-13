@@ -157,7 +157,7 @@ namespace RecipeRadar
 
                 TextBlock textBlock = new TextBlock();
                 textBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
-                textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#319930")) });
+                textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
                 textBlock.FontSize = 18;
                 textBlock.Margin = new Thickness(10);
                 textBlock.TextAlignment = TextAlignment.Center;
@@ -298,12 +298,17 @@ namespace RecipeRadar
             var stackPanel = new StackPanel();
 
             TextBlock titleBlock = new TextBlock();
-            titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#329f32")) });
-            titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#40c33f")) });
+            titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
+            titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = Brushes.Olive });
             titleBlock.FontSize = 24;
-            titleBlock.FontFamily = new FontFamily("Impact");
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
+
+            Border dividerLine = new Border();
+            dividerLine.Width = 700;
+            dividerLine.Height = 2;
+            dividerLine.Background = Brushes.Transparent;
+            dividerLine.Margin = new Thickness(0, 5, 0, 5);
 
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
             Image recipeImage = new Image();
@@ -313,18 +318,8 @@ namespace RecipeRadar
             recipeImage.Margin = new Thickness(10);
             recipeImage.VerticalAlignment = VerticalAlignment.Top;
 
-            TextBlock infoBlock = new TextBlock();
-            infoBlock.Inlines.Add(new Run("Ready in: ") { FontStyle = FontStyles.Italic });
-            infoBlock.Inlines.Add(new Run($"{recipeInformation.ReadyInMinutes} minutes. \n") { FontWeight = FontWeights.Bold });
-            infoBlock.Inlines.Add(new Run("Serves: ") { FontStyle = FontStyles.Italic });
-            infoBlock.Inlines.Add(new Run($"{recipeInformation.Servings} people.") { FontWeight = FontWeights.Bold });
-            infoBlock.FontSize = 18;
-            infoBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
-            infoBlock.Margin = new Thickness(10);
-            infoBlock.TextAlignment = TextAlignment.Center;
-
             TextBlock ingredientsTitleBlock = new TextBlock();
-            ingredientsTitleBlock.Text = "Ingredients";
+            ingredientsTitleBlock.Text = "             Ingredients";
             ingredientsTitleBlock.FontSize = 24;
             ingredientsTitleBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
             ingredientsTitleBlock.TextAlignment = TextAlignment.Center;
@@ -337,6 +332,17 @@ namespace RecipeRadar
             ingredientsBlock.Margin = new Thickness(10);
             ingredientsBlock.TextAlignment = TextAlignment.Left;
             ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
+
+            Border ingredientsBorder = new Border();
+            ingredientsBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
+            ingredientsBorder.Width = 750;
+            ingredientsBorder.CornerRadius = new CornerRadius(10);
+
+            Border dividerLine2 = new Border();
+            dividerLine2.Width = 700;
+            dividerLine2.Height = 20;
+            dividerLine2.Background = Brushes.Transparent;
+            dividerLine2.Margin = new Thickness(0, 5, 0, 5);
 
             TextBlock instructionsTitleBlock = new TextBlock();
             instructionsTitleBlock.Text = "  Instructions";
@@ -353,6 +359,21 @@ namespace RecipeRadar
             instructionsBlock.Margin = new Thickness(10);
             instructionsBlock.TextAlignment = TextAlignment.Left;
 
+            Border instructionsBorder = new Border();
+            instructionsBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#67cf66"));
+            instructionsBorder.Width = 750;
+            instructionsBorder.CornerRadius = new CornerRadius(10);
+
+            TextBlock infoBlock = new TextBlock();
+            infoBlock.Inlines.Add(new Run("Ready in: ") { FontStyle = FontStyles.Italic });
+            infoBlock.Inlines.Add(new Run($"{recipeInformation.ReadyInMinutes} minutes. \n") { FontWeight = FontWeights.Bold });
+            infoBlock.Inlines.Add(new Run("Serves: ") { FontStyle = FontStyles.Italic });
+            infoBlock.Inlines.Add(new Run($"{recipeInformation.Servings} people.") { FontWeight = FontWeights.Bold });
+            infoBlock.FontSize = 18;
+            infoBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
+            infoBlock.Margin = new Thickness(10);
+            infoBlock.TextAlignment = TextAlignment.Center;
+
             Button returnButton = new Button();
             returnButton.Content = "Return to Recipe Select";
             returnButton.Style = (Style)Resources["ButtonStyle"];
@@ -366,17 +387,23 @@ namespace RecipeRadar
 
             var ingredientsPanel = new StackPanel();
             ingredientsPanel.Orientation = Orientation.Horizontal;
+            ingredientsPanel.Width = 700;
+            ingredientsPanel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
             ingredientsPanel.Children.Add(recipeImage);
             ingredientsPanel.Children.Add(ingredientsTextPanel);
+            ingredientsBorder.Child = ingredientsPanel;
 
             var instructionsPanel = new StackPanel();
             instructionsPanel.Orientation = Orientation.Vertical;
             instructionsPanel.Children.Add(instructionsTitleBlock);
             instructionsPanel.Children.Add(instructionsBlock);
+            instructionsBorder.Child = instructionsPanel;
 
             stackPanel.Children.Add(titleBlock);
-            stackPanel.Children.Add(ingredientsPanel);
-            stackPanel.Children.Add(instructionsPanel);
+            stackPanel.Children.Add(dividerLine);
+            stackPanel.Children.Add(ingredientsBorder);
+            stackPanel.Children.Add(dividerLine2);
+            stackPanel.Children.Add(instructionsBorder);
             stackPanel.Children.Add(infoBlock);
             stackPanel.Children.Add(returnButton);
 
