@@ -102,19 +102,82 @@ namespace RecipeRadar
             loginWindow.Height = 300;
             loginWindow.Background = Brushes.LightGreen;
 
+            var loginPanel = new StackPanel();
+
             TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Log ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
             titleBlock.Inlines.Add(new Run("In") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
             titleBlock.FontFamily = new FontFamily("Impact");
             titleBlock.FontSize = 48;
-
             titleBlock.Foreground = Brushes.DarkOliveGreen;
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
 
+            TextBlock usernameBlock = new TextBlock();
+            usernameBlock.Text = "Username:   ";
+            usernameBlock.FontSize = 18;
+            usernameBlock.FontWeight = FontWeights.Bold;
+            usernameBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
+            usernameBlock.TextAlignment = TextAlignment.Left;
+
+            TextBox usernameBox = new TextBox();
+            ApplyRoundedCorners(usernameBox);
+            usernameBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
+            usernameBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
+            usernameBox.HorizontalAlignment = HorizontalAlignment.Right;
+            usernameBox.Width = 250;
+
+            TextBlock passwordBlock = new TextBlock();
+            passwordBlock.Text = "Password:    ";
+            passwordBlock.FontSize = 18;
+            passwordBlock.FontWeight= FontWeights.Bold;
+            passwordBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
+            passwordBlock.TextAlignment = TextAlignment.Left;
+
+            TextBox passwordBox = new TextBox();
+            ApplyRoundedCorners(passwordBox);
+            passwordBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
+            passwordBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
+            passwordBox.HorizontalAlignment = HorizontalAlignment.Right;
+            passwordBox.Width = 250;
+
+            var usernamePanel = new StackPanel();
+            usernamePanel.Children.Add(usernameBlock);
+            usernamePanel.Children.Add(usernameBox);
+            usernamePanel.Orientation = Orientation.Horizontal;
+            usernamePanel.Margin = new Thickness(10);
+
+            var passwordPanel = new StackPanel();
+            passwordPanel.Children.Add(passwordBlock);
+            passwordPanel.Children.Add(passwordBox); 
+            passwordPanel.Orientation = Orientation.Horizontal;
+            passwordPanel.Margin = new Thickness(10);
+
+            Button loginButton = new Button();
+            loginButton.Content = $"Log In";
+            loginButton.Style = (Style)Resources["ButtonStyle"];
+            loginButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55"));
+            loginButton.Height = 40;
+            loginButton.Width = 100;
+
             stackPanel.Children.Add(titleBlock);
+            stackPanel.Children.Add(usernamePanel);
+            stackPanel.Children.Add(passwordPanel);
+            stackPanel.Children.Add(loginButton);
             loginWindow.Content = stackPanel;
             loginWindow.ShowDialog();
+        }
+
+        private void ApplyRoundedCorners(TextBox textBox)
+        {
+            Style textBoxStyle = new Style(typeof(TextBox));
+
+            Style borderStyle = new Style(typeof(Border));
+            borderStyle.Setters.Add(new Setter(Border.CornerRadiusProperty, new CornerRadius(5)));
+
+            textBoxStyle.Resources.Add(typeof(Border), borderStyle);
+
+            textBox.Style = textBoxStyle;
         }
 
 
@@ -319,10 +382,10 @@ namespace RecipeRadar
             recipeImage.VerticalAlignment = VerticalAlignment.Top;
 
             TextBlock ingredientsTitleBlock = new TextBlock();
-            ingredientsTitleBlock.Text = "             Ingredients";
+            ingredientsTitleBlock.Text = "  Ingredients";
             ingredientsTitleBlock.FontSize = 24;
             ingredientsTitleBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
-            ingredientsTitleBlock.TextAlignment = TextAlignment.Center;
+            ingredientsTitleBlock.TextAlignment = TextAlignment.Left;
             ingredientsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
             TextBlock ingredientsBlock = new TextBlock();

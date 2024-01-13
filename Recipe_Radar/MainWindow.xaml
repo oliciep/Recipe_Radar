@@ -66,7 +66,7 @@
             </Style.Resources>
         </Style>
 
-        <Style x:Key= "ButtonStyle" TargetType="{x:Type Button}">
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="MinWidth" Value="120"/>
             <Setter Property="MaxWidth" Value="150"/>
             <Setter Property="Margin" Value="5"/>
