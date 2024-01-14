@@ -3,6 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="RecipeRadar" Height="600" Width="800"
     Background="LightGreen">
+    <Window.Icon>
+        <BitmapImage UriSource="logo.ico"/>
+    </Window.Icon>
 
     <Window.Resources>
         <Style x:Key="ComboBoxIngredient" TargetType="{x:Type ComboBox}">

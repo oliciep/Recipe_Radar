@@ -38,6 +38,9 @@ namespace RecipeRadar
 
             InitializeComponent();
 
+            Uri iconUri = new Uri("logo.ico", UriKind.Relative);
+            this.Icon = BitmapFrame.Create(iconUri);
+
             FindButton.Click += FindButton_Click;
             RecipesComboBox.SelectedIndex = 0;
             using (var context = new YourDbContext())
@@ -95,14 +98,11 @@ namespace RecipeRadar
         {
             var stackPanel = new StackPanel();
 
-
             var loginWindow = new Window();
             loginWindow.Title = "Log In";
             loginWindow.Width = 400;
             loginWindow.Height = 300;
             loginWindow.Background = Brushes.LightGreen;
-
-            var loginPanel = new StackPanel();
 
             TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Log ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
@@ -269,21 +269,6 @@ namespace RecipeRadar
                 isDialogShown = true;
                 imageWindow.ShowDialog();
             }
-        }
-
-        private LinearGradientBrush CreateFadingBrush()
-        {
-            LinearGradientBrush gradientBrush = new LinearGradientBrush();
-
-            gradientBrush.StartPoint = new Point(0, 0.5);
-            gradientBrush.EndPoint = new Point(1, 0.5);
-
-            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 0));
-            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 86, 202, 85), 0.2));
-            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 86, 202, 85), 0.8));
-            gradientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1));
-
-            return gradientBrush;
         }
 
         private async void chooseRecipe(Window window, int uniqueID)

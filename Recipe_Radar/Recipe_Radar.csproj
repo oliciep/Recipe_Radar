@@ -16,7 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="logo.ico" />
     <None Remove="logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
