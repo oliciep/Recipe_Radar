@@ -29,7 +29,6 @@ namespace RecipeRadar
     {
         private TextBox usernameBox;
         private TextBox passwordBox;
-        private Button loginButton;
 
         private string cuisineType = "";
         private int numberOfRecipes = 1;
@@ -177,11 +176,33 @@ namespace RecipeRadar
         {
             if (usernameBox != null && passwordBox != null)
             {
-                // Retrieve the text from the class-level TextBox controls
                 string username = usernameBox.Text;
                 string password = passwordBox.Text;
 
-                MessageBox.Show($"Username is {username} and Password is {password}");
+                AuthenticateUser(username, password);
+            }
+        }
+
+        private void AuthenticateUser(string username, string password)
+        {
+            Boolean logged_in = false;
+            using (var context = new YourDbContext())
+            {
+
+                List<User> users = context.ListUsers();
+                foreach (var user in users)
+                {
+                    if (user.Username == username && user.Password == password)
+                    {
+                        MessageBox.Show($"Logged in successfully, Username: {user.Username}");
+                        logged_in = true;
+                        break;
+                    }
+                }
+            }
+            if (!logged_in)
+            {
+                MessageBox.Show("Login unsuccessful.");
             }
         }
 
