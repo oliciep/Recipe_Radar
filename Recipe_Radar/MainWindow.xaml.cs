@@ -97,7 +97,7 @@ namespace RecipeRadar
 
             var loginWindow = new Window();
             loginWindow.Title = "Log In";
-            loginWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/logo.ico"));
+            loginWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
             loginWindow.Width = 400;
             loginWindow.Height = 300;
             loginWindow.Background = Brushes.LightGreen;
@@ -258,7 +258,7 @@ namespace RecipeRadar
             scrollViewer.Content = stackPanel;
 
             imageWindow.Title = "Your Recipes";
-            imageWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/logo.ico"));
+            imageWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
             imageWindow.Width = 800;
             imageWindow.Height = 600;
             imageWindow.Background = Brushes.LightGreen;

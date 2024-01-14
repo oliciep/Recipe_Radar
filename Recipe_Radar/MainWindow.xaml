@@ -4,7 +4,7 @@
     Title="RecipeRadar" Height="600" Width="800"
     Background="LightGreen">
     <Window.Icon>
-        <BitmapImage UriSource="logo.ico"/>
+        <BitmapImage UriSource="Images/logo.ico"/>
     </Window.Icon>
 
     <Window.Resources>
@@ -96,7 +96,7 @@
             <StackPanel Grid.Row="0">
                 <Button Content="Login" Click="createLoginWindow" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
 
-                <Image Source="logo.png" Width="538" Height="129"/>
+                <Image Source="Images\logo.png" Width="538" Height="129"/>
 
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Ingredients"/></TextBlock>
                 <TextBox x:Name="ingredientsTextBox" Margin="5"  Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
