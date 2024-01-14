@@ -206,6 +206,7 @@ namespace RecipeRadar
             titleBlock.Inlines.Add(new Run("Recipes") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
             titleBlock.FontFamily = new FontFamily("Impact");
             titleBlock.FontSize = 36;
+            titleBlock.Margin = new Thickness(0, 0, 0, 10);
             titleBlock.TextAlignment = TextAlignment.Center;
 
             stackPanel.Children.Add(titleBlock);
@@ -240,6 +241,8 @@ namespace RecipeRadar
 
                 Border recipeBorder = new Border();
                 recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
+                recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+                recipeBorder.BorderThickness = new Thickness(2);
                 recipeBorder.Width = 750;
                 recipeBorder.CornerRadius = new CornerRadius(10);
 
@@ -250,10 +253,10 @@ namespace RecipeRadar
                 recipePanel.Width = 700;
                 recipeBorder.Child = recipePanel;
 
-                stackPanel.Children.Add(dividerLine);
                 stackPanel.Children.Add(recipeBorder);
+                stackPanel.Children.Add(dividerLine);
             }
-
+            
             scrollViewer.Content = stackPanel;
 
             imageWindow.Title = "Your Recipes";
@@ -385,16 +388,13 @@ namespace RecipeRadar
 
             Border titleBorder = new Border();
             titleBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+            titleBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+            titleBorder.BorderThickness = new Thickness(1);
             titleBorder.CornerRadius = new CornerRadius(10);
             titleBorder.Child = titleBlock;
-
-            // Measure the desired size of the TextBlock
+            
             titleBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-
-            // Set the width of the Border based on the measured width of the TextBlock
-            titleBorder.Width = titleBlock.DesiredSize.Width + 20; // Adding some padding
-
-            // Center the TextBlock within the Border
+            titleBorder.Width = titleBlock.DesiredSize.Width + 20;
             titleBlock.Margin = new Thickness((titleBorder.Width - titleBlock.DesiredSize.Width) / 2, 0, 0, 0);
 
             Border dividerLine2 = new Border();
@@ -428,6 +428,8 @@ namespace RecipeRadar
 
             Border ingredientsBorder = new Border();
             ingredientsBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
+            ingredientsBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#42c441"));
+            ingredientsBorder.BorderThickness = new Thickness(2);
             ingredientsBorder.Width = 750;
             ingredientsBorder.CornerRadius = new CornerRadius(10);
 
@@ -454,6 +456,8 @@ namespace RecipeRadar
 
             Border instructionsBorder = new Border();
             instructionsBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#67cf66"));
+            instructionsBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2d8d2c"));
+            instructionsBorder.BorderThickness = new Thickness(2);
             instructionsBorder.Width = 750;
             instructionsBorder.CornerRadius = new CornerRadius(10);
 
@@ -469,6 +473,8 @@ namespace RecipeRadar
 
             Border infoBorder = new Border();
             infoBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3cbc3b"));
+            infoBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30962f"));
+            infoBorder.BorderThickness = new Thickness(1);
             infoBorder.Width = 200;
             infoBorder.CornerRadius = new CornerRadius(10);
             infoBorder.Child = infoBlock;
