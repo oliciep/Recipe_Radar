@@ -115,7 +115,7 @@ namespace RecipeRadar
 
             TextBlock usernameBlock = new TextBlock();
             usernameBlock.Text = "Username:   ";
-            usernameBlock.FontSize = 18;
+            usernameBlock.FontSize = 16;
             usernameBlock.FontWeight = FontWeights.Bold;
             usernameBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
             usernameBlock.TextAlignment = TextAlignment.Left;
@@ -129,7 +129,7 @@ namespace RecipeRadar
 
             TextBlock passwordBlock = new TextBlock();
             passwordBlock.Text = "Password:    ";
-            passwordBlock.FontSize = 18;
+            passwordBlock.FontSize = 16;
             passwordBlock.FontWeight= FontWeights.Bold;
             passwordBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
             passwordBlock.TextAlignment = TextAlignment.Left;
@@ -214,8 +214,8 @@ namespace RecipeRadar
             {
                 Border dividerLine = new Border();
                 dividerLine.Width = 700;
-                dividerLine.Height = 2;
-                dividerLine.Background = CreateFadingBrush();
+                dividerLine.Height = 10;
+                dividerLine.Background = Brushes.Transparent;
                 dividerLine.Margin = new Thickness(0, 5, 0, 5);
 
                 TextBlock textBlock = new TextBlock();
@@ -238,10 +238,20 @@ namespace RecipeRadar
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
 
+                Border recipeBorder = new Border();
+                recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
+                recipeBorder.Width = 750;
+                recipeBorder.CornerRadius = new CornerRadius(10);
+
+                var recipePanel = new StackPanel();
+                recipePanel.Children.Add(textBlock);
+                recipePanel.Children.Add(img);
+                recipePanel.Children.Add(chooseButton);
+                recipePanel.Width = 700;
+                recipeBorder.Child = recipePanel;
+
                 stackPanel.Children.Add(dividerLine);
-                stackPanel.Children.Add(textBlock);
-                stackPanel.Children.Add(img);
-                stackPanel.Children.Add(chooseButton);
+                stackPanel.Children.Add(recipeBorder);
             }
 
             scrollViewer.Content = stackPanel;
@@ -360,6 +370,12 @@ namespace RecipeRadar
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             var stackPanel = new StackPanel();
 
+            Border dividerLine = new Border();
+            dividerLine.Width = 700;
+            dividerLine.Height = 10;
+            dividerLine.Background = Brushes.Transparent;
+            dividerLine.Margin = new Thickness(0, 5, 0, 5);
+
             TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
             titleBlock.Inlines.Add(new Run($"{recipeInformation.Title}") { Foreground = Brushes.Olive });
@@ -367,11 +383,25 @@ namespace RecipeRadar
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
 
-            Border dividerLine = new Border();
-            dividerLine.Width = 700;
-            dividerLine.Height = 2;
-            dividerLine.Background = Brushes.Transparent;
-            dividerLine.Margin = new Thickness(0, 5, 0, 5);
+            Border titleBorder = new Border();
+            titleBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+            titleBorder.CornerRadius = new CornerRadius(10);
+            titleBorder.Child = titleBlock;
+
+            // Measure the desired size of the TextBlock
+            titleBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            // Set the width of the Border based on the measured width of the TextBlock
+            titleBorder.Width = titleBlock.DesiredSize.Width + 20; // Adding some padding
+
+            // Center the TextBlock within the Border
+            titleBlock.Margin = new Thickness((titleBorder.Width - titleBlock.DesiredSize.Width) / 2, 0, 0, 0);
+
+            Border dividerLine2 = new Border();
+            dividerLine2.Width = 700;
+            dividerLine2.Height = 2;
+            dividerLine2.Background = Brushes.Transparent;
+            dividerLine2.Margin = new Thickness(0, 5, 0, 5);
 
             BitmapImage bitmap = new BitmapImage(new Uri(recipeInformation.Image));
             Image recipeImage = new Image();
@@ -401,11 +431,11 @@ namespace RecipeRadar
             ingredientsBorder.Width = 750;
             ingredientsBorder.CornerRadius = new CornerRadius(10);
 
-            Border dividerLine2 = new Border();
-            dividerLine2.Width = 700;
-            dividerLine2.Height = 20;
-            dividerLine2.Background = Brushes.Transparent;
-            dividerLine2.Margin = new Thickness(0, 5, 0, 5);
+            Border dividerLine3 = new Border();
+            dividerLine3.Width = 700;
+            dividerLine3.Height = 20;
+            dividerLine3.Background = Brushes.Transparent;
+            dividerLine3.Margin = new Thickness(0, 5, 0, 5);
 
             TextBlock instructionsTitleBlock = new TextBlock();
             instructionsTitleBlock.Text = "  Instructions";
@@ -437,6 +467,18 @@ namespace RecipeRadar
             infoBlock.Margin = new Thickness(10);
             infoBlock.TextAlignment = TextAlignment.Center;
 
+            Border infoBorder = new Border();
+            infoBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3cbc3b"));
+            infoBorder.Width = 200;
+            infoBorder.CornerRadius = new CornerRadius(10);
+            infoBorder.Child = infoBlock;
+
+            Border dividerLine4 = new Border();
+            dividerLine4.Width = 700;
+            dividerLine4.Height = 10;
+            dividerLine4.Background = Brushes.Transparent;
+            dividerLine4.Margin = new Thickness(0, 5, 0, 5);
+
             Button returnButton = new Button();
             returnButton.Content = "Return to Recipe Select";
             returnButton.Style = (Style)Resources["ButtonStyle"];
@@ -462,12 +504,14 @@ namespace RecipeRadar
             instructionsPanel.Children.Add(instructionsBlock);
             instructionsBorder.Child = instructionsPanel;
 
-            stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(dividerLine);
-            stackPanel.Children.Add(ingredientsBorder);
+            stackPanel.Children.Add(titleBorder);
             stackPanel.Children.Add(dividerLine2);
+            stackPanel.Children.Add(ingredientsBorder);
+            stackPanel.Children.Add(dividerLine3);
             stackPanel.Children.Add(instructionsBorder);
-            stackPanel.Children.Add(infoBlock);
+            stackPanel.Children.Add(dividerLine4);
+            stackPanel.Children.Add(infoBorder);
             stackPanel.Children.Add(returnButton);
 
             scrollViewer.Content = stackPanel;
