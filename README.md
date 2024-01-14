@@ -42,6 +42,7 @@ public static partial class APIKeys
 ## Acknowledgements
 
  - [Spoonacular API](https://spoonacular.com/food-api)
+ - [Favicon Image by _Those Icons_](https://www.flaticon.com/free-icon/chef_483841?term=chef+hat&page=1&position=6&origin=search&related_id=483841)
 
 
 ## Authors

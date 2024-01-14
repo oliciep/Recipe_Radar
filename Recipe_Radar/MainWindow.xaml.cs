@@ -27,6 +27,10 @@ namespace RecipeRadar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TextBox usernameBox;
+        private TextBox passwordBox;
+        private Button loginButton;
+
         private string cuisineType = "";
         private int numberOfRecipes = 1;
         private int maxTimeAllowed = 60;
@@ -118,7 +122,7 @@ namespace RecipeRadar
             usernameBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
             usernameBlock.TextAlignment = TextAlignment.Left;
 
-            TextBox usernameBox = new TextBox();
+            usernameBox = new TextBox();
             ApplyRoundedCorners(usernameBox);
             usernameBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
             usernameBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
@@ -132,7 +136,7 @@ namespace RecipeRadar
             passwordBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
             passwordBlock.TextAlignment = TextAlignment.Left;
 
-            TextBox passwordBox = new TextBox();
+            passwordBox = new TextBox();
             ApplyRoundedCorners(passwordBox);
             passwordBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
             passwordBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
@@ -157,6 +161,9 @@ namespace RecipeRadar
             loginButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55"));
             loginButton.Height = 40;
             loginButton.Width = 100;
+            loginButton.Click += LoginButton_Click;
+
+            DataContext = this;
 
             stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(usernamePanel);
@@ -164,6 +171,18 @@ namespace RecipeRadar
             stackPanel.Children.Add(loginButton);
             loginWindow.Content = stackPanel;
             loginWindow.ShowDialog();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (usernameBox != null && passwordBox != null)
+            {
+                // Retrieve the text from the class-level TextBox controls
+                string username = usernameBox.Text;
+                string password = passwordBox.Text;
+
+                MessageBox.Show($"Username is {username} and Password is {password}");
+            }
         }
 
         private void ApplyRoundedCorners(TextBox textBox)
