@@ -31,6 +31,7 @@ namespace RecipeRadar
         private TextBox usernameBox;
         private TextBox passwordBox;
         private Boolean logged_in = false;
+        private int user_id;
 
         private string cuisineType = "";
         private int numberOfRecipes = 1;
@@ -321,6 +322,7 @@ namespace RecipeRadar
                     {
                         MessageBox.Show($"Logged in successfully, Username: {user.Username}");
                         logged_in = true;
+                        user_id = user.UserID;
                         loginWindow.Close();
                         createHomepageWindow(user.UserID, username);
                         break;
@@ -683,6 +685,8 @@ namespace RecipeRadar
                 Button saveButton = new Button();
                 saveButton.Content = "Save Recipe";
                 saveButton.Style = (Style)Resources["ButtonStyle"];
+                saveButton.Tag = recipeInformation;
+                saveButton.Click += saveButton_Click;
                 buttonsPanel.Children.Add(saveButton);
             }
             buttonsPanel.Children.Add(returnButton);
@@ -720,6 +724,53 @@ namespace RecipeRadar
             window.Content = scrollViewer;
 
 
+        }
+
+        private void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button saveButton && saveButton.Tag is RecipeInformation recipeInformation)
+            {
+                using (var context = new YourDbContext())
+                {
+                    /*List<Recipe_Radar.dbConfig.Recipe> recipes = context.ListRecipes();
+                    foreach (var recipe in recipes)
+                    {
+                        if (recipe.RecipeID == 3)
+                        {
+
+                        }
+                    } */
+
+
+                    var newRecipe = new Recipe_Radar.dbConfig.Recipe
+                    {
+                        Title = recipeInformation.Title,
+                        ReadyTime = recipeInformation.ReadyInMinutes,
+                        Servings = recipeInformation.Servings,
+                        Image = recipeInformation.Image,
+                        Instructions = recipeInformation.Instructions,
+                        Ingredients = recipeInformation.ExtendedIngredients
+                            .Select(extendedIngredient => new Ingredient
+                            {
+                                RecipeID = recipeInformation.Id,
+                                Name = extendedIngredient.Name,
+                                Amount = extendedIngredient.Amount,
+                                Unit = extendedIngredient.Unit
+                            })
+                            .ToList(),
+                        UserRecipes = new List<UserRecipe>
+                        {
+                            new UserRecipe
+                            {
+                                UserID = user_id,
+                                RecipeID = recipeInformation.Id
+                            }
+                        }
+                    };
+                    context.Recipes.Add(newRecipe);
+                    context.SaveChanges();
+                }
+            }
         }
 
         private void AddIngredient_Click(object sender, RoutedEventArgs e)
