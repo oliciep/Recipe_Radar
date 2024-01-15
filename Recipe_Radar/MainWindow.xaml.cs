@@ -188,7 +188,6 @@ namespace RecipeRadar
             Boolean logged_in = false;
             using (var context = new YourDbContext())
             {
-
                 List<User> users = context.ListUsers();
                 foreach (var user in users)
                 {
@@ -289,10 +288,49 @@ namespace RecipeRadar
             {
                 string username = usernameBox.Text;
                 string password = passwordBox.Text;
+                registerUser(username, password);
             }
         }
 
-        private void ApplyRoundedCorners(TextBox textBox)
+        private void registerUser(string username, string password)
+        {
+            Boolean valid = true;
+            using (var context = new YourDbContext())
+            {
+                List<User> users = context.ListUsers();
+                foreach (var user in users)
+                {
+                    MessageBox.Show($"User: {user.Username}, Password: {user.Password}");
+                    if (user.Username == username)
+                    {
+                        MessageBox.Show($"Name is already taken.");
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (password.Length < 8)
+            {
+                MessageBox.Show("Password must be 8 or more characters.");
+                valid = false;
+            }
+
+            if (valid)
+            {
+                MessageBox.Show("Sign up successful.");
+                using (var context = new YourDbContext())
+                {
+                    var newUser = new User();
+                    newUser.Username = username;
+                    newUser.Password = password;
+                    context.Users.Add(newUser);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+            private void ApplyRoundedCorners(TextBox textBox)
         {
             Style textBoxStyle = new Style(typeof(TextBox));
 
