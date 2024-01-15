@@ -94,8 +94,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <Button Content="Login" Click="createLoginWindow" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
-
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Register" Click="createRegisterWindow" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
+                    <Button Content="Login" Click="createLoginWindow" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
+                </StackPanel>
                 <Image Source="Images\logo.png" Width="538" Height="129"/>
 
                 <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Ingredients"/></TextBlock>

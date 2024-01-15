@@ -206,6 +206,92 @@ namespace RecipeRadar
             }
         }
 
+        private void createRegisterWindow(object sender, RoutedEventArgs e)
+        {
+            var stackPanel = new StackPanel();
+
+            var registerWindow = new Window();
+            registerWindow.Title = "Register";
+            registerWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
+            registerWindow.Width = 400;
+            registerWindow.Height = 300;
+            registerWindow.Background = Brushes.LightGreen;
+
+            TextBlock titleBlock = new TextBlock();
+            titleBlock.Inlines.Add(new Run("Register") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+            titleBlock.FontFamily = new FontFamily("Impact");
+            titleBlock.FontSize = 48;
+            titleBlock.Foreground = Brushes.DarkOliveGreen;
+            titleBlock.Margin = new Thickness(10);
+            titleBlock.TextAlignment = TextAlignment.Center;
+
+            TextBlock usernameBlock = new TextBlock();
+            usernameBlock.Text = "Username:   ";
+            usernameBlock.FontSize = 16;
+            usernameBlock.FontWeight = FontWeights.Bold;
+            usernameBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
+            usernameBlock.TextAlignment = TextAlignment.Left;
+
+            usernameBox = new TextBox();
+            ApplyRoundedCorners(usernameBox);
+            usernameBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
+            usernameBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
+            usernameBox.HorizontalAlignment = HorizontalAlignment.Right;
+            usernameBox.Width = 250;
+
+            TextBlock passwordBlock = new TextBlock();
+            passwordBlock.Text = "Password:    ";
+            passwordBlock.FontSize = 16;
+            passwordBlock.FontWeight = FontWeights.Bold;
+            passwordBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
+            passwordBlock.TextAlignment = TextAlignment.Left;
+
+            passwordBox = new TextBox();
+            ApplyRoundedCorners(passwordBox);
+            passwordBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
+            passwordBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
+            passwordBox.HorizontalAlignment = HorizontalAlignment.Right;
+            passwordBox.Width = 250;
+
+            var usernamePanel = new StackPanel();
+            usernamePanel.Children.Add(usernameBlock);
+            usernamePanel.Children.Add(usernameBox);
+            usernamePanel.Orientation = Orientation.Horizontal;
+            usernamePanel.Margin = new Thickness(10);
+
+            var passwordPanel = new StackPanel();
+            passwordPanel.Children.Add(passwordBlock);
+            passwordPanel.Children.Add(passwordBox);
+            passwordPanel.Orientation = Orientation.Horizontal;
+            passwordPanel.Margin = new Thickness(10);
+
+            Button registerButton = new Button();
+            registerButton.Content = $"Register";
+            registerButton.Style = (Style)Resources["ButtonStyle"];
+            registerButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55"));
+            registerButton.Height = 40;
+            registerButton.Width = 100;
+            registerButton.Click += RegisterButton_Click;
+
+            DataContext = this;
+
+            stackPanel.Children.Add(titleBlock);
+            stackPanel.Children.Add(usernamePanel);
+            stackPanel.Children.Add(passwordPanel);
+            stackPanel.Children.Add(registerButton);
+            registerWindow.Content = stackPanel;
+            registerWindow.ShowDialog();
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (usernameBox != null && passwordBox != null)
+            {
+                string username = usernameBox.Text;
+                string password = passwordBox.Text;
+            }
+        }
+
         private void ApplyRoundedCorners(TextBox textBox)
         {
             Style textBoxStyle = new Style(typeof(TextBox));
