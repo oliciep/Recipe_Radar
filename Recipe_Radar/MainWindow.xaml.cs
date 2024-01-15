@@ -300,7 +300,7 @@ namespace RecipeRadar
                 List<User> users = context.ListUsers();
                 foreach (var user in users)
                 {
-                    MessageBox.Show($"User: {user.Username}, Password: {user.Password}");
+                    MessageBox.Show($"UserID: {user.UserID}, User: {user.Username}, Password: {user.Password}");
                     if (user.Username == username)
                     {
                         MessageBox.Show($"Name is already taken.");
