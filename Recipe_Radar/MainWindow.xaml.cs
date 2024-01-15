@@ -30,6 +30,7 @@ namespace RecipeRadar
         private Window loginWindow;
         private TextBox usernameBox;
         private TextBox passwordBox;
+        private Boolean logged_in = false;
 
         private string cuisineType = "";
         private int numberOfRecipes = 1;
@@ -311,7 +312,6 @@ namespace RecipeRadar
 
         private void AuthenticateUser(string username, string password)
         {
-            Boolean logged_in = false;
             using (var context = new YourDbContext())
             {
                 List<User> users = context.ListUsers();
@@ -675,6 +675,18 @@ namespace RecipeRadar
             returnButton.Tag = window;
             returnButton.Click += returnButton_Click;
 
+            var buttonsPanel = new StackPanel();
+            buttonsPanel.Orientation = Orientation.Horizontal;
+            buttonsPanel.HorizontalAlignment = HorizontalAlignment.Center;
+            if (logged_in)
+            {
+                Button saveButton = new Button();
+                saveButton.Content = "Save Recipe";
+                saveButton.Style = (Style)Resources["ButtonStyle"];
+                buttonsPanel.Children.Add(saveButton);
+            }
+            buttonsPanel.Children.Add(returnButton);
+
             var ingredientsTextPanel = new StackPanel();
             ingredientsTextPanel.Orientation = Orientation.Vertical;
             ingredientsTextPanel.Children.Add(ingredientsTitleBlock);
@@ -702,7 +714,7 @@ namespace RecipeRadar
             stackPanel.Children.Add(instructionsBorder);
             stackPanel.Children.Add(dividerLine4);
             stackPanel.Children.Add(infoBorder);
-            stackPanel.Children.Add(returnButton);
+            stackPanel.Children.Add(buttonsPanel);
 
             scrollViewer.Content = stackPanel;
             window.Content = scrollViewer;
