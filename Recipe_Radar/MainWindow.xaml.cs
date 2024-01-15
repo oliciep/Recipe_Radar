@@ -27,6 +27,7 @@ namespace RecipeRadar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Window loginWindow;
         private TextBox usernameBox;
         private TextBox passwordBox;
 
@@ -92,117 +93,6 @@ namespace RecipeRadar
             }
             fetchResults(testData);
             */
-        }
-
-        private void createLoginWindow(object sender, RoutedEventArgs e)
-        {
-            var stackPanel = new StackPanel();
-
-            var loginWindow = new Window();
-            loginWindow.Title = "Log In";
-            loginWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
-            loginWindow.Width = 400;
-            loginWindow.Height = 300;
-            loginWindow.Background = Brushes.LightGreen;
-
-            TextBlock titleBlock = new TextBlock();
-            titleBlock.Inlines.Add(new Run("Log ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
-            titleBlock.Inlines.Add(new Run("In") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
-            titleBlock.FontFamily = new FontFamily("Impact");
-            titleBlock.FontSize = 48;
-            titleBlock.Foreground = Brushes.DarkOliveGreen;
-            titleBlock.Margin = new Thickness(10);
-            titleBlock.TextAlignment = TextAlignment.Center;
-
-            TextBlock usernameBlock = new TextBlock();
-            usernameBlock.Text = "Username:   ";
-            usernameBlock.FontSize = 16;
-            usernameBlock.FontWeight = FontWeights.Bold;
-            usernameBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
-            usernameBlock.TextAlignment = TextAlignment.Left;
-
-            usernameBox = new TextBox();
-            ApplyRoundedCorners(usernameBox);
-            usernameBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
-            usernameBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
-            usernameBox.HorizontalAlignment = HorizontalAlignment.Right;
-            usernameBox.Width = 250;
-
-            TextBlock passwordBlock = new TextBlock();
-            passwordBlock.Text = "Password:    ";
-            passwordBlock.FontSize = 16;
-            passwordBlock.FontWeight= FontWeights.Bold;
-            passwordBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
-            passwordBlock.TextAlignment = TextAlignment.Left;
-
-            passwordBox = new TextBox();
-            ApplyRoundedCorners(passwordBox);
-            passwordBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
-            passwordBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
-            passwordBox.HorizontalAlignment = HorizontalAlignment.Right;
-            passwordBox.Width = 250;
-
-            var usernamePanel = new StackPanel();
-            usernamePanel.Children.Add(usernameBlock);
-            usernamePanel.Children.Add(usernameBox);
-            usernamePanel.Orientation = Orientation.Horizontal;
-            usernamePanel.Margin = new Thickness(10);
-
-            var passwordPanel = new StackPanel();
-            passwordPanel.Children.Add(passwordBlock);
-            passwordPanel.Children.Add(passwordBox); 
-            passwordPanel.Orientation = Orientation.Horizontal;
-            passwordPanel.Margin = new Thickness(10);
-
-            Button loginButton = new Button();
-            loginButton.Content = $"Log In";
-            loginButton.Style = (Style)Resources["ButtonStyle"];
-            loginButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55"));
-            loginButton.Height = 40;
-            loginButton.Width = 100;
-            loginButton.Click += LoginButton_Click;
-
-            DataContext = this;
-
-            stackPanel.Children.Add(titleBlock);
-            stackPanel.Children.Add(usernamePanel);
-            stackPanel.Children.Add(passwordPanel);
-            stackPanel.Children.Add(loginButton);
-            loginWindow.Content = stackPanel;
-            loginWindow.ShowDialog();
-        }
-
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (usernameBox != null && passwordBox != null)
-            {
-                string username = usernameBox.Text;
-                string password = passwordBox.Text;
-
-                AuthenticateUser(username, password);
-            }
-        }
-
-        private void AuthenticateUser(string username, string password)
-        {
-            Boolean logged_in = false;
-            using (var context = new YourDbContext())
-            {
-                List<User> users = context.ListUsers();
-                foreach (var user in users)
-                {
-                    if (user.Username == username && user.Password == password)
-                    {
-                        MessageBox.Show($"Logged in successfully, Username: {user.Username}");
-                        logged_in = true;
-                        break;
-                    }
-                }
-            }
-            if (!logged_in)
-            {
-                MessageBox.Show("Login unsuccessful.");
-            }
         }
 
         private void createRegisterWindow(object sender, RoutedEventArgs e)
@@ -330,7 +220,153 @@ namespace RecipeRadar
             }
         }
 
-            private void ApplyRoundedCorners(TextBox textBox)
+        private void createLoginWindow(object sender, RoutedEventArgs e)
+        {
+            var stackPanel = new StackPanel();
+
+            loginWindow = new Window();
+            loginWindow.Title = "Log In";
+            loginWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
+            loginWindow.Width = 400;
+            loginWindow.Height = 300;
+            loginWindow.Background = Brushes.LightGreen;
+
+            TextBlock titleBlock = new TextBlock();
+            titleBlock.Inlines.Add(new Run("Log ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+            titleBlock.Inlines.Add(new Run("In") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+            titleBlock.FontFamily = new FontFamily("Impact");
+            titleBlock.FontSize = 48;
+            titleBlock.Foreground = Brushes.DarkOliveGreen;
+            titleBlock.Margin = new Thickness(10);
+            titleBlock.TextAlignment = TextAlignment.Center;
+
+            TextBlock usernameBlock = new TextBlock();
+            usernameBlock.Text = "Username:   ";
+            usernameBlock.FontSize = 16;
+            usernameBlock.FontWeight = FontWeights.Bold;
+            usernameBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
+            usernameBlock.TextAlignment = TextAlignment.Left;
+
+            usernameBox = new TextBox();
+            ApplyRoundedCorners(usernameBox);
+            usernameBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
+            usernameBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
+            usernameBox.HorizontalAlignment = HorizontalAlignment.Right;
+            usernameBox.Width = 250;
+
+            TextBlock passwordBlock = new TextBlock();
+            passwordBlock.Text = "Password:    ";
+            passwordBlock.FontSize = 16;
+            passwordBlock.FontWeight = FontWeights.Bold;
+            passwordBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137"));
+            passwordBlock.TextAlignment = TextAlignment.Left;
+
+            passwordBox = new TextBox();
+            ApplyRoundedCorners(passwordBox);
+            passwordBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC6EAA2"));
+            passwordBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2F5318"));
+            passwordBox.HorizontalAlignment = HorizontalAlignment.Right;
+            passwordBox.Width = 250;
+
+            var usernamePanel = new StackPanel();
+            usernamePanel.Children.Add(usernameBlock);
+            usernamePanel.Children.Add(usernameBox);
+            usernamePanel.Orientation = Orientation.Horizontal;
+            usernamePanel.Margin = new Thickness(10);
+
+            var passwordPanel = new StackPanel();
+            passwordPanel.Children.Add(passwordBlock);
+            passwordPanel.Children.Add(passwordBox);
+            passwordPanel.Orientation = Orientation.Horizontal;
+            passwordPanel.Margin = new Thickness(10);
+
+            Button loginButton = new Button();
+            loginButton.Content = $"Log In";
+            loginButton.Style = (Style)Resources["ButtonStyle"];
+            loginButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55"));
+            loginButton.Height = 40;
+            loginButton.Width = 100;
+            loginButton.Click += LoginButton_Click;
+
+            DataContext = this;
+
+            stackPanel.Children.Add(titleBlock);
+            stackPanel.Children.Add(usernamePanel);
+            stackPanel.Children.Add(passwordPanel);
+            stackPanel.Children.Add(loginButton);
+            loginWindow.Content = stackPanel;
+            loginWindow.ShowDialog();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (usernameBox != null && passwordBox != null)
+            {
+                string username = usernameBox.Text;
+                string password = passwordBox.Text;
+
+                AuthenticateUser(username, password);
+            }
+        }
+
+        private void AuthenticateUser(string username, string password)
+        {
+            Boolean logged_in = false;
+            using (var context = new YourDbContext())
+            {
+                List<User> users = context.ListUsers();
+                foreach (var user in users)
+                {
+                    if (user.Username == username && user.Password == password)
+                    {
+                        MessageBox.Show($"Logged in successfully, Username: {user.Username}");
+                        logged_in = true;
+                        loginWindow.Close();
+                        createHomepageWindow(user.UserID, username);
+                        break;
+                    }
+                }
+            }
+            if (!logged_in)
+            {
+                MessageBox.Show("Login unsuccessful.");
+            }
+        }
+
+        private void createHomepageWindow(int ID, string username)
+        {
+            var accountWindow = new Window();
+            accountWindow.Title = $"{username}'s homepage";
+            accountWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
+            accountWindow.Width = 800;
+            accountWindow.Height = 600;
+            accountWindow.Background = Brushes.LightGreen;
+            fetchAccountInfo(ID, username, accountWindow);
+        }
+
+        private void fetchAccountInfo(int ID, string username, Window accountWindow)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            scrollViewer.Content = null;
+
+            var stackPanel = new StackPanel();
+
+            TextBlock titleBlock = new TextBlock();
+            titleBlock.Inlines.Add(new Run("Welcome, ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+            titleBlock.Inlines.Add(new Run($"{username}.") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+            titleBlock.FontFamily = new FontFamily("Impact");
+            titleBlock.FontSize = 48;
+            titleBlock.Margin = new Thickness(0, 0, 0, 10);
+            titleBlock.TextAlignment = TextAlignment.Center;
+
+            stackPanel.Children.Add(titleBlock);
+            scrollViewer.Content = stackPanel;
+            accountWindow.Content = scrollViewer;
+            accountWindow.ShowDialog();
+        }
+
+        private void ApplyRoundedCorners(TextBox textBox)
         {
             Style textBoxStyle = new Style(typeof(TextBox));
 
