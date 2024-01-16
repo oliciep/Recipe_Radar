@@ -395,7 +395,7 @@ namespace RecipeRadar
             recipeTitleBlock.Inlines.Add(new Run("Recipes") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
             recipeTitleBlock.FontFamily = new FontFamily("Impact");
             recipeTitleBlock.FontSize = 36;
-            recipeTitleBlock.Margin = new Thickness(0, 0, 0, 10);
+            recipeTitleBlock.Margin = new Thickness(10, 0, 0, 10);
             recipeTitleBlock.TextAlignment = TextAlignment.Left;
             stackPanel.Children.Add(recipeTitleBlock);
 
@@ -403,13 +403,20 @@ namespace RecipeRadar
             {
                 var recipesForUser = context.UserRecipes
                     .Where(ur => ur.UserID == user_id)
-                    .Include(ur => ur.Recipe)  // Include the Recipe navigation property
-                    .ThenInclude(recipe => recipe.Ingredients)  // Include the Ingredients navigation property within Recipe
+                    .Include(ur => ur.Recipe)
+                    .ThenInclude(recipe => recipe.Ingredients)
                     .Select(ur => ur.Recipe)
                     .ToList();
                 foreach (var recipe in recipesForUser)
                 {
                     StackPanel recipePanel = new StackPanel();
+                    StackPanel recipeInfoPanel = new StackPanel();
+
+                    Border dividerLine = new Border();
+                    dividerLine.Width = 700;
+                    dividerLine.Height = 10;
+                    dividerLine.Background = Brushes.Transparent;
+                    dividerLine.Margin = new Thickness(0, 5, 0, 5);
 
                     BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                     Image img = new Image();
@@ -420,12 +427,12 @@ namespace RecipeRadar
                     recipePanel.Children.Add(img);
 
                     TextBlock recipeBlock = new TextBlock();
-                    recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
-                    recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
-                    recipeBlock.FontSize = 24;
+                    recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
+                    recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
+                    recipeBlock.FontSize = 18;
                     recipeBlock.Margin = new Thickness(0, 0, 0, 10);
                     recipeBlock.TextAlignment = TextAlignment.Left;
-                    recipePanel.Children.Add(recipeBlock);
+                    recipeInfoPanel.Children.Add(recipeBlock);
 
                     Button chooseRecipeButton = new Button();
                     chooseRecipeButton.Content = $"Choose Recipe";
@@ -448,10 +455,24 @@ namespace RecipeRadar
                             .ToList() ?? new List<ExtendedIngredient>()
                     };
                     chooseRecipeButton.Click += chooseRecipeButton_Click;
-                    recipePanel.Children.Add(chooseRecipeButton);
+                    chooseRecipeButton.HorizontalAlignment = HorizontalAlignment.Left;
+                    recipeInfoPanel.Children.Add(chooseRecipeButton);
 
+                    Border recipeBorder = new Border();
+                    recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
+                    recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+                    recipeBorder.BorderThickness = new Thickness(2);
+                    recipeBorder.Width = 750;
+                    recipeBorder.CornerRadius = new CornerRadius(10);
+
+                    recipeInfoPanel.Orientation = Orientation.Vertical;
+                    recipePanel.Children.Add(recipeInfoPanel);
                     recipePanel.Orientation = Orientation.Horizontal;
-                    stackPanel.Children.Add(recipePanel);
+                    recipePanel.Width = 700;
+
+                    recipeBorder.Child = recipePanel;
+                    stackPanel.Children.Add(recipeBorder);
+                    stackPanel.Children.Add(dividerLine);
                 }
             }
             scrollViewer.Content = stackPanel;
@@ -842,29 +863,6 @@ namespace RecipeRadar
             {
                 using (var context = new YourDbContext())
                 {
-                    /*
-                    Boolean saved = false;
-                    Boolean user_saved = false;
-                    List<Recipe_Radar.dbConfig.Recipe> recipes = context.ListRecipes();
-                    foreach (var recipe in recipes)
-                    {
-                        if (recipe.RecipeID == recipeInformation.Id)
-                        {
-                            saved = true;
-                            bool linkedRecipe = context.Users
-                                .Any(u => u.UserRecipes.Any(ur => ur.RecipeID == recipe.RecipeID && ur.UserID == user_id));
-                            if (linkedRecipe)
-                            {
-                                MessageBox.Show("You have already saved this recipe.");
-                                user_saved = true;
-                            }
-                            else
-                            {
-                                MessageBox.Show("Recipe Saved.");
-                            }
-                        }
-                    }
-                    */
                     bool saved = context.Recipes.Any(recipe => recipe.RecipeID == recipeInformation.Id);
                     bool user_saved = context.Users
                                 .Any(u => u.UserRecipes.Any(ur => ur.RecipeID == recipeInformation.Id && ur.UserID == user_id));
