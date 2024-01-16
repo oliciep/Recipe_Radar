@@ -28,6 +28,7 @@ namespace RecipeRadar
     public partial class MainWindow : Window
     {
         private Window loginWindow;
+        private Window accountWindow;
         private TextBox usernameBox;
         private TextBox passwordBox;
         private Boolean logged_in = false;
@@ -314,6 +315,7 @@ namespace RecipeRadar
 
         private void AuthenticateUser(string username, string password)
         {
+            bool success = false;
             using (var context = new YourDbContext())
             {
                 List<User> users = context.ListUsers();
@@ -327,11 +329,12 @@ namespace RecipeRadar
                         user_id = user.UserID;
                         loginWindow.Close();
                         createHomepageWindow(user.UserID, username);
+                        success = true;
                         break;
                     }
                 }
             }
-            if (!logged_in)
+            if (!success)
             {
                 MessageBox.Show("Login unsuccessful.");
             }
@@ -349,7 +352,7 @@ namespace RecipeRadar
 
         private void createHomepageWindow(int ID, string username)
         {
-            var accountWindow = new Window();
+            accountWindow = new Window();
             accountWindow.Title = $"{username}'s homepage";
             accountWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
             accountWindow.Width = 800;
@@ -365,6 +368,13 @@ namespace RecipeRadar
             scrollViewer.Content = null;
 
             var stackPanel = new StackPanel();
+
+            Button logOutButton = new Button();
+            logOutButton.Content = "Log out";
+            logOutButton.Style = (Style)Resources["ButtonStyle"];
+            logOutButton.Click += logOutButton_Click;
+            logOutButton.HorizontalAlignment = HorizontalAlignment.Right;
+            stackPanel.Children.Add(logOutButton);
 
             TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Welcome, ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
@@ -393,6 +403,7 @@ namespace RecipeRadar
                 foreach (var recipe in recipesForUser)
                 {
                     StackPanel recipePanel = new StackPanel();
+
                     TextBlock recipeBlock = new TextBlock();
                     recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
                     recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
@@ -416,6 +427,15 @@ namespace RecipeRadar
             scrollViewer.Content = stackPanel;
             accountWindow.Content = scrollViewer;
             accountWindow.ShowDialog();
+        }
+
+        private void logOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            logged_in = false;
+            user_id = 0;
+            accountWindow.Close();
+            ButtonsPanel.Visibility = Visibility.Visible;
+            AccountPanel.Visibility = Visibility.Collapsed;
         }
 
         private void ApplyRoundedCorners(TextBox textBox)
