@@ -554,7 +554,6 @@ namespace RecipeRadar
                 instructionsList.Append((i + 1) + ": " + trimmedInstruction + "\n");
             }
 
-
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             var stackPanel = new StackPanel();
@@ -732,33 +731,53 @@ namespace RecipeRadar
             {
                 using (var context = new YourDbContext())
                 {
-                    /*List<Recipe_Radar.dbConfig.Recipe> recipes = context.ListRecipes();
+                    /*
+                    Boolean saved = false;
+                    Boolean user_saved = false;
+                    List<Recipe_Radar.dbConfig.Recipe> recipes = context.ListRecipes();
                     foreach (var recipe in recipes)
                     {
-                        if (recipe.RecipeID == 3)
+                        if (recipe.RecipeID == recipeInformation.Id)
                         {
-
-                        }
-                    } */
-
-
-                    var newRecipe = new Recipe_Radar.dbConfig.Recipe
-                    {
-                        Title = recipeInformation.Title,
-                        ReadyTime = recipeInformation.ReadyInMinutes,
-                        Servings = recipeInformation.Servings,
-                        Image = recipeInformation.Image,
-                        Instructions = recipeInformation.Instructions,
-                        Ingredients = recipeInformation.ExtendedIngredients
-                            .Select(extendedIngredient => new Ingredient
+                            saved = true;
+                            bool linkedRecipe = context.Users
+                                .Any(u => u.UserRecipes.Any(ur => ur.RecipeID == recipe.RecipeID && ur.UserID == user_id));
+                            if (linkedRecipe)
                             {
-                                RecipeID = recipeInformation.Id,
-                                Name = extendedIngredient.Name,
-                                Amount = extendedIngredient.Amount,
-                                Unit = extendedIngredient.Unit
-                            })
-                            .ToList(),
-                        UserRecipes = new List<UserRecipe>
+                                MessageBox.Show("You have already saved this recipe.");
+                                user_saved = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Recipe Saved.");
+                            }
+                        }
+                    }
+                    */
+                    bool saved = context.Recipes.Any(recipe => recipe.RecipeID == recipeInformation.Id);
+                    bool user_saved = context.Users
+                                .Any(u => u.UserRecipes.Any(ur => ur.RecipeID == recipeInformation.Id && ur.UserID == user_id));
+
+                    if (!saved)
+                    {
+                        var newRecipe = new Recipe_Radar.dbConfig.Recipe
+                        {
+                            RecipeID = recipeInformation.Id,
+                            Title = recipeInformation.Title,
+                            ReadyTime = recipeInformation.ReadyInMinutes,
+                            Servings = recipeInformation.Servings,
+                            Image = recipeInformation.Image,
+                            Instructions = recipeInformation.Instructions,
+                            Ingredients = recipeInformation.ExtendedIngredients
+                                .Select(extendedIngredient => new Ingredient
+                                {
+                                    RecipeID = recipeInformation.Id,
+                                    Name = extendedIngredient.Name,
+                                    Amount = extendedIngredient.Amount,
+                                    Unit = extendedIngredient.Unit
+                                })
+                                .ToList(),
+                            UserRecipes = new List<UserRecipe>
                         {
                             new UserRecipe
                             {
@@ -766,9 +785,27 @@ namespace RecipeRadar
                                 RecipeID = recipeInformation.Id
                             }
                         }
-                    };
-                    context.Recipes.Add(newRecipe);
-                    context.SaveChanges();
+                        };
+                        context.Recipes.Add(newRecipe);
+                        context.SaveChanges();
+                        MessageBox.Show("Recipe added to saved recipes globally.");
+                    } 
+                    else if (!user_saved)
+                    {
+                        var user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                        user.UserRecipes.Add(new UserRecipe
+                        {
+                            RecipeID = recipeInformation.Id,
+                            UserID = user_id
+                        });
+
+                        context.SaveChanges();
+                        MessageBox.Show("Recipe added to saved recipes locally.");
+                    } 
+                    else
+                    {
+                        MessageBox.Show("User already saved this recipe.");
+                    }
                 }
             }
         }
