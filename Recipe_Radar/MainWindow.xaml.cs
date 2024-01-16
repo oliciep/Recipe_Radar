@@ -434,6 +434,16 @@ namespace RecipeRadar
                     recipeBlock.TextAlignment = TextAlignment.Left;
                     recipeInfoPanel.Children.Add(recipeBlock);
 
+                    TextBlock recipeInfoBlock = new TextBlock();
+                    recipeInfoBlock.Inlines.Add(new Run("Serves: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
+                    recipeInfoBlock.Inlines.Add(new Run($"{recipe.Servings} people\n") { Foreground = Brushes.Olive });
+                    recipeInfoBlock.Inlines.Add(new Run("Ready in: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
+                    recipeInfoBlock.Inlines.Add(new Run($"{recipe.ReadyTime} minutes") { Foreground = Brushes.Olive });
+                    recipeInfoBlock.FontSize = 14;
+                    recipeInfoBlock.Margin = new Thickness(0, 0, 0, 10);
+                    recipeInfoBlock.TextAlignment = TextAlignment.Left;
+                    recipeInfoPanel.Children.Add(recipeInfoBlock);
+
                     Button chooseRecipeButton = new Button();
                     chooseRecipeButton.Content = $"Choose Recipe";
                     chooseRecipeButton.Style = (Style)Resources["ButtonStyle"];
