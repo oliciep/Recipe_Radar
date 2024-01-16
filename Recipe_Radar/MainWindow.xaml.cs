@@ -392,13 +392,25 @@ namespace RecipeRadar
                     .ToList();
                 foreach (var recipe in recipesForUser)
                 {
+                    StackPanel recipePanel = new StackPanel();
                     TextBlock recipeBlock = new TextBlock();
                     recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
                     recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
                     recipeBlock.FontSize = 24;
                     recipeBlock.Margin = new Thickness(0, 0, 0, 10);
                     recipeBlock.TextAlignment = TextAlignment.Left;
-                    stackPanel.Children.Add(recipeBlock);
+                    recipePanel.Children.Add(recipeBlock);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
+                    Image img = new Image();
+                    img.Source = bitmap;
+                    img.Width = 300;
+                    img.Height = 200;
+                    img.Margin = new Thickness(10);
+                    recipePanel.Children.Add(img);
+
+                    recipePanel.Orientation = Orientation.Horizontal;
+                    stackPanel.Children.Add(recipePanel);
                 }
             }
             scrollViewer.Content = stackPanel;
