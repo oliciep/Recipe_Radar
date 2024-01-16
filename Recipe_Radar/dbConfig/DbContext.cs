@@ -53,6 +53,8 @@ namespace Recipe_Radar.dbConfig
                 .HasForeignKey(ur => ur.RecipeID);
         }
 
+
+
         public void AddUser(User newUser)
         {
             Users.Add(newUser);

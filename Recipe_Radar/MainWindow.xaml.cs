@@ -19,6 +19,7 @@ using Recipe_Radar.apiObjects;
 using System.Xml;
 using System.Text.RegularExpressions;
 using Recipe_Radar.dbConfig;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecipeRadar
 {
@@ -328,7 +329,7 @@ namespace RecipeRadar
                         logged_in = true;
                         user_id = user.UserID;
                         loginWindow.Close();
-                        createHomepageWindow(user.UserID, username);
+                        createHomepageWindow(user.UserID, username, false);
                         success = true;
                         break;
                     }
@@ -345,23 +346,27 @@ namespace RecipeRadar
             using (YourDbContext context = new YourDbContext())
             {
                 User? user = context.Users.FirstOrDefault(u => u.UserID == user_id);
-                createHomepageWindow(user_id, user.Username);
+                createHomepageWindow(user_id, user.Username, false);
             }
         }
 
 
-        private void createHomepageWindow(int ID, string username)
+        private void createHomepageWindow(int ID, string username, bool returned)
         {
-            accountWindow = new Window();
+            if (!returned)
+            {
+                accountWindow = new Window();
+            }
             accountWindow.Title = $"{username}'s homepage";
+            accountWindow.Name = "AccountSearch";
             accountWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
             accountWindow.Width = 800;
             accountWindow.Height = 600;
             accountWindow.Background = Brushes.LightGreen;
-            fetchAccountInfo(ID, username, accountWindow);
+            fetchAccountInfo(ID, username, accountWindow, returned);
         }
 
-        private void fetchAccountInfo(int ID, string username, Window accountWindow)
+        private void fetchAccountInfo(int ID, string username, Window accountWindow, bool returned)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -398,19 +403,13 @@ namespace RecipeRadar
             {
                 var recipesForUser = context.UserRecipes
                     .Where(ur => ur.UserID == user_id)
+                    .Include(ur => ur.Recipe)  // Include the Recipe navigation property
+                    .ThenInclude(recipe => recipe.Ingredients)  // Include the Ingredients navigation property within Recipe
                     .Select(ur => ur.Recipe)
                     .ToList();
                 foreach (var recipe in recipesForUser)
                 {
                     StackPanel recipePanel = new StackPanel();
-
-                    TextBlock recipeBlock = new TextBlock();
-                    recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
-                    recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
-                    recipeBlock.FontSize = 24;
-                    recipeBlock.Margin = new Thickness(0, 0, 0, 10);
-                    recipeBlock.TextAlignment = TextAlignment.Left;
-                    recipePanel.Children.Add(recipeBlock);
 
                     BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                     Image img = new Image();
@@ -420,13 +419,54 @@ namespace RecipeRadar
                     img.Margin = new Thickness(10);
                     recipePanel.Children.Add(img);
 
+                    TextBlock recipeBlock = new TextBlock();
+                    recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+                    recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+                    recipeBlock.FontSize = 24;
+                    recipeBlock.Margin = new Thickness(0, 0, 0, 10);
+                    recipeBlock.TextAlignment = TextAlignment.Left;
+                    recipePanel.Children.Add(recipeBlock);
+
+                    Button chooseRecipeButton = new Button();
+                    chooseRecipeButton.Content = $"Choose Recipe";
+                    chooseRecipeButton.Style = (Style)Resources["ButtonStyle"];
+                    chooseRecipeButton.Tag = new RecipeInformation
+                    {
+                        Id = recipe?.RecipeID ?? 0,
+                        Title = recipe?.Title,
+                        ReadyInMinutes = recipe?.ReadyTime ?? 0,
+                        Servings = recipe?.Servings ?? 0,
+                        Image = recipe?.Image,
+                        Instructions = recipe?.Instructions,
+                        ExtendedIngredients = recipe?.Ingredients
+                            ?.Select(ingredient => new ExtendedIngredient
+                            {
+                                Name = ingredient?.Name,
+                                Amount = ingredient?.Amount ?? 0,
+                                Unit = ingredient?.Unit
+                            })
+                            .ToList() ?? new List<ExtendedIngredient>()
+                    };
+                    chooseRecipeButton.Click += chooseRecipeButton_Click;
+                    recipePanel.Children.Add(chooseRecipeButton);
+
                     recipePanel.Orientation = Orientation.Horizontal;
                     stackPanel.Children.Add(recipePanel);
                 }
             }
             scrollViewer.Content = stackPanel;
             accountWindow.Content = scrollViewer;
-            accountWindow.ShowDialog();
+            if (!returned)
+            {
+                accountWindow.ShowDialog();
+            }
+        }
+
+        private void chooseRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            RecipeInformation recipeInfo = (RecipeInformation)clickedButton.Tag;
+            fetchInfo(accountWindow, recipeInfo);
         }
 
         private void logOutButton_Click(object sender, RoutedEventArgs e)
@@ -531,6 +571,7 @@ namespace RecipeRadar
 
             imageWindow.Title = "Your Recipes";
             imageWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
+            imageWindow.Name = "APISearch";
             imageWindow.Width = 800;
             imageWindow.Height = 600;
             imageWindow.Background = Brushes.LightGreen;
@@ -749,7 +790,7 @@ namespace RecipeRadar
             var buttonsPanel = new StackPanel();
             buttonsPanel.Orientation = Orientation.Horizontal;
             buttonsPanel.HorizontalAlignment = HorizontalAlignment.Center;
-            if (logged_in)
+            if (logged_in && window.Name == "APISearch")
             {
                 Button saveButton = new Button();
                 saveButton.Content = "Save Recipe";
@@ -957,7 +998,18 @@ namespace RecipeRadar
 
                 if (window != null)
                 {
-                    fetchResults(fetchedRecipes, window);
+                    if (window.Name == "APISearch")
+                    {
+                        fetchResults(fetchedRecipes, window);
+                    }
+                    else if (window.Name == "AccountSearch")
+                    {
+                        using (YourDbContext context = new YourDbContext())
+                        {
+                            User? user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                            createHomepageWindow(user_id, user.Username, true);
+                        }
+                    }
                 }
             }
         }
