@@ -44,6 +44,7 @@ namespace RecipeRadar
 
             InitializeComponent();
 
+            AccountPanel.Visibility = Visibility.Collapsed;
             FindButton.Click += FindButton_Click;
             RecipesComboBox.SelectedIndex = 0;
             using (var context = new YourDbContext())
@@ -320,6 +321,8 @@ namespace RecipeRadar
                 {
                     if (user.Username == username && user.Password == password)
                     {
+                        ButtonsPanel.Visibility = Visibility.Collapsed;
+                        AccountPanel.Visibility = Visibility.Visible;
                         logged_in = true;
                         user_id = user.UserID;
                         loginWindow.Close();
@@ -333,6 +336,16 @@ namespace RecipeRadar
                 MessageBox.Show("Login unsuccessful.");
             }
         }
+
+        private void AccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (YourDbContext context = new YourDbContext())
+            {
+                User? user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                createHomepageWindow(user_id, user.Username);
+            }
+        }
+
 
         private void createHomepageWindow(int ID, string username)
         {

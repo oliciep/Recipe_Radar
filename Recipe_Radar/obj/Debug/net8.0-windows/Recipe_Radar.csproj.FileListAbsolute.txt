@@ -141,3 +141,4 @@ C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\bin\Debug\net8.0-windows\r
 C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\bin\Debug\net8.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\bin\Debug\net8.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\bin\Debug\net8.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\olive\source\repos\Recipe_Radar\Recipe_Radar\obj\Debug\net8.0-windows\Recipe_Radar_MarkupCompile.lref
