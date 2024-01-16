@@ -109,7 +109,7 @@ namespace Recipe_Radar.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserRecipe");
+                    b.ToTable("UserRecipes");
                 });
 
             modelBuilder.Entity("Recipe_Radar.dbConfig.Ingredient", b =>

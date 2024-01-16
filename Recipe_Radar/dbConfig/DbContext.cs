@@ -15,6 +15,7 @@ namespace Recipe_Radar.dbConfig
         public DbSet<User> Users { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<UserRecipe> UserRecipes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -320,7 +320,6 @@ namespace RecipeRadar
                 {
                     if (user.Username == username && user.Password == password)
                     {
-                        MessageBox.Show($"Logged in successfully, Username: {user.Username}");
                         logged_in = true;
                         user_id = user.UserID;
                         loginWindow.Close();
@@ -361,8 +360,34 @@ namespace RecipeRadar
             titleBlock.FontSize = 48;
             titleBlock.Margin = new Thickness(0, 0, 0, 10);
             titleBlock.TextAlignment = TextAlignment.Center;
-
             stackPanel.Children.Add(titleBlock);
+
+            TextBlock recipeTitleBlock = new TextBlock();
+            recipeTitleBlock.Inlines.Add(new Run("Your ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+            recipeTitleBlock.Inlines.Add(new Run("Recipes") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+            recipeTitleBlock.FontFamily = new FontFamily("Impact");
+            recipeTitleBlock.FontSize = 36;
+            recipeTitleBlock.Margin = new Thickness(0, 0, 0, 10);
+            recipeTitleBlock.TextAlignment = TextAlignment.Left;
+            stackPanel.Children.Add(recipeTitleBlock);
+
+            using (var context = new YourDbContext())
+            {
+                var recipesForUser = context.UserRecipes
+                    .Where(ur => ur.UserID == user_id)
+                    .Select(ur => ur.Recipe)
+                    .ToList();
+                foreach (var recipe in recipesForUser)
+                {
+                    TextBlock recipeBlock = new TextBlock();
+                    recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
+                    recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
+                    recipeBlock.FontSize = 24;
+                    recipeBlock.Margin = new Thickness(0, 0, 0, 10);
+                    recipeBlock.TextAlignment = TextAlignment.Left;
+                    stackPanel.Children.Add(recipeBlock);
+                }
+            }
             scrollViewer.Content = stackPanel;
             accountWindow.Content = scrollViewer;
             accountWindow.ShowDialog();
