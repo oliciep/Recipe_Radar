@@ -430,7 +430,7 @@ namespace RecipeRadar
                     recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                     recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
                     recipeBlock.FontSize = 18;
-                    recipeBlock.Margin = new Thickness(0, 0, 0, 10);
+                    recipeBlock.Margin = new Thickness(0, 5, 0, 10);
                     recipeBlock.TextAlignment = TextAlignment.Left;
                     recipeBlock.TextWrapping = TextWrapping.Wrap;
                     recipeBlock.MaxWidth = 420;
@@ -739,13 +739,15 @@ namespace RecipeRadar
             recipeImage.Source = bitmap;
             recipeImage.Width = 400;
             recipeImage.Height = 300;
-            recipeImage.Margin = new Thickness(10);
+            recipeImage.Margin = new Thickness(5, 10, 0, 0);
             recipeImage.VerticalAlignment = VerticalAlignment.Top;
 
             TextBlock ingredientsTitleBlock = new TextBlock();
-            ingredientsTitleBlock.Text = "  Ingredients";
+            ingredientsTitleBlock.Text = "Ingredients";
+            ingredientsTitleBlock.TextDecorations = TextDecorations.Underline;
             ingredientsTitleBlock.FontSize = 24;
             ingredientsTitleBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
+            ingredientsTitleBlock.Margin = new Thickness(10, 5, 0, 0);
             ingredientsTitleBlock.TextAlignment = TextAlignment.Left;
             ingredientsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
@@ -753,7 +755,7 @@ namespace RecipeRadar
             ingredientsBlock.Text = ingredientsList.ToString();
             ingredientsBlock.FontSize = 12;
             ingredientsBlock.Foreground = Brushes.DarkOliveGreen;
-            ingredientsBlock.Margin = new Thickness(10);
+            ingredientsBlock.Margin = new Thickness(10, 5, 0, 0);
             ingredientsBlock.TextAlignment = TextAlignment.Left;
             ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
 
@@ -771,10 +773,11 @@ namespace RecipeRadar
             dividerLine3.Margin = new Thickness(0, 5, 0, 5);
 
             TextBlock instructionsTitleBlock = new TextBlock();
-            instructionsTitleBlock.Text = "  Instructions";
+            instructionsTitleBlock.Text = "Instructions";
+            instructionsTitleBlock.TextDecorations = TextDecorations.Underline;
             instructionsTitleBlock.FontSize = 24;
             instructionsTitleBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21"));
-            ingredientsBlock.Margin = new Thickness(10);
+            instructionsTitleBlock.Margin = new Thickness(10, 5, 0, 0);
             instructionsTitleBlock.TextAlignment = TextAlignment.Left;
             instructionsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
@@ -782,7 +785,7 @@ namespace RecipeRadar
             instructionsBlock.Text = instructionsList.ToString();
             instructionsBlock.FontSize = 12;
             instructionsBlock.Foreground = Brushes.DarkOliveGreen;
-            instructionsBlock.Margin = new Thickness(10);
+            instructionsBlock.Margin = new Thickness(10, 5, 0, 0);
             instructionsBlock.TextAlignment = TextAlignment.Left;
 
             Border instructionsBorder = new Border();
@@ -840,6 +843,8 @@ namespace RecipeRadar
             ingredientsTextPanel.Orientation = Orientation.Vertical;
             ingredientsTextPanel.Children.Add(ingredientsTitleBlock);
             ingredientsTextPanel.Children.Add(ingredientsBlock);
+
+            
 
             var ingredientsPanel = new StackPanel();
             ingredientsPanel.Orientation = Orientation.Horizontal;
