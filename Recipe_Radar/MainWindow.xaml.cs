@@ -432,6 +432,8 @@ namespace RecipeRadar
                     recipeBlock.FontSize = 18;
                     recipeBlock.Margin = new Thickness(0, 0, 0, 10);
                     recipeBlock.TextAlignment = TextAlignment.Left;
+                    recipeBlock.TextWrapping = TextWrapping.Wrap;
+                    recipeBlock.MaxWidth = 420;
                     recipeInfoPanel.Children.Add(recipeBlock);
 
                     TextBlock recipeInfoBlock = new TextBlock();
@@ -712,6 +714,8 @@ namespace RecipeRadar
             titleBlock.FontSize = 24;
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
+            titleBlock.TextWrapping = TextWrapping.Wrap;
+            titleBlock.MaxWidth = 700;
 
             Border titleBorder = new Border();
             titleBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
