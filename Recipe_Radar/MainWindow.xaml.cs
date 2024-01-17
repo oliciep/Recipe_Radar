@@ -960,6 +960,9 @@ namespace RecipeRadar
                 {
                     context.RemoveRecipe(user_id, recipe_id);
                     MessageBox.Show("Recipe removed successfully.");
+
+                    var user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                    createHomepageWindow(user_id, user.Username, true);
                 }
             }
             catch (Exception ex)
