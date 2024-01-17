@@ -411,6 +411,7 @@ namespace RecipeRadar
                 {
                     StackPanel recipePanel = new StackPanel();
                     StackPanel recipeInfoPanel = new StackPanel();
+                    StackPanel recipeButtonsPanel = new StackPanel();
 
                     Border dividerLine = new Border();
                     dividerLine.Width = 700;
@@ -446,6 +447,14 @@ namespace RecipeRadar
                     recipeInfoBlock.TextAlignment = TextAlignment.Left;
                     recipeInfoPanel.Children.Add(recipeInfoBlock);
 
+                    Button removeRecipeButton = new Button();
+                    removeRecipeButton.Content = $"Remove Recipe";
+                    removeRecipeButton.Style = (Style)Resources["ButtonStyle"];
+                    removeRecipeButton.Tag = recipe.RecipeID;
+                    removeRecipeButton.Click += removeRecipeButton_Click;
+                    removeRecipeButton.HorizontalAlignment = HorizontalAlignment.Left;
+                    recipeButtonsPanel.Children.Add(removeRecipeButton);
+
                     Button chooseRecipeButton = new Button();
                     chooseRecipeButton.Content = $"Choose Recipe";
                     chooseRecipeButton.Style = (Style)Resources["ButtonStyle"];
@@ -467,8 +476,11 @@ namespace RecipeRadar
                             .ToList() ?? new List<ExtendedIngredient>()
                     };
                     chooseRecipeButton.Click += chooseRecipeButton_Click;
-                    chooseRecipeButton.HorizontalAlignment = HorizontalAlignment.Left;
-                    recipeInfoPanel.Children.Add(chooseRecipeButton);
+                    chooseRecipeButton.HorizontalAlignment = HorizontalAlignment.Right;
+
+                    recipeButtonsPanel.Children.Add(chooseRecipeButton);
+                    recipeButtonsPanel.Orientation = Orientation.Horizontal;
+                    recipeInfoPanel.Children.Add(recipeButtonsPanel);
 
                     Border recipeBorder = new Border();
                     recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
@@ -937,6 +949,25 @@ namespace RecipeRadar
                 }
             }
         }
+
+        private void removeRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+            int recipe_id = Convert.ToInt32(button.Tag);
+            try
+            {
+                using (var context = new YourDbContext())
+                {
+                    context.RemoveRecipe(user_id, recipe_id);
+                    MessageBox.Show("Recipe removed successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error removing recipe: {ex.Message}");
+            }
+        }
+
 
         private void AddIngredient_Click(object sender, RoutedEventArgs e)
         {

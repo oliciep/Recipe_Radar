@@ -53,6 +53,45 @@ namespace Recipe_Radar.dbConfig
                 .HasForeignKey(ur => ur.RecipeID);
         }
 
+        public void RemoveRecipe(int userId, int recipeId)
+        {
+            using (var context = new YourDbContext())
+            {
+                // Find the UserRecipe entry
+                var userRecipe = context.UserRecipes.FirstOrDefault(ur => ur.UserID == userId && ur.RecipeID == recipeId);
+
+                if (userRecipe != null)
+                {
+                    // Remove UserRecipe entry
+                    context.UserRecipes.Remove(userRecipe);
+                    context.SaveChanges();
+
+                    // Check if the recipe is not associated with any other users in UserRecipe
+                    var isRecipeUsedByOtherUsers = context.UserRecipes.Any(ur => ur.RecipeID == recipeId);
+
+                    if (!isRecipeUsedByOtherUsers)
+                    {
+                        // Find the recipe
+                        var recipe = context.Recipes.FirstOrDefault(r => r.RecipeID == recipeId);
+
+                        if (recipe != null)
+                        {
+                            // Check if the recipe has associated ingredients
+                            if (recipe.Ingredients != null)
+                            {
+                                // Remove associated ingredients
+                                context.Ingredients.RemoveRange(recipe.Ingredients);
+                            }
+
+                            // Remove the recipe
+                            context.Recipes.Remove(recipe);
+                            context.SaveChanges();
+                        }
+                    }
+                }
+            }
+        }
+
 
 
         public void AddUser(User newUser)
