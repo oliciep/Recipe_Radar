@@ -104,6 +104,7 @@
                 </StackPanel>
                 <StackPanel x:Name="AccountPanel" Orientation="Horizontal"  HorizontalAlignment="Right">
                     <Button Content="My Account" Click="AccountButton_Click" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
+                    <Button Content="Log Out" Click="logOutButton_Click" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
                 </StackPanel>
                 <Image Source="Images\logo.png" Width="538" Height="129"/>
 
