@@ -568,6 +568,8 @@ namespace RecipeRadar
 
             foreach (var recipe in rootObject.Results)
             {
+                var recipePanel = new StackPanel();
+
                 Border dividerLine = new Border();
                 dividerLine.Width = 700;
                 dividerLine.Height = 10;
@@ -578,19 +580,22 @@ namespace RecipeRadar
                 textBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                 textBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
                 textBlock.FontSize = 18;
-                textBlock.Margin = new Thickness(10);
-                textBlock.TextAlignment = TextAlignment.Center;
+                textBlock.Margin = new Thickness(0, 5, 0, 10);
+                textBlock.TextAlignment = TextAlignment.Left;
+                textBlock.TextWrapping = TextWrapping.Wrap;
+                textBlock.MaxWidth = 450;
 
                 BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                 Image img = new Image();
                 img.Source = bitmap;
-                img.Width = 300;
-                img.Height = 200;
+                img.Width = 200;
+                img.Height = 150;
                 img.Margin = new Thickness(10);
 
                 Button chooseButton = new Button();
                 chooseButton.Content = $"Choose Recipe";
                 chooseButton.Style = (Style)Resources["ButtonStyle"];
+                chooseButton.HorizontalAlignment = HorizontalAlignment.Center;
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
 
@@ -601,10 +606,15 @@ namespace RecipeRadar
                 recipeBorder.Width = 750;
                 recipeBorder.CornerRadius = new CornerRadius(10);
 
-                var recipePanel = new StackPanel();
-                recipePanel.Children.Add(textBlock);
+                var recipeInfoPanel = new StackPanel();
+                recipeInfoPanel.Children.Add(textBlock);
+                recipeInfoPanel.Children.Add(chooseButton);
+                recipeInfoPanel.Orientation = Orientation.Vertical;
+
                 recipePanel.Children.Add(img);
-                recipePanel.Children.Add(chooseButton);
+                recipePanel.Children.Add(recipeInfoPanel);
+                recipePanel.Orientation = Orientation.Horizontal;
+
                 recipePanel.Width = 700;
                 recipeBorder.Child = recipePanel;
 
