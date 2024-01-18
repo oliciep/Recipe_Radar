@@ -381,6 +381,8 @@ namespace RecipeRadar
             logOutButton.HorizontalAlignment = HorizontalAlignment.Right;
             stackPanel.Children.Add(logOutButton);
 
+
+
             TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Welcome, ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
             titleBlock.Inlines.Add(new Run($"{username}.") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
@@ -410,7 +412,6 @@ namespace RecipeRadar
                 foreach (var recipe in recipesForUser)
                 {
                     StackPanel recipePanel = new StackPanel();
-                    StackPanel recipeInfoPanel = new StackPanel();
                     StackPanel recipeButtonsPanel = new StackPanel();
 
                     Border dividerLine = new Border();
@@ -424,28 +425,27 @@ namespace RecipeRadar
                     img.Source = bitmap;
                     img.Width = 300;
                     img.Height = 200;
-                    img.Margin = new Thickness(10);
+                    img.Margin = new Thickness(5, 10, 10, 10);
                     recipePanel.Children.Add(img);
 
                     TextBlock recipeBlock = new TextBlock();
                     recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                     recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
-                    recipeBlock.FontSize = 18;
-                    recipeBlock.Margin = new Thickness(0, 5, 0, 10);
+                    recipeBlock.FontSize = 22;
+                    recipeBlock.Margin = new Thickness(10, 5, 0, 10);
                     recipeBlock.TextAlignment = TextAlignment.Left;
                     recipeBlock.TextWrapping = TextWrapping.Wrap;
                     recipeBlock.MaxWidth = 420;
-                    recipeInfoPanel.Children.Add(recipeBlock);
 
                     TextBlock recipeInfoBlock = new TextBlock();
                     recipeInfoBlock.Inlines.Add(new Run("Serves: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                     recipeInfoBlock.Inlines.Add(new Run($"{recipe.Servings} people\n") { Foreground = Brushes.Olive });
                     recipeInfoBlock.Inlines.Add(new Run("Ready in: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                     recipeInfoBlock.Inlines.Add(new Run($"{recipe.ReadyTime} minutes") { Foreground = Brushes.Olive });
-                    recipeInfoBlock.FontSize = 14;
-                    recipeInfoBlock.Margin = new Thickness(0, 0, 0, 10);
+                    recipeInfoBlock.FontSize = 18;
+                    recipeInfoBlock.Margin = new Thickness(10, 0, 0, 10);
                     recipeInfoBlock.TextAlignment = TextAlignment.Left;
-                    recipeInfoPanel.Children.Add(recipeInfoBlock);
+                    recipeInfoBlock.VerticalAlignment = VerticalAlignment.Top;
 
                     Button removeRecipeButton = new Button();
                     removeRecipeButton.Content = $"Remove Recipe";
@@ -477,22 +477,49 @@ namespace RecipeRadar
                     };
                     chooseRecipeButton.Click += chooseRecipeButton_Click;
                     chooseRecipeButton.HorizontalAlignment = HorizontalAlignment.Right;
+                    recipeButtonsPanel.VerticalAlignment = VerticalAlignment.Bottom;
 
                     recipeButtonsPanel.Children.Add(chooseRecipeButton);
                     recipeButtonsPanel.Orientation = Orientation.Horizontal;
+                    recipeButtonsPanel.Margin = new Thickness(10, 0, 0, 0);
+
+                    var recipeInfoPanel = new Grid();
+                    RowDefinition titleRow = new RowDefinition();
+                    RowDefinition buttonsRow = new RowDefinition();
+
+                    recipeInfoPanel.RowDefinitions.Add(titleRow);
+                    recipeInfoPanel.RowDefinitions.Add(buttonsRow);
+
+                    StackPanel textStackPanel = new StackPanel();
+                    textStackPanel.Children.Add(recipeBlock);
+                    textStackPanel.Children.Add(recipeInfoBlock);
+
+                    Grid.SetRow(textStackPanel, 0);
+                    Grid.SetRow(recipeButtonsPanel, 1);
+
+                    recipeInfoPanel.Children.Add(textStackPanel);
                     recipeInfoPanel.Children.Add(recipeButtonsPanel);
+
+                    Border recipeInfoBorder = new Border();
+                    recipeInfoBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+                    recipeInfoBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+                    recipeInfoBorder.BorderThickness = new Thickness(2);
+                    recipeInfoBorder.Width = 400;
+                    recipeInfoBorder.Margin = new Thickness(10, 10, 0, 10);
+                    recipeInfoBorder.CornerRadius = new CornerRadius(10);
+                    recipeInfoBorder.Child = recipeInfoPanel;
 
                     Border recipeBorder = new Border();
                     recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
                     recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
                     recipeBorder.BorderThickness = new Thickness(2);
+                    recipeBorder.Margin = new Thickness(10, 10, 0, 10);
                     recipeBorder.Width = 750;
                     recipeBorder.CornerRadius = new CornerRadius(10);
 
-                    recipeInfoPanel.Orientation = Orientation.Vertical;
-                    recipePanel.Children.Add(recipeInfoPanel);
+                    recipePanel.Children.Add(recipeInfoBorder);
                     recipePanel.Orientation = Orientation.Horizontal;
-                    recipePanel.Width = 700;
+                    recipePanel.Width = 730;
 
                     recipeBorder.Child = recipePanel;
                     stackPanel.Children.Add(recipeBorder);
@@ -597,6 +624,7 @@ namespace RecipeRadar
                 chooseButton.Style = (Style)Resources["ButtonStyle"];
                 chooseButton.HorizontalAlignment = HorizontalAlignment.Left;
                 chooseButton.VerticalAlignment = VerticalAlignment.Bottom;
+                chooseButton.Margin = new Thickness(20, 0, 0, 5);
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
 
@@ -618,12 +646,20 @@ namespace RecipeRadar
                 recipeInfoPanel.Children.Add(textBlock);
                 recipeInfoPanel.Children.Add(chooseButton);
 
+                Border titleBorder = new Border();
+                titleBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+                titleBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+                titleBorder.BorderThickness = new Thickness(2);
+                titleBorder.CornerRadius = new CornerRadius(10);
+                titleBorder.Width = 490;
+                titleBorder.Margin = new Thickness(10);
+                titleBorder.Child = recipeInfoPanel;
 
                 recipePanel.Children.Add(img);
-                recipePanel.Children.Add(recipeInfoPanel);
+                recipePanel.Children.Add(titleBorder);
                 recipePanel.Orientation = Orientation.Horizontal;
 
-                recipePanel.Width = 700;
+                recipePanel.Width = 730;
                 recipeBorder.Child = recipePanel;
 
                 stackPanel.Children.Add(recipeBorder);
