@@ -55,6 +55,7 @@
             <Style.Triggers>
             </Style.Triggers>
         </Style>
+        
         <Style TargetType="{x:Type TextBox}">
             <Style.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -89,8 +90,6 @@
         </Style>
         
         
-
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
 
     <Border Padding="10">
@@ -110,66 +109,70 @@
                 </StackPanel>
                 <Image Source="Images\logo.png" Width="538" Height="129"/>
 
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Ingredients"/></TextBlock>
-                <TextBox x:Name="ingredientsTextBox" Margin="5"  Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
-                <ListBox x:Name="ingredientListBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318">
-                    <ListBox.Resources>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Background" Value="#FFC6EAA2"/>
-                        </Style>
-                    </ListBox.Resources>
-                    <ListBox.Style>
-                        <Style TargetType="{x:Type ListBox}">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Items.Count, ElementName=ingredientListBox}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.Style>
-                </ListBox>
+                <Border Background="#93dd92" BorderBrush="#52922a" BorderThickness="2" CornerRadius="10">
+                    <StackPanel Margin="10" ClipToBounds="True">
+                        <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Ingredients"/></TextBlock>
+                        <TextBox x:Name="ingredientsTextBox" Margin="5"  Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
+                        <ListBox x:Name="ingredientListBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Background" Value="#FFC6EAA2"/>
+                                </Style>
+                            </ListBox.Resources>
+                            <ListBox.Style>
+                                <Style TargetType="{x:Type ListBox}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Items.Count, ElementName=ingredientListBox}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.Style>
+                        </ListBox>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Add Ingredient" Click="AddIngredient_Click" Style="{StaticResource ButtonStyle}"/>
-                    <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Style="{StaticResource ButtonStyle}"/>
-                </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Add Ingredient" Click="AddIngredient_Click" Style="{StaticResource ButtonStyle}"/>
+                            <Button Content="Remove Ingredient" Click="RemoveIngredient_Click" Style="{StaticResource ButtonStyle}"/>
+                        </StackPanel>
 
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Type of Cuisine"/></TextBlock>
-                <ComboBox x:Name="CuisinesComboBox" Margin="5 0 5 10" Style="{StaticResource ComboBoxIngredient}" SelectedIndex="0" SelectionChanged="CuisinesComboBox_SelectionChanged">
-                    <ComboBox.Background>
-                        <LinearGradientBrush EndPoint="0,1">
-                            <GradientStop Color="#FFF0F0F0"/>
-                            <GradientStop Color="#FF3C8026" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ComboBox.Background>
-                    <ComboBoxItem Content="" />
-                    <ComboBoxItem Content="African" />
-                    <ComboBoxItem Content="American" />
-                    <ComboBoxItem Content="Asian" />
-                    <ComboBoxItem Content="European" />
-                    <ComboBoxItem Content="Middle Eastern" />
-                </ComboBox>
+                        <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Type of Cuisine"/></TextBlock>
+                        <ComboBox x:Name="CuisinesComboBox" Margin="5 0 5 10" Style="{StaticResource ComboBoxIngredient}" SelectedIndex="0" SelectionChanged="CuisinesComboBox_SelectionChanged">
+                            <ComboBox.Background>
+                                <LinearGradientBrush EndPoint="0,1">
+                                    <GradientStop Color="#FFF0F0F0"/>
+                                    <GradientStop Color="#FF3C8026" Offset="1"/>
+                                </LinearGradientBrush>
+                            </ComboBox.Background>
+                            <ComboBoxItem Content="" />
+                            <ComboBoxItem Content="African" />
+                            <ComboBoxItem Content="American" />
+                            <ComboBoxItem Content="Asian" />
+                            <ComboBoxItem Content="European" />
+                            <ComboBoxItem Content="Middle Eastern" />
+                        </ComboBox>
 
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Maximum Ready Time (in minutes)"/></TextBlock>
-                <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus" Background="#FFC6EAA2" BorderBrush="#FF2F5318"/>
+                        <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Maximum Ready Time (in minutes)"/></TextBlock>
+                        <TextBox x:Name="timeTextBox" Margin="5" LostFocus="timeTextBox_LostFocus" Background="#FFC6EAA2" BorderBrush="#FF2F5318"/>
 
-                <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Number of Recipes"/></TextBlock>
-                <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" Style="{StaticResource ComboBoxIngredient}" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
-                    <ComboBox.Background>
-                        <LinearGradientBrush EndPoint="0,1">
-                            <GradientStop Color="#FFF0F0F0"/>
-                            <GradientStop Color="#FF3C8026" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ComboBox.Background>
-                    <ComboBoxItem Content="1" />
-                    <ComboBoxItem Content="2" />
-                    <ComboBoxItem Content="3" />
-                    <ComboBoxItem Content="4" />
-                    <ComboBoxItem Content="5" />
-                </ComboBox>
+                        <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Number of Recipes"/></TextBlock>
+                        <ComboBox x:Name="RecipesComboBox" Margin="5 0 5 10" Style="{StaticResource ComboBoxIngredient}" SelectedIndex="0" SelectionChanged="RecipesComboBox_SelectionChanged">
+                            <ComboBox.Background>
+                                <LinearGradientBrush EndPoint="0,1">
+                                    <GradientStop Color="#FFF0F0F0"/>
+                                    <GradientStop Color="#FF3C8026" Offset="1"/>
+                                </LinearGradientBrush>
+                            </ComboBox.Background>
+                            <ComboBoxItem Content="1" />
+                            <ComboBoxItem Content="2" />
+                            <ComboBoxItem Content="3" />
+                            <ComboBoxItem Content="4" />
+                            <ComboBoxItem Content="5" />
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
             </StackPanel>
-
+            
             <StackPanel Grid.Row="1">
                 <Grid>
                     <Button x:Name="FindButton" Content="Find Recipes" Background="#FF92C46B" Margin="0,-58,0,0" BorderBrush="#FF2F5318"/>
