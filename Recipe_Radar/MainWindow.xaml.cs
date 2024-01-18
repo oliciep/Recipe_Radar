@@ -778,13 +778,18 @@ namespace RecipeRadar
             ingredientsTitleBlock.TextAlignment = TextAlignment.Left;
             ingredientsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
-            TextBlock ingredientsBlock = new TextBlock();
+            TextBox ingredientsBlock = new TextBox();
             ingredientsBlock.Text = ingredientsList.ToString();
             ingredientsBlock.FontSize = 12;
+            ingredientsBlock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
             ingredientsBlock.Foreground = Brushes.DarkOliveGreen;
+            ingredientsBlock.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
             ingredientsBlock.Margin = new Thickness(10, 5, 0, 0);
             ingredientsBlock.TextAlignment = TextAlignment.Left;
             ingredientsBlock.VerticalAlignment = VerticalAlignment.Top;
+            ingredientsBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ingredientsBlock.Width = 270;
+            ingredientsBlock.MaxHeight = 240;
 
             Border ingredientsBorder = new Border();
             ingredientsBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
