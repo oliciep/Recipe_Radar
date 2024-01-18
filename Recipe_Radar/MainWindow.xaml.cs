@@ -745,18 +745,15 @@ namespace RecipeRadar
             titleBlock.Margin = new Thickness(10);
             titleBlock.TextAlignment = TextAlignment.Center;
             titleBlock.TextWrapping = TextWrapping.Wrap;
-            titleBlock.MaxWidth = 700;
+            titleBlock.Width = 700;
 
             Border titleBorder = new Border();
             titleBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
             titleBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
-            titleBorder.BorderThickness = new Thickness(1);
+            titleBorder.BorderThickness = new Thickness(2);
             titleBorder.CornerRadius = new CornerRadius(10);
+            titleBorder.Width = 750;
             titleBorder.Child = titleBlock;
-            
-            titleBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            titleBorder.Width = titleBlock.DesiredSize.Width + 20;
-            titleBlock.Margin = new Thickness((titleBorder.Width - titleBlock.DesiredSize.Width) / 2, 0, 0, 0);
 
             Border dividerLine2 = new Border();
             dividerLine2.Width = 700;
