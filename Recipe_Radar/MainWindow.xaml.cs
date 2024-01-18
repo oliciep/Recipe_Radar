@@ -595,7 +595,8 @@ namespace RecipeRadar
                 Button chooseButton = new Button();
                 chooseButton.Content = $"Choose Recipe";
                 chooseButton.Style = (Style)Resources["ButtonStyle"];
-                chooseButton.HorizontalAlignment = HorizontalAlignment.Center;
+                chooseButton.HorizontalAlignment = HorizontalAlignment.Left;
+                chooseButton.VerticalAlignment = VerticalAlignment.Bottom;
                 chooseButton.Tag = recipe.Id;
                 chooseButton.Click += chooseButton_Click;
 
@@ -606,10 +607,17 @@ namespace RecipeRadar
                 recipeBorder.Width = 750;
                 recipeBorder.CornerRadius = new CornerRadius(10);
 
-                var recipeInfoPanel = new StackPanel();
+                var recipeInfoPanel = new Grid();
+                RowDefinition textRow = new RowDefinition();
+                RowDefinition buttonsRow = new RowDefinition();
+
+                Grid.SetRow(recipeInfoPanel, 0);
+                Grid.SetRow(chooseButton, 1);
+
+
                 recipeInfoPanel.Children.Add(textBlock);
                 recipeInfoPanel.Children.Add(chooseButton);
-                recipeInfoPanel.Orientation = Orientation.Vertical;
+
 
                 recipePanel.Children.Add(img);
                 recipePanel.Children.Add(recipeInfoPanel);
