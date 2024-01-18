@@ -107,13 +107,13 @@
                     <Button Content="My Account" Click="AccountButton_Click" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
                     <Button Content="Log Out" Click="logOutButton_Click" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right"/>
                 </StackPanel>
-                <Image Source="Images\logo.png" Width="538" Height="129"/>
+                <Image Source="Images\logo.png" Width="538" Height="100"/>
 
                 <Border Background="#93dd92" BorderBrush="#52922a" BorderThickness="2" CornerRadius="10">
                     <StackPanel Margin="10" ClipToBounds="True">
                         <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="DarkOliveGreen"><Run Text="Ingredients"/></TextBlock>
                         <TextBox x:Name="ingredientsTextBox" Margin="5"  Background="#FFCAEEA5" BorderBrush="#FF2F5318"/>
-                        <ListBox x:Name="ingredientListBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318">
+                        <ListBox x:Name="ingredientListBox" Margin="5" Background="#FFCAEEA5" BorderBrush="#FF2F5318" MaxHeight="65">
                             <ListBox.Resources>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Background" Value="#FFC6EAA2"/>
