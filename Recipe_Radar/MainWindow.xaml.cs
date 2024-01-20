@@ -28,6 +28,7 @@ namespace RecipeRadar
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Private variables for account information handling
         private Window loginWindow;
         private Window accountWindow;
         private TextBox usernameBox;
@@ -35,12 +36,17 @@ namespace RecipeRadar
         private Boolean logged_in = false;
         private int user_id;
 
+        // Private variables for general recipe handling
         private string cuisineType = "";
         private int numberOfRecipes = 1;
         private int maxTimeAllowed = 60;
         private bool isDialogShown = false;
         private RootObject? fetchedRecipes;
 
+
+        /// <summary>
+        /// Initialises main window, initialises XAML elements
+        /// </summary>
         public MainWindow()
         {
 
@@ -49,17 +55,11 @@ namespace RecipeRadar
             AccountPanel.Visibility = Visibility.Collapsed;
             FindButton.Click += FindButton_Click;
             RecipesComboBox.SelectedIndex = 0;
-            using (var context = new YourDbContext())
-            {
-
-                List<User> users = context.ListUsers();
-                foreach (var user in users)
-                {
-                    Console.WriteLine($"UserID: {user.UserID}, Username: {user.Username}, Password: {user.Password}");
-                }
-            }
         }
 
+        /// <summary>
+        /// [Main Screen] Logic for finding recipe based on initial parameters
+        /// </summary>
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
             // Real Data (WITH API)
@@ -100,6 +100,9 @@ namespace RecipeRadar
             */
         }
 
+        /// <summary>
+        /// [Register Window] Logic for creating account registering window
+        /// </summary>
         private void createRegisterWindow(object sender, RoutedEventArgs e)
         {
             var stackPanel = new StackPanel();
@@ -190,6 +193,9 @@ namespace RecipeRadar
             registerWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// [Register Window] Logic for register button press
+        /// </summary>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             if (usernameBox != null && passwordBox != null)
@@ -200,6 +206,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Register Window] Logic for authenticating valid user sign up
+        /// </summary>
         private void registerUser(string username, string password)
         {
             Boolean valid = true;
@@ -238,6 +247,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Login Window] Logic for creating account login window
+        /// </summary>
         private void createLoginWindow(object sender, RoutedEventArgs e)
         {
             var stackPanel = new StackPanel();
@@ -329,6 +341,9 @@ namespace RecipeRadar
             loginWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// [Login Window] Logic for login button press
+        /// </summary>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             if (usernameBox != null && passwordBox != null)
@@ -340,6 +355,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Register Window] Logic for authenticating valid user log in
+        /// </summary>
         private void AuthenticateUser(string username, string password)
         {
             bool success = false;
@@ -367,6 +385,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Account Window] Logic for sending user to account page on button press
+        /// </summary>
         private void AccountButton_Click(object sender, RoutedEventArgs e)
         {
             using (YourDbContext context = new YourDbContext())
@@ -376,7 +397,9 @@ namespace RecipeRadar
             }
         }
 
-
+        /// <summary>
+        /// [Account Window] Logic for creating home page window 
+        /// </summary>
         private void createHomepageWindow(int ID, string username, bool returned)
         {
             if (!returned)
@@ -392,6 +415,9 @@ namespace RecipeRadar
             fetchAccountInfo(ID, username, accountWindow, returned);
         }
 
+        /// <summary>
+        /// [Account Window] Logic for fetching users' information to display on account window
+        /// </summary>
         private void fetchAccountInfo(int ID, string username, Window accountWindow, bool returned)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
@@ -407,8 +433,6 @@ namespace RecipeRadar
             logOutButton.HorizontalAlignment = HorizontalAlignment.Right;
             stackPanel.Children.Add(logOutButton);
 
-
-
             TextBlock titleBlock = new TextBlock();
             titleBlock.Inlines.Add(new Run("Welcome, ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
             titleBlock.Inlines.Add(new Run($"{username}.") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
@@ -416,7 +440,15 @@ namespace RecipeRadar
             titleBlock.FontSize = 48;
             titleBlock.Margin = new Thickness(0, 0, 0, 10);
             titleBlock.TextAlignment = TextAlignment.Center;
-            stackPanel.Children.Add(titleBlock);
+
+            Border titleBorder = new Border();
+            titleBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+            titleBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+            titleBorder.BorderThickness = new Thickness(2);
+            titleBorder.CornerRadius = new CornerRadius(10);
+            titleBorder.Width = 750;
+            titleBorder.Child = titleBlock;
+            stackPanel.Children.Add(titleBorder);
 
             TextBlock recipeTitleBlock = new TextBlock();
             recipeTitleBlock.Inlines.Add(new Run("Your ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#56ca55")) });
@@ -553,6 +585,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Account Window] Logic for displaying saved recipe on button press
+        /// </summary>
         private void chooseRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = (Button)sender;
@@ -560,6 +595,9 @@ namespace RecipeRadar
             fetchInfo(accountWindow, recipeInfo);
         }
 
+        /// <summary>
+        /// [Account Window] Logic for logging user out of account on button press
+        /// </summary>
         private void logOutButton_Click(object sender, RoutedEventArgs e)
         {
             logged_in = false;
@@ -569,6 +607,9 @@ namespace RecipeRadar
             AccountPanel.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// [General] Logic for applying rounded corners styling to textboxes
+        /// </summary>
         private void ApplyRoundedCorners(TextBox textBox)
         {
             Style textBoxStyle = new Style(typeof(TextBox));
@@ -581,7 +622,9 @@ namespace RecipeRadar
             textBox.Style = textBoxStyle;
         }
 
-
+        /// <summary>
+        /// [Recipe Select Window] Logic for creating initial recipe select window
+        /// </summary>
         private void createWindow(RootObject rootObject)
         {
             var imageWindow = new Window();
@@ -594,6 +637,9 @@ namespace RecipeRadar
             fetchResults(fetchedRecipes, imageWindow);
         }
 
+        /// <summary>
+        /// [Recipe Select Window] Logic for displaying selectable recipes and styling on recipe select screen
+        /// </summary>
         private void fetchResults(RootObject rootObject, Window imageWindow)
         {
             List<string> recipeImages = new List<string>();
@@ -701,6 +747,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Recipe Select Window] Logic for selecting a recipe from select screen
+        /// </summary>
         private async void chooseRecipe(Window window, int uniqueID)
         {
             string? apiKey = APIKeys.SpoonacularKey;
@@ -722,6 +771,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Recipe Information Window] Logic for displaying information about selected recipe
+        /// </summary>
         private void fetchInfo(Window window, RecipeInformation recipeInformation)
         {
             window.Title = $"Recipe: {recipeInformation.Title}";
@@ -963,6 +1015,9 @@ namespace RecipeRadar
 
         }
 
+        /// <summary>
+        /// [Recipe Information Window] Logic for saving recipe to users' account on button press
+        /// </summary>
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button saveButton && saveButton.Tag is RecipeInformation recipeInformation)
@@ -1025,6 +1080,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Account Window] Logic for removing recipe from users' account on button press
+        /// </summary>
         private void removeRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
@@ -1046,7 +1104,9 @@ namespace RecipeRadar
             }
         }
 
-
+        /// <summary>
+        /// [Main Window] Logic for adding ingredient to search on button press
+        /// </summary>
         private void AddIngredient_Click(object sender, RoutedEventArgs e)
         {
             string newIngredient = ingredientsTextBox.Text;
@@ -1057,6 +1117,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Main Window] Logic for removing ingredient from search on button press
+        /// </summary>
         private void RemoveIngredient_Click(object sender, RoutedEventArgs e)
         {
             if (ingredientListBox.SelectedItem != null)
@@ -1064,6 +1127,10 @@ namespace RecipeRadar
                 ingredientListBox.Items.Remove(ingredientListBox.SelectedItem);
             }
         }
+
+        /// <summary>
+        /// [Main Window] Logic for updating variable based on cuisine choice being changed
+        /// </summary>
         private void CuisinesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CuisinesComboBox.SelectedItem != null)
@@ -1073,7 +1140,9 @@ namespace RecipeRadar
         }
 
 
-
+        /// <summary>
+        /// [Main Window] Logic for updating variable based on number of recipes choice being changed
+        /// </summary>
         private void RecipesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (RecipesComboBox.SelectedItem != null)
@@ -1082,6 +1151,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Main Window] Logic for user inputted max ready time for recipe when text box is clicked off
+        /// </summary>
         private void timeTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             String maxTime = timeTextBox.Text.Trim();
@@ -1095,6 +1167,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Recipe Select Window] Logic for selecting certain recipe based on button press
+        /// </summary>
         private void chooseButton_Click(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
@@ -1115,6 +1190,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [Account Window/Recipe Information Window] Logic for returning user to previous screen based on button press
+        /// </summary>
         private void returnButton_Click(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
@@ -1140,6 +1218,9 @@ namespace RecipeRadar
             }
         }
 
+        /// <summary>
+        /// [General] Logic for ensuring that dialog window is closed
+        /// </summary>
         private void ImageWindow_Closed(object sender, EventArgs e)
         {
             isDialogShown = false;
