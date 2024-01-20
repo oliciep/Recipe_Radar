@@ -103,6 +103,7 @@ namespace RecipeRadar
         private void createRegisterWindow(object sender, RoutedEventArgs e)
         {
             var stackPanel = new StackPanel();
+            stackPanel.Margin = new Thickness(0, 10, 0, 10);
 
             var registerWindow = new Window();
             registerWindow.Title = "Register";
@@ -169,11 +170,23 @@ namespace RecipeRadar
 
             DataContext = this;
 
-            stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(usernamePanel);
             stackPanel.Children.Add(passwordPanel);
             stackPanel.Children.Add(registerButton);
-            registerWindow.Content = stackPanel;
+
+            Border registerPanelBorder = new Border();
+            registerPanelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+            registerPanelBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#52922a"));
+            registerPanelBorder.BorderThickness = new Thickness(2);
+            registerPanelBorder.Width = 370;
+            registerPanelBorder.CornerRadius = new CornerRadius(10);
+            registerPanelBorder.Child = stackPanel;
+
+            var registerPanel = new StackPanel();
+            registerPanel.Children.Add(titleBlock);
+            registerPanel.Children.Add(registerPanelBorder);
+
+            registerWindow.Content = registerPanel;
             registerWindow.ShowDialog();
         }
 
@@ -228,6 +241,7 @@ namespace RecipeRadar
         private void createLoginWindow(object sender, RoutedEventArgs e)
         {
             var stackPanel = new StackPanel();
+            stackPanel.Margin = new Thickness(0, 10, 0, 10);
 
             loginWindow = new Window();
             loginWindow.Title = "Log In";
@@ -295,11 +309,23 @@ namespace RecipeRadar
 
             DataContext = this;
 
-            stackPanel.Children.Add(titleBlock);
             stackPanel.Children.Add(usernamePanel);
             stackPanel.Children.Add(passwordPanel);
             stackPanel.Children.Add(loginButton);
-            loginWindow.Content = stackPanel;
+
+            Border loginPanelBorder = new Border();
+            loginPanelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#93dd92"));
+            loginPanelBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#52922a"));
+            loginPanelBorder.BorderThickness = new Thickness(2);
+            loginPanelBorder.Width = 370;
+            loginPanelBorder.CornerRadius = new CornerRadius(10);
+            loginPanelBorder.Child = stackPanel;
+
+            var loginPanel = new StackPanel();
+            loginPanel.Children.Add(titleBlock);
+            loginPanel.Children.Add(loginPanelBorder);
+
+            loginWindow.Content = loginPanel;
             loginWindow.ShowDialog();
         }
 
@@ -414,12 +440,6 @@ namespace RecipeRadar
                     StackPanel recipePanel = new StackPanel();
                     StackPanel recipeButtonsPanel = new StackPanel();
 
-                    Border dividerLine = new Border();
-                    dividerLine.Width = 700;
-                    dividerLine.Height = 10;
-                    dividerLine.Background = Brushes.Transparent;
-                    dividerLine.Margin = new Thickness(0, 5, 0, 5);
-
                     BitmapImage bitmap = new BitmapImage(new Uri(recipe.Image));
                     Image img = new Image();
                     img.Source = bitmap;
@@ -431,8 +451,8 @@ namespace RecipeRadar
                     TextBlock recipeBlock = new TextBlock();
                     recipeBlock.Inlines.Add(new Run("Recipe: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                     recipeBlock.Inlines.Add(new Run($"{recipe.Title}") { Foreground = Brushes.Olive });
-                    recipeBlock.FontSize = 22;
-                    recipeBlock.Margin = new Thickness(10, 5, 0, 10);
+                    recipeBlock.FontSize = 20;
+                    recipeBlock.Margin = new Thickness(10, 5, 0, 5);
                     recipeBlock.TextAlignment = TextAlignment.Left;
                     recipeBlock.TextWrapping = TextWrapping.Wrap;
                     recipeBlock.MaxWidth = 420;
@@ -442,7 +462,7 @@ namespace RecipeRadar
                     recipeInfoBlock.Inlines.Add(new Run($"{recipe.Servings} people\n") { Foreground = Brushes.Olive });
                     recipeInfoBlock.Inlines.Add(new Run("Ready in: ") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#226a21")) });
                     recipeInfoBlock.Inlines.Add(new Run($"{recipe.ReadyTime} minutes") { Foreground = Brushes.Olive });
-                    recipeInfoBlock.FontSize = 18;
+                    recipeInfoBlock.FontSize = 16;
                     recipeInfoBlock.Margin = new Thickness(10, 0, 0, 10);
                     recipeInfoBlock.TextAlignment = TextAlignment.Left;
                     recipeInfoBlock.VerticalAlignment = VerticalAlignment.Top;
@@ -511,7 +531,7 @@ namespace RecipeRadar
 
                     Border recipeBorder = new Border();
                     recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
-                    recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+                    recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#52922a"));
                     recipeBorder.BorderThickness = new Thickness(2);
                     recipeBorder.Margin = new Thickness(10, 10, 0, 10);
                     recipeBorder.Width = 750;
@@ -523,7 +543,6 @@ namespace RecipeRadar
 
                     recipeBorder.Child = recipePanel;
                     stackPanel.Children.Add(recipeBorder);
-                    stackPanel.Children.Add(dividerLine);
                 }
             }
             scrollViewer.Content = stackPanel;
@@ -630,7 +649,7 @@ namespace RecipeRadar
 
                 Border recipeBorder = new Border();
                 recipeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78d577"));
-                recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
+                recipeBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#52922a"));
                 recipeBorder.BorderThickness = new Thickness(2);
                 recipeBorder.Width = 750;
                 recipeBorder.CornerRadius = new CornerRadius(10);
