@@ -4,10 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// File for storing test information, primarily used to limit API requests being used
+/// </summary>
 namespace Recipe_Radar.testData
 {
+    /// <summary>
+    /// Class definition storing recipe object formats
+    /// </summary>
     public class RecipeTests
     {
+        /// <summary>
+        /// Class definition for storing Recipe information
+        /// </summary>
         public class Result
         {
             public int Id { get; set; }
@@ -16,6 +25,9 @@ namespace Recipe_Radar.testData
             public string ImageType { get; set; }
         }
 
+        /// <summary>
+        // Class definition for storing JSON information retrieved from API request
+        /// </summary>
         public class TestRootObject
         {
             public int Offset { get; set; }
@@ -24,7 +36,9 @@ namespace Recipe_Radar.testData
             public int TotalResults { get; set; }
         }
 
-        // Test Data
+        /// <summary>
+        // Class definition for instantiating some test recipe objects to test data with
+        /// </summary>
         public TestRootObject TestRecipeData()
         {
             var testRoot = new TestRootObject
