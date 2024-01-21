@@ -20,6 +20,7 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using Recipe_Radar.dbConfig;
 using Microsoft.EntityFrameworkCore;
+using System.Windows.Media.Effects;
 
 namespace RecipeRadar
 {
@@ -30,6 +31,7 @@ namespace RecipeRadar
     {
         // Private variables for account information handling
         private Window loginWindow;
+        private Window registerWindow;
         private Window accountWindow;
         private TextBox usernameBox;
         private TextBox passwordBox;
@@ -65,7 +67,7 @@ namespace RecipeRadar
             var stackPanel = new StackPanel();
             stackPanel.Margin = new Thickness(0, 10, 0, 10);
 
-            var registerWindow = new Window();
+            registerWindow = new Window();
             registerWindow.Title = "Register";
             registerWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
             registerWindow.Width = 400;
@@ -195,9 +197,10 @@ namespace RecipeRadar
             // If all checks are valid user is added to users table
             if (valid)
             {
-                MessageBox.Show("Sign up successful.");
+                MessageBox.Show("Successfully signed up.");
                 using (var context = new YourDbContext())
                 {
+                    registerWindow.Close();
                     var newUser = new User();
                     newUser.Username = username;
                     newUser.Password = password;
@@ -395,6 +398,7 @@ namespace RecipeRadar
             logOutButton.Style = (Style)Resources["ButtonStyle"];
             logOutButton.Click += logOutButton_Click;
             logOutButton.HorizontalAlignment = HorizontalAlignment.Right;
+            logOutButton.Margin = new Thickness(0, 5, 5, 20);
             stackPanel.Children.Add(logOutButton);
 
             TextBlock titleBlock = new TextBlock();
@@ -410,7 +414,7 @@ namespace RecipeRadar
             titleBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50c84e"));
             titleBorder.BorderThickness = new Thickness(2);
             titleBorder.CornerRadius = new CornerRadius(10);
-            titleBorder.Width = 750;
+            titleBorder.Width = 600;
             titleBorder.Child = titleBlock;
             stackPanel.Children.Add(titleBorder);
 
@@ -419,7 +423,7 @@ namespace RecipeRadar
             recipeTitleBlock.Inlines.Add(new Run("Recipes") { Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#38b137")) });
             recipeTitleBlock.FontFamily = new FontFamily("Impact");
             recipeTitleBlock.FontSize = 36;
-            recipeTitleBlock.Margin = new Thickness(10, 0, 0, 10);
+            recipeTitleBlock.Margin = new Thickness(20, 10, 0, 0);
             recipeTitleBlock.TextAlignment = TextAlignment.Left;
             stackPanel.Children.Add(recipeTitleBlock);
 
@@ -884,7 +888,7 @@ namespace RecipeRadar
             string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), "<.*?>", "");
             string[] instructions = filterInstructions.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
-            const int maxLength = 130;
+            const int maxLength = 110;
             const int ninthInstruction = 9;
 
             // Code used to check if instruction is 10th or after. If it is, margin amount is adjusted
@@ -972,6 +976,14 @@ namespace RecipeRadar
             ingredientsTitleBlock.TextAlignment = TextAlignment.Left;
             ingredientsTitleBlock.VerticalAlignment = VerticalAlignment.Top;
 
+            DropShadowEffect dropShadowEffect = new DropShadowEffect
+            {
+                Color = Color.FromRgb(0, 64, 0),
+                Opacity = 0.15,
+                ShadowDepth = 2,
+                BlurRadius = 2
+            };
+
             TextBox ingredientsBlock = new TextBox();
             ingredientsBlock.Text = ingredientsList.ToString();
             ingredientsBlock.FontSize = 12;
@@ -1009,10 +1021,11 @@ namespace RecipeRadar
 
             TextBlock instructionsBlock = new TextBlock();
             instructionsBlock.Text = instructionsList.ToString();
-            instructionsBlock.FontSize = 12;
+            instructionsBlock.FontSize = 14;
             instructionsBlock.Foreground = Brushes.DarkOliveGreen;
             instructionsBlock.Margin = new Thickness(10, 5, 0, 0);
             instructionsBlock.TextAlignment = TextAlignment.Left;
+            instructionsBlock.Effect = dropShadowEffect;
 
             Border instructionsBorder = new Border();
             instructionsBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#67cf66"));
