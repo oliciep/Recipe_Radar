@@ -58,52 +58,6 @@ namespace RecipeRadar
         }
 
         /// <summary>
-        /// [Main Screen] Logic for finding recipe based on initial parameters
-        /// </summary>
-        private async void FindButton_Click(object sender, RoutedEventArgs e)
-        {
-            StringBuilder ingredients = new("");
-            foreach (var item in ingredientListBox.Items)
-            {
-                ingredients.Append(item + ", ");
-            }
-
-            // Replace file with your API key here
-            string? apiKey = APIKeys.SpoonacularKey;
-            using (HttpClient client = new HttpClient())
-            {
-                // Sends query to Spoonacular API with multiple parameters from user inputs
-                client.BaseAddress = new Uri("https://api.spoonacular.com/");
-                HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&cuisine={cuisineType}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
-
-                // Check if JSON is valid
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseData = await response.Content.ReadAsStringAsync();
-                    fetchedRecipes = JsonConvert.DeserializeObject<RootObject>(responseData);
-                    createWindow(fetchedRecipes);
-                }
-                else
-                {
-                    Console.WriteLine("Failed to retrieve data");
-                }
-            }
-
-            // Test Data object for testing without API request
-            /*
-            RecipeTests recipeTests = new RecipeTests();
-            RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
-            StringBuilder outputRecipes = new("");
-
-            foreach (var recipe in testData.Results)
-            {
-                outputRecipes.Append("Title: " +recipe.Title + "\n\n");
-            }
-            fetchResults(testData);
-            */
-        }
-
-        /// <summary>
         /// [Register Window] Logic for creating account registering window
         /// </summary>
         private void createRegisterWindow(object sender, RoutedEventArgs e)
@@ -363,7 +317,7 @@ namespace RecipeRadar
         }
 
         /// <summary>
-        /// [Register Window] Logic for authenticating valid user log in
+        /// [Login Window] Logic for authenticating valid user log in
         /// </summary>
         private void AuthenticateUser(string username, string password)
         {
@@ -599,6 +553,32 @@ namespace RecipeRadar
         }
 
         /// <summary>
+        /// [Account Window] Logic for removing recipe from users' account on button press
+        /// </summary>
+        private void removeRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+            int recipe_id = Convert.ToInt32(button.Tag);
+            try
+            {
+                using (var context = new YourDbContext())
+                {
+                    // SQL code to remove recipe alongside any linked properties it has
+                    context.RemoveRecipe(user_id, recipe_id);
+                    MessageBox.Show("Recipe removed successfully.");
+
+                    var user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                    // Refreshes the account window
+                    createHomepageWindow(user_id, user.Username, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error removing recipe: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// [Account Window] Logic for displaying saved recipe on button press
         /// </summary>
         private void chooseRecipeButton_Click(object sender, RoutedEventArgs e)
@@ -606,6 +586,36 @@ namespace RecipeRadar
             Button clickedButton = (Button)sender;
             RecipeInformation recipeInfo = (RecipeInformation)clickedButton.Tag;
             fetchInfo(accountWindow, recipeInfo);
+        }
+
+        /// <summary>
+        /// [Account Window/Recipe Information Window] Logic for returning user to previous screen based on button press
+        /// </summary>
+        private void returnButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+            if (button != null)
+            {
+                Window window = Window.GetWindow(button);
+
+                if (window != null)
+                {
+                    // If the window is for Recipe Information, return to Recipe Select window
+                    if (window.Name == "APISearch")
+                    {
+                        fetchResults(fetchedRecipes, window);
+                    }
+                    // If the window is for Account Recipe Information, return to Account window
+                    else if (window.Name == "AccountSearch")
+                    {
+                        using (YourDbContext context = new YourDbContext())
+                        {
+                            User? user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                            createHomepageWindow(user_id, user.Username, true);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -618,6 +628,52 @@ namespace RecipeRadar
             accountWindow.Close();
             ButtonsPanel.Visibility = Visibility.Visible;
             AccountPanel.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// [Main Window] Logic for finding recipe based on initial parameters
+        /// </summary>
+        private async void FindButton_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder ingredients = new("");
+            foreach (var item in ingredientListBox.Items)
+            {
+                ingredients.Append(item + ", ");
+            }
+
+            // Replace file with your API key here
+            string? apiKey = APIKeys.SpoonacularKey;
+            using (HttpClient client = new HttpClient())
+            {
+                // Sends query to Spoonacular API with multiple parameters from user inputs
+                client.BaseAddress = new Uri("https://api.spoonacular.com/");
+                HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&cuisine={cuisineType}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
+
+                // Check if JSON is valid
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+                    fetchedRecipes = JsonConvert.DeserializeObject<RootObject>(responseData);
+                    createWindow(fetchedRecipes);
+                }
+                else
+                {
+                    Console.WriteLine("Failed to retrieve data");
+                }
+            }
+
+            // Test Data object for testing without API request
+            /*
+            RecipeTests recipeTests = new RecipeTests();
+            RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
+            StringBuilder outputRecipes = new("");
+
+            foreach (var recipe in testData.Results)
+            {
+                outputRecipes.Append("Title: " +recipe.Title + "\n\n");
+            }
+            fetchResults(testData);
+            */
         }
 
         /// <summary>
@@ -745,6 +801,29 @@ namespace RecipeRadar
             {
                 isDialogShown = true;
                 imageWindow.ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// [Recipe Select Window] Logic for selecting certain recipe based on button press
+        /// </summary>
+        private void chooseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+            int uniqueID = Convert.ToInt32(button.Tag);
+            if (button != null)
+            {
+                Window window = Window.GetWindow(button);
+
+                if (window != null)
+                {
+                    if (window.Content is ScrollViewer scrollViewer)
+                    {
+                        scrollViewer.Content = null;
+
+                    }
+                    chooseRecipe(window, uniqueID);
+                }
             }
         }
 
@@ -1095,32 +1174,6 @@ namespace RecipeRadar
         }
 
         /// <summary>
-        /// [Account Window] Logic for removing recipe from users' account on button press
-        /// </summary>
-        private void removeRecipeButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button? button = sender as Button;
-            int recipe_id = Convert.ToInt32(button.Tag);
-            try
-            {
-                using (var context = new YourDbContext())
-                {
-                    // SQL code to remove recipe alongside any linked properties it has
-                    context.RemoveRecipe(user_id, recipe_id);
-                    MessageBox.Show("Recipe removed successfully.");
-
-                    var user = context.Users.FirstOrDefault(u => u.UserID == user_id);
-                    // Refreshes the account window
-                    createHomepageWindow(user_id, user.Username, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error removing recipe: {ex.Message}");
-            }
-        }
-
-        /// <summary>
         /// [Main Window] Logic for adding ingredient to search on button press
         /// </summary>
         private void AddIngredient_Click(object sender, RoutedEventArgs e)
@@ -1182,59 +1235,6 @@ namespace RecipeRadar
             if (string.IsNullOrEmpty(maxTime))
             {
                 MessageBox.Show("Please enter maximum ready time.");
-            }
-        }
-
-        /// <summary>
-        /// [Recipe Select Window] Logic for selecting certain recipe based on button press
-        /// </summary>
-        private void chooseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button? button = sender as Button;
-            int uniqueID = Convert.ToInt32(button.Tag);
-            if (button != null)
-            {
-                Window window = Window.GetWindow(button);
-
-                if (window != null)
-                {
-                    if (window.Content is ScrollViewer scrollViewer)
-                    {
-                        scrollViewer.Content = null;
-
-                    }
-                    chooseRecipe(window, uniqueID);
-                }
-            }
-        }
-
-        /// <summary>
-        /// [Account Window/Recipe Information Window] Logic for returning user to previous screen based on button press
-        /// </summary>
-        private void returnButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button? button = sender as Button;
-            if (button != null)
-            {
-                Window window = Window.GetWindow(button);
-
-                if (window != null)
-                {
-                    // If the window is for Recipe Information, return to Recipe Select window
-                    if (window.Name == "APISearch")
-                    {
-                        fetchResults(fetchedRecipes, window);
-                    }
-                    // If the window is for Account Recipe Information, return to Account window
-                    else if (window.Name == "AccountSearch")
-                    {
-                        using (YourDbContext context = new YourDbContext())
-                        {
-                            User? user = context.Users.FirstOrDefault(u => u.UserID == user_id);
-                            createHomepageWindow(user_id, user.Username, true);
-                        }
-                    }
-                }
             }
         }
 
