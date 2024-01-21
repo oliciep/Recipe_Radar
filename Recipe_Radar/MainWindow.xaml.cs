@@ -62,18 +62,21 @@ namespace RecipeRadar
         /// </summary>
         private async void FindButton_Click(object sender, RoutedEventArgs e)
         {
-            // Real Data (WITH API)
             StringBuilder ingredients = new("");
             foreach (var item in ingredientListBox.Items)
             {
                 ingredients.Append(item + ", ");
             }
+
+            // Replace file with your API key here
             string? apiKey = APIKeys.SpoonacularKey;
             using (HttpClient client = new HttpClient())
             {
+                // Sends query to Spoonacular API with multiple parameters from user inputs
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
                 HttpResponseMessage response = await client.GetAsync($"recipes/complexSearch?query={ingredients}&cuisine={cuisineType}&maxReadyTime={maxTimeAllowed}&number={numberOfRecipes}&apiKey={apiKey}");
 
+                // Check if JSON is valid
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
@@ -86,7 +89,7 @@ namespace RecipeRadar
                 }
             }
 
-            // Test Data (NO API)
+            // Test Data object for testing without API request
             /*
             RecipeTests recipeTests = new RecipeTests();
             RecipeTests.TestRootObject testData = recipeTests.TestRecipeData();
@@ -198,6 +201,7 @@ namespace RecipeRadar
         /// </summary>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
+            // Check for null inputs in text boxes
             if (usernameBox != null && passwordBox != null)
             {
                 string username = usernameBox.Text;
@@ -214,10 +218,10 @@ namespace RecipeRadar
             Boolean valid = true;
             using (var context = new YourDbContext())
             {
+                // Iterates through list to check if username is already taken
                 List<User> users = context.ListUsers();
                 foreach (var user in users)
                 {
-                    MessageBox.Show($"UserID: {user.UserID}, User: {user.Username}, Password: {user.Password}");
                     if (user.Username == username)
                     {
                         MessageBox.Show($"Name is already taken.");
@@ -227,12 +231,14 @@ namespace RecipeRadar
                 }
             }
 
+            // Checks for invalid password length (less than 8 characters)
             if (password.Length < 8)
             {
                 MessageBox.Show("Password must be 8 or more characters.");
                 valid = false;
             }
 
+            // If all checks are valid user is added to users table
             if (valid)
             {
                 MessageBox.Show("Sign up successful.");
@@ -346,6 +352,7 @@ namespace RecipeRadar
         /// </summary>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            // Checks for null inputs in text boxes
             if (usernameBox != null && passwordBox != null)
             {
                 string username = usernameBox.Text;
@@ -366,9 +373,11 @@ namespace RecipeRadar
                 List<User> users = context.ListUsers();
                 foreach (var user in users)
                 {
+                    // If the username and password match, then user is logged in
                     if (user.Username == username && user.Password == password)
                     {
                         ButtonsPanel.Visibility = Visibility.Collapsed;
+                        // Log in and register buttons are replaced by account buttons
                         AccountPanel.Visibility = Visibility.Visible;
                         logged_in = true;
                         user_id = user.UserID;
@@ -402,6 +411,7 @@ namespace RecipeRadar
         /// </summary>
         private void createHomepageWindow(int ID, string username, bool returned)
         {
+            // If user has already created the window, ignores repeat creation
             if (!returned)
             {
                 accountWindow = new Window();
@@ -461,6 +471,7 @@ namespace RecipeRadar
 
             using (var context = new YourDbContext())
             {
+                // SQL Query that will check every recipe that the user is linked to and list them
                 var recipesForUser = context.UserRecipes
                     .Where(ur => ur.UserID == user_id)
                     .Include(ur => ur.Recipe)
@@ -510,6 +521,8 @@ namespace RecipeRadar
                     Button chooseRecipeButton = new Button();
                     chooseRecipeButton.Content = $"Choose Recipe";
                     chooseRecipeButton.Style = (Style)Resources["ButtonStyle"];
+
+                    // Tag is initialised with recreation of JSON object that API returns, allowing for recipe to be selected from saved recipes
                     chooseRecipeButton.Tag = new RecipeInformation
                     {
                         Id = recipe?.RecipeID ?? 0,
@@ -608,21 +621,6 @@ namespace RecipeRadar
         }
 
         /// <summary>
-        /// [General] Logic for applying rounded corners styling to textboxes
-        /// </summary>
-        private void ApplyRoundedCorners(TextBox textBox)
-        {
-            Style textBoxStyle = new Style(typeof(TextBox));
-
-            Style borderStyle = new Style(typeof(Border));
-            borderStyle.Setters.Add(new Setter(Border.CornerRadiusProperty, new CornerRadius(5)));
-
-            textBoxStyle.Resources.Add(typeof(Border), borderStyle);
-
-            textBox.Style = textBoxStyle;
-        }
-
-        /// <summary>
         /// [Recipe Select Window] Logic for creating initial recipe select window
         /// </summary>
         private void createWindow(RootObject rootObject)
@@ -658,6 +656,7 @@ namespace RecipeRadar
 
             stackPanel.Children.Add(titleBlock);
 
+            // Iterates through API request results and returns amount of recipes and their information
             foreach (var recipe in rootObject.Results)
             {
                 var recipePanel = new StackPanel();
@@ -740,6 +739,8 @@ namespace RecipeRadar
             imageWindow.Height = 600;
             imageWindow.Background = Brushes.LightGreen;
             imageWindow.Content = scrollViewer;
+
+            // Checks if window has been closed properly or not
             if (!isDialogShown)
             {
                 isDialogShown = true;
@@ -752,12 +753,15 @@ namespace RecipeRadar
         /// </summary>
         private async void chooseRecipe(Window window, int uniqueID)
         {
+            // Setting up API request
             string? apiKey = APIKeys.SpoonacularKey;
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://api.spoonacular.com/");
+                // API Query using Recipe ID to get further information about a recipe
                 HttpResponseMessage response = await client.GetAsync($"recipes/{uniqueID}/information?apiKey={apiKey}");
 
+                // Checks if JSON is valid
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
@@ -780,8 +784,10 @@ namespace RecipeRadar
 
             StringBuilder ingredientsList = new StringBuilder();
             List<string> uniqueIngredients = new List<string>();
+            // Adds each ingredient to the string of ingredients list
             foreach (var ingredient in recipeInformation.ExtendedIngredients)
             {
+                // Checks if the ingredient has already been listed 
                 if (!uniqueIngredients.Contains($"• {ingredient.Amount} {ingredient.Unit} of {ingredient.Name}\n"))
                 {
                     uniqueIngredients.Add($"• {ingredient.Amount} {ingredient.Unit} of {ingredient.Name}\n");
@@ -795,12 +801,14 @@ namespace RecipeRadar
 
 
             StringBuilder instructionsList = new StringBuilder();
+            // Regex to filter out any lingering HTML tags
             string filterInstructions = Regex.Replace(recipeInformation.Instructions.ToString(), "<.*?>", "");
             string[] instructions = filterInstructions.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
             const int maxLength = 130;
             const int ninthInstruction = 9;
 
+            // Code used to check if instruction is 10th or after. If it is, margin amount is adjusted
             for (int i = 0; i < instructions.Length; i++)
             {
                 string trimmedInstruction = instructions[i].Trim();
@@ -967,6 +975,7 @@ namespace RecipeRadar
             var buttonsPanel = new StackPanel();
             buttonsPanel.Orientation = Orientation.Horizontal;
             buttonsPanel.HorizontalAlignment = HorizontalAlignment.Center;
+            // Checks if user is in recipe select screen
             if (logged_in && window.Name == "APISearch")
             {
                 Button saveButton = new Button();
@@ -1024,12 +1033,16 @@ namespace RecipeRadar
             {
                 using (var context = new YourDbContext())
                 {
+                    // SQL Code to check if that recipe has already been saved to the recipes table
                     bool saved = context.Recipes.Any(recipe => recipe.RecipeID == recipeInformation.Id);
+                    // SQL Code to check if that user has saved that recipe to their UserRecipes table
                     bool user_saved = context.Users
                                 .Any(u => u.UserRecipes.Any(ur => ur.RecipeID == recipeInformation.Id && ur.UserID == user_id));
 
+                    // If the recipe has not been saved anywhere, code to saved to Recipes, UserRecipes and Ingredients
                     if (!saved)
                     {
+                        // Initialising a new record for the recipe
                         var newRecipe = new Recipe_Radar.dbConfig.Recipe
                         {
                             RecipeID = recipeInformation.Id,
@@ -1060,6 +1073,7 @@ namespace RecipeRadar
                         context.SaveChanges();
                         MessageBox.Show("Recipe added to saved recipes globally.");
                     } 
+                    // Another check, this time to check if that user has saved the recipe
                     else if (!user_saved)
                     {
                         var user = context.Users.FirstOrDefault(u => u.UserID == user_id);
@@ -1091,10 +1105,12 @@ namespace RecipeRadar
             {
                 using (var context = new YourDbContext())
                 {
+                    // SQL code to remove recipe alongside any linked properties it has
                     context.RemoveRecipe(user_id, recipe_id);
                     MessageBox.Show("Recipe removed successfully.");
 
                     var user = context.Users.FirstOrDefault(u => u.UserID == user_id);
+                    // Refreshes the account window
                     createHomepageWindow(user_id, user.Username, true);
                 }
             }
@@ -1110,6 +1126,7 @@ namespace RecipeRadar
         private void AddIngredient_Click(object sender, RoutedEventArgs e)
         {
             string newIngredient = ingredientsTextBox.Text;
+            // Checks if ingredient entered is not null
             if (!string.IsNullOrWhiteSpace(newIngredient))
             {
                 ingredientListBox.Items.Add(newIngredient);
@@ -1122,6 +1139,7 @@ namespace RecipeRadar
         /// </summary>
         private void RemoveIngredient_Click(object sender, RoutedEventArgs e)
         {
+            // Checks if ingredient selected is not null
             if (ingredientListBox.SelectedItem != null)
             {
                 ingredientListBox.Items.Remove(ingredientListBox.SelectedItem);
@@ -1202,10 +1220,12 @@ namespace RecipeRadar
 
                 if (window != null)
                 {
+                    // If the window is for Recipe Information, return to Recipe Select window
                     if (window.Name == "APISearch")
                     {
                         fetchResults(fetchedRecipes, window);
                     }
+                    // If the window is for Account Recipe Information, return to Account window
                     else if (window.Name == "AccountSearch")
                     {
                         using (YourDbContext context = new YourDbContext())
@@ -1216,6 +1236,22 @@ namespace RecipeRadar
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// [General] Logic for applying rounded corners styling to textboxes
+        /// </summary>
+        private void ApplyRoundedCorners(TextBox textBox)
+        {
+            // Sets the textbox style to have a corner radius
+            Style textBoxStyle = new Style(typeof(TextBox));
+
+            Style borderStyle = new Style(typeof(Border));
+            borderStyle.Setters.Add(new Setter(Border.CornerRadiusProperty, new CornerRadius(5)));
+
+            textBoxStyle.Resources.Add(typeof(Border), borderStyle);
+
+            textBox.Style = textBoxStyle;
         }
 
         /// <summary>
