@@ -4,13 +4,13 @@ This project is a C# based recipe application that allows you to find recipes, v
 ## Application Overview
 
 Search for recipes with a robust parameterised search
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/searchGif) 
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/searchGif.gif) 
 
 Select from a variety of recipes, and then learn more about a specific recipe
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/infoGif) 
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/infoGif.gif) 
 
 Sign up and log in to store and access your saved recipes
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/loginGif) 
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/loginGif.gif) 
 
 
 ## Features
