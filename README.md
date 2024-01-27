@@ -1,6 +1,6 @@
 # Recipe Radar Application
 
-This project is a C# based recipe application that allows you to find recipes, visualised with a WPF GUI, using the Spoonacular API to fetch recipes. Contains API integration, responsive WPF interface, SQL Backend database to store user and recipe data, dynamic parameterised recipe search and selection and application specific styling on WPF content.
+This project is a C# based recipe curation application that allows you to find, curate and save recipes visualised with a WPF GUI, using the Spoonacular API to fetch recipes. Contains API integration, responsive WPF interface, SQL Backend database to store user and recipe data, dynamic parameterised recipe search and selection and application specific styling on WPF content.
 ## Application Overview
 
 __Search for specialised recipes with a robust parameterised search__
