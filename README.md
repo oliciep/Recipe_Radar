@@ -16,7 +16,7 @@ __Sign up and log in to store and access your saved recipes__
 ![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/loginGif.gif) 
 
 
-## Features
+## Features 
 
 - C# Based backend to implement recipe finding logic.
 - Uses Spoonacular API to fetch recipes based on parameters.
