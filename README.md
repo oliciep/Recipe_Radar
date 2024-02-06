@@ -21,11 +21,11 @@ __Sign up and log in to store and access your saved recipes__
 - C# Based backend to implement recipe finding logic.
 - Uses Spoonacular API to fetch recipes based on parameters.
 - WPF GUI using buttons, general styling and displaying information.
-- SQL based registration system for log in and sign up
+- SQL based registration system for log in and sign up.
 - SQL database integration for storing recipe information and users' recipes.
 - Filtering system to hone in on specialised recipes.
 - Advanced recipe select hub with further recipe information.
-- Console application version available for efficiency.
+- _Next Feature:_ **Recipe Recommendation System**
 
 ## Deployment
 
