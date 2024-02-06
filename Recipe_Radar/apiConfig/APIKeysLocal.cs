@@ -13,8 +13,7 @@ namespace Recipe_Radar.config
         /// </summary>
         static APIKeys()
         {
-            //SpoonacularKey = "288d4b3d9f8d44d39f041ea5260c4301";
-            SpoonacularKey = "b8e7d201b7174c628cb52b3b35cb27f6";
+            SpoonacularKey = "288d4b3d9f8d44d39f041ea5260c4301";
         }
     }
 }
