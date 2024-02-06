@@ -1,31 +1,31 @@
 # Recipe Radar Application
 
-This project is a C# based recipe application that allows you to find recipes, visualised with a WPF GUI, using the Spoonacular API to fetch recipes. Contains API integration, responsive WPF interface, SQL Backend database to store user and recipe data, dynamic parameterised recipe search and selection and application specific styling on WPF content.
+This project is a C# based recipe curation application that allows you to find, curate and save recipes visualised with a WPF GUI, using the Spoonacular API to fetch recipes. Contains API integration, responsive WPF interface, SQL Backend database to store user and recipe data, dynamic parameterised recipe search and selection and application specific styling on WPF content.
 ## Application Overview
 
-Search for recipes with a robust parameterised search
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/searchGif) 
+__Search for specialised recipes with a robust parameterised search__
 
-Select from a variety of recipes, and then learn more about a specific recipe
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/infoGif) 
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/searchGif.gif) 
 
-Sign up and log in to store and access your saved recipes
-![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/loginGif) 
+__Select from a variety of recipes, and then access more information about any recipe__
+
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/infoGif.gif) 
+
+__Sign up and log in to store and access your saved recipes__
+
+![](https://github.com/oliciep/Recipe_Radar/blob/main/demos/loginGif.gif) 
 
 
-## Features
+## Features 
 
 - C# Based backend to implement recipe finding logic.
 - Uses Spoonacular API to fetch recipes based on parameters.
 - WPF GUI using buttons, general styling and displaying information.
-- SQL database integration for storing user data and recipe information.
-- Filtering system to hone in on user needs.
+- SQL based registration system for log in and sign up
+- SQL database integration for storing recipe information and users' recipes.
+- Filtering system to hone in on specialised recipes.
+- Advanced recipe select hub with further recipe information.
 - Console application version available for efficiency.
-
-
-
-
-
 
 ## Deployment
 
