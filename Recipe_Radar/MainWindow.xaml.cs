@@ -220,7 +220,7 @@ namespace RecipeRadar
 
             loginWindow = new Window();
             loginWindow.Title = "Log In";
-            loginWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico"));
+            loginWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Images/logo.ico")); 
             loginWindow.Width = 400;
             loginWindow.Height = 300;
             loginWindow.Background = Brushes.LightGreen;
