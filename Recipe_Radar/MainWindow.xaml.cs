@@ -607,7 +607,7 @@ namespace RecipeRadar
                     // If the window is for Recipe Information, return to Recipe Select window
                     if (window.Name == "APISearch")
                     {
-                        fetchResults(fetchedRecipes, window);
+                        fetchResults(fetchedRecipes,window);
                     }
                     // If the window is for Account Recipe Information, return to Account window
                     else if (window.Name == "AccountSearch")
